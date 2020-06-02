@@ -1,4 +1,4 @@
-# SEP boilerplate template
+# SEP project group O
 
 This is a boilerplate repository for the JavaScript SEP.
 
