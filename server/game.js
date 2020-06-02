@@ -1,4 +1,5 @@
-class game( assests, canvas) {
-    this.assests = assests;
+class game{
+    constructor(assets, canvas) {
+    this.assests = assets;
     this.canvas = canvas;
 }
