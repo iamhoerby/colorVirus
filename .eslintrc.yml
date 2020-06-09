@@ -7,4 +7,7 @@ parserOptions:
   ecmaVersion: 2018
   sourceType: module
 rules:
+  linebreak-style:
+    - error
+    - unix
   prettier/prettier: error
