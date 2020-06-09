@@ -8,7 +8,9 @@
 import { Apple } from "./export-a-class.js";
 import { square } from "./export-a-function.js";
 import { CANVAS_SIZE } from "./export-a-identifier.js";
+import { Game } from "../server/game.js"
 
+new Game(document.getElementById("myCanvas"),8);
 new Apple();
 
 console.log(square(8));
