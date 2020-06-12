@@ -3,11 +3,16 @@ class Game{
         this.extent = extent;
         this.canvas = canvas;
         this.cellSize = this.canvas.width / this.extent;
-        window.setInterval(this.draw.bind(this), 500);
+        this.context = this.canvas.getContext('2d');
+        this.room = new Room
+        window.setInterval(this.loop.bind(this), 33);
     }
     draw(){
-        this.context.fillStyle = 'red';
-        this.context.fillRect(5 * this.cellSize,4 * this.cellSize,this.cellSize,this.cellSize);
+        this.room.draw()
+        
+    }
+    loop(){
+
     }
     
 
