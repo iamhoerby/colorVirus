@@ -1,6 +1,5 @@
 export class Spieler{
     constructor(x, y, color, lifes, pressedKey, cellSize, context,){ //socket
-    //aufrufen mit: this.spieler1 = new Spieler(2, 3, 'blue', 3, 'ArrowRight', this.cellSize, this.context, this.socket);
         this.x = x;
         this.y = y;
         this.color = color;
@@ -42,7 +41,6 @@ export class Spieler{
     }
 
     draw(){
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.color === 'blue'){
             if (this.lifes === 3){
                 this.context.fillStyle = 'navy';
@@ -88,6 +86,7 @@ export class Spieler{
         this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
     }
     loop(){
+        this.context.clearRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
         this.move();
         this.draw();
     }
