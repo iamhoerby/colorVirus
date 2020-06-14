@@ -1,4 +1,4 @@
-class Room {
+export class Room {
 
     constructor (canvas, extent, number) {
         this.canvas = canvas;
@@ -50,7 +50,7 @@ class Room {
 
 }
 
-class Door {
+export class Door {
    constructor (colour, state, position, extent, cellSize, context) {
        this.colour = colour;
        this.state = state;
@@ -71,6 +71,6 @@ class Door {
 
 }
 
-module.exports = Room;
-module.exports = Door;
+// module.exports = Room;
+// module.exports = Door;
 //new Room(document.getElementById('myCanvas'), 64, 0);
