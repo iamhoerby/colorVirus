@@ -1,5 +1,5 @@
-class Spieler{
-    constructor(x, y, color, lifes, pressedKey, cellSize, context, socket){
+export class Spieler{
+    constructor(x, y, color, lifes, pressedKey, cellSize, context,){ //socket
     //aufrufen mit: this.spieler1 = new Spieler(2, 3, 'blue', 3, 'ArrowRight', this.cellSize, this.context, this.socket);
         this.x = x;
         this.y = y;
@@ -8,7 +8,7 @@ class Spieler{
         this.pressedKey = pressedKey;
         this.cellSize = cellSize;
         this.context = context;
-        this.socket = io('http://localhost:3000');
+        //this.socket = io('http://localhost:3000');
 
         document.addEventListener('keyup', this.handleKeyUp.bind(this))
     }        
@@ -37,7 +37,7 @@ class Spieler{
         } else if (this.pressedKey === 'ArrowUp') {
             this.y -= 1;
         }
-        this.socket.emit('player_position', {x, y});
+        //this.socket.emit('player_position', {x, y});
     }
 
     draw(){
@@ -86,5 +86,3 @@ class Spieler{
         this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
     }
 }
-
-module.exports = Spieler;
