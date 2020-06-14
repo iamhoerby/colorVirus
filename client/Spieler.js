@@ -9,7 +9,7 @@ export class Spieler{
         this.cellSize = cellSize;
         this.context = context;
         //this.socket = io('http://localhost:3000');
-
+        setInterval(this.loop.bind(this), 500);
         document.addEventListener('keyup', this.handleKeyUp.bind(this))
         this.draw();
     }        
@@ -85,5 +85,9 @@ export class Spieler{
             }    
         }
         this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
+    }
+    loop(){
+        this.move();
+        this.draw();
     }
 }
