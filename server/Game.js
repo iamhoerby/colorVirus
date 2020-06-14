@@ -4,9 +4,10 @@
  * - onclick handler on server or client? 
  * - draw methodes 
  * - Asset-Loader? 
- * - Pause function? 
+ * - Pause function?  Eher nicht
  * - this.room.reset 
  */
+import { Room } from "../client/Room.js";
 
 class Game{
     constructor(canvas, extent) {
@@ -14,15 +15,19 @@ class Game{
         this.canvas = canvas;
         this.cellSize = this.canvas.width / this.extent;
         this.context = this.canvas.getContext('2d');
-        this.player1 = new Player // TO-DO: constructor
-        this.player2 = new Player // TO-DO: constructor
-        // this.monster1 = new Monster   // TO-DO: constructor   Muss das hier hin oder in die class Room?
+        // this.player1 = new Spieler(5, 6, 'blue', 3, 'ArrowRight', this.cellSize, this.context, this.socket);
+        // this.player2 = new Spieler(4, 6, 'red', 3, 'ArrowRight', this.cellSize, this.context, this.socket);
+        // this.monster1 = new Monster(10, 5, 'black' , 2, this.canvas, this.extent);
+        this.room = new Room(this.canvas, this.extent, 1); 
         this.difficulty = 0; 
         this.startGame();
         this.levelCounter = 0;  
         this.pause = false; 
-        // Socket.io 
+        /* io.on('connection', function(socket) {
+            socket.on('player_position', request => {x , y })
+        }) */
     }
+    /*
     // Startbildschirm
     startGame() {
         //TO-DO:  draw Startbildschirm 
@@ -71,7 +76,7 @@ class Game{
     // Room laden + Level starten
     play() {
         levelCounter++;
-        this.room = new Room // TO-DO: constructor , beinhaltet levelCounter! 
+        this.room = new Room(this.canvas, this.extent, levelCounter); // TO-DO: constructor , beinhaltet levelCounter! 
         // document.getElementById("play").onclick = this.runLevel.bind(this);    //Level auf Knopfdruck starten   // TO-DO
         this.runLevel();   // Level startet automatisch
     }
@@ -121,9 +126,10 @@ class Game{
         // TO-DO: drawgameOverBilschirm
         clearInterval(running);
         document.getElementById("end").onclick = startGame(); 
-    }
+    }*/
     
 }
+
 module.exports = Game;
 
 
