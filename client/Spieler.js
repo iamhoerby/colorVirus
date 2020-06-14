@@ -42,6 +42,7 @@ export class Spieler{
     }
 
     draw(){
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (this.color === 'blue'){
             if (this.lifes === 3){
                 this.context.fillStyle = 'navy';
