@@ -5,7 +5,7 @@
  * ECMA-Script 6 specification. It is also sometimes referred
  * to as ES6 imports.
  */
-import { Game } from "../server/game.js"
+import { Game } from "../server/Game.js"
 
 new Game(document.getElementById("myCanvas"),8);
 
