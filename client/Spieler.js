@@ -11,6 +11,7 @@ export class Spieler{
         //this.socket = io('http://localhost:3000');
 
         document.addEventListener('keyup', this.handleKeyUp.bind(this))
+        this.draw();
     }        
         //openDoor()
         //mixColors()
