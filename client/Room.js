@@ -71,5 +71,6 @@ class Door {
 
 }
 
-
+module.exports = Room;
+module.exports = Door;
 //new Room(document.getElementById('myCanvas'), 64, 0);
