@@ -9,21 +9,23 @@ export class Monster {
    * @param {boolean} vertical vertical or horizontal
    */
 
-  constructor(x, y, color, life, context, cellSize, extent, vertical) {
+  constructor(x, y, color, life, canvas, extent, vertical) {
     this.x = x;
     this.y = y;
     this.color = color;
     this.life = life;
-    this.context = context;
+    this.canvas = canvas
     this.extent = extent;
-    this.cellSize = cellSize;
-    this.move = 1;
     this.vertical = vertical;
+
+    this.context = this.canvas.getContext('2d');
+    this.cellSize = this.canvas.width / this.extent;
+    this.move = 1;
 
     setInterval(this.loop.bind(this), 350);
   }
   draw() {
-    //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.context.fillStyle = this.color;
     this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
   }
