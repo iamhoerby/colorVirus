@@ -8,8 +8,8 @@
 import { Room } from "/Room.js";
 // import { Game } from "../server/Game.js"
 
-new Room(document.getElementById("myCanvaas"), this.extent, 1); 
-new Game(document.getElementById("myCanvas"),8);
+new Room(document.getElementById("myCanvas"), 64, 1); 
+// new Game(document.getElementById("myCanvas"),8);
 
 const socket = io();
 socket.on("connect", () =>
