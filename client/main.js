@@ -5,15 +5,9 @@
  * ECMA-Script 6 specification. It is also sometimes referred
  * to as ES6 imports.
  */
-import { Apple } from "./export-a-class.js";
-import { square } from "./export-a-function.js";
-import { CANVAS_SIZE } from "./export-a-identifier.js";
+import { Game } from "../server/game.js"
 
-new Apple();
-
-console.log(square(8));
-
-console.log(CANVAS_SIZE);
+new Game(document.getElementById("myCanvas"),8);
 
 const socket = io();
 socket.on("connect", () =>
