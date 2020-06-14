@@ -13,7 +13,8 @@ import { Monster } from "/Monster.js"
 new Room(document.getElementById("myCanvas"), 64, 1); 
 let context = document.getElementById("myCanvas").getContext('2d')
 new Spieler(5, 6, 'blue', 3, 'ArrowRight', 64, context);
-new Monster(10, 5, 'black' , 2, document.getElementById("myCanvas"), 64);
+new Monster(10, 5, 'black' , 2, context, 64);
+
 // new Game(document.getElementById("myCanvas"),8);
 
 const socket = io();
