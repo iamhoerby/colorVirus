@@ -15,7 +15,7 @@ let context = canvas.getContext('2d')
 
 new Room(canvas, 64, 1); 
 new Spieler(5, 6, 'blue', 3, 'ArrowRight', 64, context);
-new Monster(10, 5, 'purple', 2, canvas, 64, true);
+// new Monster(10, 5, 'purple', 2, canvas, 64, true);
 
 // new Game(document.getElementById("myCanvas"),8);
 
