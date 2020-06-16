@@ -4,28 +4,25 @@ export class Monster {
    * @param {number} x x position of the monster
    * @param {number} y y position of the monster
    * @param {string} color color of the monster
-   * @param {number} life number of lives
-   * @param {number} extent extent of the field
    * @param {boolean} vertical vertical or horizontal
+   * @param {number} life number of lives
+   * @param {number} cellSize width / extent
+   * @param {number} extent extent of the field
+   * 
    */
 
-  constructor(x, y, color, life, canvas, extent, vertical) {
+  constructor(x, y, color, vertical, life, cellSize, context, extent) {
     this.x = x;
     this.y = y;
     this.color = color;
     this.life = life;
-    this.canvas = canvas
+    this.canvas = context
     this.extent = extent;
     this.vertical = vertical;
-
-    this.context = this.canvas.getContext('2d');
-    this.cellSize = this.canvas.width / this.extent;
+    this.cellSize = cellSize;
     this.move = 1;
-
-    setInterval(this.loop.bind(this), 350);
   }
   draw() {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
     this.context.fillStyle = this.color;
     this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
   }
@@ -45,9 +42,5 @@ export class Monster {
       }
       this.x += this.move;
     }
-  }
-  loop() {
-    this.draw();
-    this.update();
   }
 }
