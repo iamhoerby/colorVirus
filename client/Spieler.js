@@ -1,5 +1,5 @@
 export class Spieler{
-    constructor(x, y, color, lifes, pressedKey, cellSize, context, socket){ //socket
+    constructor(x, y, color, lifes, pressedKey, cellSize, context, socket){ 
         this.x = x;
         this.y = y;
         this.color = color;
@@ -8,9 +8,7 @@ export class Spieler{
         this.cellSize = cellSize;
         this.context = context;
         this.socket = socket;
-        setInterval(this.loop.bind(this), 500);
         document.addEventListener('keyup', this.handleKeyUp.bind(this))
-        this.draw();
     }
         //openDoor()
         //mixColors()
@@ -84,10 +82,5 @@ export class Spieler{
             }
         }
         this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
-    }
-    loop(){
-        this.context.clearRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
-        this.move();
-        this.draw();
     }
 }
