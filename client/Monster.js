@@ -21,6 +21,7 @@ export class Monster {
     this.vertical = vertical;
     this.cellSize = cellSize;
     this.move = 1;
+    this.context = context;
   }
   draw() {
     this.context.fillStyle = this.color;
