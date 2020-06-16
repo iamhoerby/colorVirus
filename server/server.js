@@ -25,6 +25,7 @@ app.use(express.static(clientPath));
 
 io.on("connection", (socket) => {
   console.log(`A socket connected with id ${socket.id}`);
+  socket.on("player_position", (args) => console.log(`${args.x}, ${args.y} recieved from ${socket.id}`))
 });
 
 http.listen(3000, () => {

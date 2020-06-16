@@ -12,14 +12,14 @@ import { Monster } from "/Monster.js"
 
 let canvas = document.getElementById("myCanvas")
 let context = canvas.getContext('2d')
+const socket = io();
 
-new Room(canvas, 64, 1); 
-new Spieler(5, 6, 'blue', 3, 'ArrowRight', 64, context);
+new Room(canvas, 64, 1);
+new Spieler(5, 6, 'blue', 3, 'ArrowRight', 64, context, socket);
 // new Monster(10, 5, 'purple', 2, canvas, 64, true);
 
 // new Game(document.getElementById("myCanvas"),8);
 
-const socket = io();
 socket.on("connect", () =>
   console.log(`connected to socket.io as ${socket.id}`)
 );
