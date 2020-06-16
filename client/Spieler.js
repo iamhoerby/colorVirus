@@ -35,7 +35,7 @@ export class Spieler{
         } else if (this.pressedKey === 'ArrowUp') {
             this.y -= 1;
         }
-        this.socket.emit('player_position', {x: this.x, y: this.y});
+        // this.socket.emit('player_position', {x: this.x, y: this.y});
     }
 
     draw(){
