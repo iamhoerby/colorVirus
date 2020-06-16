@@ -25,7 +25,7 @@ export class Spieler{
             }
     }
 
-    move(){
+    update(){
         if (this.pressedKey === 'ArrowRight') {
             this.x += 1;
         } else if (this.pressedKey === 'ArrowDown') {
