@@ -26,11 +26,11 @@ class Game{
         this.draw();
     }
     update() {
-        this.room.update();
         this.player1.update(); 
         this.monster1.update(); 
     }
     draw() {
+        this.context.clearRect(0,0,this.canvas.width, this.canvas.height);
         this.room.draw()
         this.player1.draw()
         this.monster1.draw();
