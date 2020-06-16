@@ -1,5 +1,5 @@
 export class Spieler{
-    constructor(x, y, color, lifes, pressedKey, cellSize, context,){ //socket
+    constructor(x, y, color, lifes, pressedKey, cellSize, context, socket){ //socket
         this.x = x;
         this.y = y;
         this.color = color;
@@ -7,11 +7,11 @@ export class Spieler{
         this.pressedKey = pressedKey;
         this.cellSize = cellSize;
         this.context = context;
-        //this.socket = io('http://localhost:3000');
+        this.socket = socket;
         setInterval(this.loop.bind(this), 500);
         document.addEventListener('keyup', this.handleKeyUp.bind(this))
         this.draw();
-    }        
+    }
         //openDoor()
         //mixColors()
         //changeColor()
@@ -26,7 +26,7 @@ export class Spieler{
             this.pressedKey = event.code;
             }
     }
-        
+
     move(){
         if (this.pressedKey === 'ArrowRight') {
             this.x += 1;
@@ -37,7 +37,7 @@ export class Spieler{
         } else if (this.pressedKey === 'ArrowUp') {
             this.y -= 1;
         }
-        //this.socket.emit('player_position', {x, y});
+        this.socket.emit('player_position', {x: this.x, y: this.y});
     }
 
     draw(){
@@ -81,7 +81,7 @@ export class Spieler{
             }
             if (this.lifes === 0){
                 this.context.fillStyle = 'white';
-            }    
+            }
         }
         this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
     }
