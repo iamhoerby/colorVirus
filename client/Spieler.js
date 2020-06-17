@@ -13,7 +13,7 @@ export class Spieler{
         //openDoor(): if (SpielerKoordinaten === TürKoordinaten && SpielerFarbe = Türfarbe, setze Boolean Variable auf positiv, damit neues Spiel gestartet wird
         //mixColors(): if (Spieler1Koordinaten === Spieler2Koordinaten), mische Farben
         //changeColor(): if (SpielerKoordinaten === FarbtopfKoordinaten), this.color = Farbtopf.color
-        //shoot(): mit handlyKeyUp Maus
+        //shoot(): mit handlyKeyUp Maus, Animation eines kleinen schwarzen Rectangel von Spieler zu Mauseingabe
 
     handleKeyUp(event) {
         if (event.code === 'ArrowRight' ||
