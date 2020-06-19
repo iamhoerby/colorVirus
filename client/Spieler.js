@@ -10,11 +10,10 @@ export class Spieler{
         this.socket = socket;
         document.addEventListener('keyup', this.handleKeyUp.bind(this))
     }
-        //openDoor()
-        //mixColors()
-        //changeColor()
-        //shoot()
-        //shot()
+        //openDoor(): if (SpielerKoordinaten === TürKoordinaten && SpielerFarbe = Türfarbe, setze Boolean Variable auf positiv, damit neues Spiel gestartet wird
+        //mixColors(): if (Spieler1Koordinaten === Spieler2Koordinaten), mische Farben
+        //changeColor(): if (SpielerKoordinaten === FarbtopfKoordinaten), this.color = Farbtopf.color
+        //shoot(): mit handlyKeyUp Maus, Animation eines kleinen schwarzen Rectangel von Spieler zu Mauseingabe
 
     handleKeyUp(event) {
         if (event.code === 'ArrowRight' ||
@@ -25,16 +24,31 @@ export class Spieler{
             }
     }
 
+    //in update Klasse fehlt noch: Spieler läuft in Monster + gegen Hindernis
     update(){
         if (this.pressedKey === 'ArrowRight') {
-            this.x += 1;
+            if (this.x < 63){ //wenn Spieler nicht aus Spielfeld rennt
+                this.x += 1;
+            } 
         } else if (this.pressedKey === 'ArrowDown') {
-            this.y += 1;
+            if (this.y < 63){ 
+                this.y += 1;
+            }
         } else if (this.pressedKey === 'ArrowLeft') {
-            this.x -= 1;
+            if (this.x > 0){
+                this.x -= 1;
+            }
         } else if (this.pressedKey === 'ArrowUp') {
-            this.y -= 1;
+            if (this.y > 0){
+                this.y -= 1;
+            }
         }
+        this.pressedKey = 'Stop';
+
+        /*if (this.x === monster.x && this.y === monster.y){
+            this.lifes = this.lifes - 1;
+        }*/
+
         // this.socket.emit('player_position', {x: this.x, y: this.y});
     }
 
