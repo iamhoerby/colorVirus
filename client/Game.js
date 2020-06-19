@@ -12,16 +12,13 @@ export class Game{
         this.monster1 = new Monster(10, 5, 'green', true, 2, this.cellSize, this.context, this.extent);
         this.room = new Room(this.canvas, this.extent, 1); 
         this.difficulty = 0; 
-        setInterval(this.loop.bind(this), 33);
         this.levelCounter = 0;  
         this.pause = false; 
+        document.getElementById("start").onclick = this.startGame.bind(this);
     }
-    /* startGame() {
-        // window.setInterval(this.loop().bind(this), 33)
-        setInterval(function() {
-            this.loop()
-            }, 33)
-    }*/
+    startGame() {
+        setInterval(this.loop.bind(this), 33)
+    }
     loop() {
         this.update();
         this.draw();
