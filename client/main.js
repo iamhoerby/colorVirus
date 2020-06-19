@@ -11,7 +11,7 @@ let canvas = document.getElementById("myCanvas")
 let context = canvas.getContext('2d')
 const socket = io();
 
-new Game(document.getElementById("myCanvas"),64);
+new Game(document.getElementById("myCanvas"),64); //extent can be 64,32,16 - it works well with any parameters now
 
 socket.on("connect", () =>
   console.log(`connected to socket.io as ${socket.id}`)
