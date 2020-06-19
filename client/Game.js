@@ -8,7 +8,7 @@ export class Game{
         this.canvas = canvas;
         this.cellSize = this.canvas.width / this.extent;
         this.context = this.canvas.getContext('2d');
-        this.player1 = new Spieler(5, 6, 'blue', 3, 'ArrowRight', this.cellSize, this.context, this.socket);
+        this.player1 = new Spieler(5, 6, 'blue', 3, 'ArrowRight', this.cellSize, this.context, this.extent, this.socket);
         this.monster1 = new Monster(10, 5, 'green', true, 2, this.cellSize, this.context, this.extent);
         this.room = new Room(this.canvas, this.extent, 1); 
         this.difficulty = 0; 
