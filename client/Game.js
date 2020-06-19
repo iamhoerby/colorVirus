@@ -3,7 +3,8 @@ import { Spieler } from "/Spieler.js"
 import { Monster } from "/Monster.js"
 
 export class Game{
-    constructor(canvas, extent) {
+    constructor(canvas, extent, socket) {
+        this.socket = socket;
         this.extent = extent;
         this.canvas = canvas;
         this.cellSize = this.canvas.width / this.extent;
@@ -32,5 +33,8 @@ export class Game{
         this.room.draw()
         this.player1.draw()
         this.monster1.draw();
+    }
+    damage() {
+        this.player1.lifes--;
     }
 }

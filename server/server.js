@@ -8,6 +8,7 @@ const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const path = require("path");
+const game = require("game.js")
 
 // internal dependencies are imported with require("./path/to/file.js")
 const functionFromLocalFile = require("./node-style-require.js");
@@ -25,7 +26,7 @@ app.use(express.static(clientPath));
 
 io.on("connection", (socket) => {
   console.log(`A socket connected with id ${socket.id}`);
-  socket.on("player_position", (args) => console.log(`${args.x}, ${args.y} recieved from ${socket.id}`))
+  socket.on('player_position', (args) => this.game.damage(args));
 });
 
 http.listen(3000, () => {
