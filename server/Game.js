@@ -19,13 +19,13 @@ class Game{
         // this.player2 = new Spieler(4, 6, 'red', 3, 'ArrowRight', this.cellSize, this.context, this.socket);
         // this.monster1 = new Monster(10, 5, 'black' , 2, this.canvas, this.extent);
         this.room = new Room(this.canvas, this.extent, 1); 
-        this.difficulty = 0; 
+        this.difficulty = 1; 
         this.startGame();
         this.levelCounter = 0;  
         this.pause = false; 
-        /* io.on('connection', function(socket) {
-            socket.on('player_position', request => {x , y })
-        }) */
+        io.on('connection', function(socket) {
+            socket.on('start_game', timer() )
+        }) 
     }
     /*
     // Startbildschirm
@@ -38,7 +38,7 @@ class Game{
             timer();
             play();
         }
-    }
+    } */
     // Spiel-Timer 
     timer() {
         let minuten = 0; 
@@ -73,6 +73,7 @@ class Game{
             }, 1000)
         }
     }
+    /*
     // Room laden + Level starten
     play() {
         levelCounter++;
