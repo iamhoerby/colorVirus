@@ -45,11 +45,7 @@ export class Spieler{
         }
         this.pressedKey = 'Stop';
 
-        /*if (this.x === monster.x && this.y === monster.y){
-            this.lifes = this.lifes - 1;
-        }*/
-
-        // this.socket.emit('player_position', {x: this.x, y: this.y});
+        this.socket.emit('player_position', {x: this.x, y: this.y});
     }
 
     draw(){
