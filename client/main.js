@@ -1,10 +1,4 @@
-/**
- * Since this file is intended to be used in the webbrowser,
- * it uses what is called CommonJS-style import statements,
- * which have been standardized in recent versions of the
- * ECMA-Script 6 specification. It is also sometimes referred
- * to as ES6 imports.
- */
+
 import { Game } from "./Game.js"
 
 let canvas = document.getElementById("myCanvas")
