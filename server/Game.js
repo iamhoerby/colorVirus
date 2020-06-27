@@ -7,8 +7,6 @@
  * - Pause function?  Eher nicht
  * - this.room.reset 
  */
-import { Room } from "../client/Room.js";
-
 class Game{
     constructor(canvas, extent) {
         this.extent = extent;
@@ -23,8 +21,10 @@ class Game{
         this.startGame();
         this.levelCounter = 0;  
         this.pause = false; 
+        this.playerLifes = 3; 
         io.on('connection', function(socket) {
             socket.on('start_game', timer() )
+            socket.on('player_position', )
         }) 
     }
     /*
@@ -71,6 +71,11 @@ class Game{
                     }
                 }
             }, 1000)
+        }
+    }
+    damage(playerPosition) {
+        if(playerPosition.x === monsterPostion.x && playerPosition.y === monsterPosition.y) {
+            socket.broadcast.emit('player1_damage');
         }
     }
     /*
