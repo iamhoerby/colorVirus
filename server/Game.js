@@ -1,32 +1,41 @@
-/**
- * TO-DO:
- * - construtors of Player, Room and (Monster)
- * - onclick handler on server or client? 
- * - draw methodes 
- * - Asset-Loader? 
- * - Pause function?  Eher nicht
- * - this.room.reset 
- */
+const server = require("./server.js");
+
 class Game{
-    constructor(canvas, extent) {
+    constructor(extent) {
         this.extent = extent;
-        this.canvas = canvas;
+        this.canvas = 0; 
         this.cellSize = this.canvas.width / this.extent;
-        this.context = this.canvas.getContext('2d');
-        // this.player1 = new Spieler(5, 6, 'blue', 3, 'ArrowRight', this.cellSize, this.context, this.socket);
-        // this.player2 = new Spieler(4, 6, 'red', 3, 'ArrowRight', this.cellSize, this.context, this.socket);
-        // this.monster1 = new Monster(10, 5, 'black' , 2, this.canvas, this.extent);
-        this.room = new Room(this.canvas, this.extent, 1); 
-        this.difficulty = 1; 
-        this.startGame();
+        // this.context = this.canvas.getContext('2d');
+        // this.room = new Room(this.canvas, this.extent, 1); 
+        this.difficulty = 0;
+        // this.startGame();
         this.levelCounter = 0;  
         this.pause = false; 
         this.playerLifes = 3; 
-        io.on('connection', function(socket) {
-            socket.on('start_game', timer() )
-            socket.on('player_position', )
-        }) 
+        this.playerCount = 0;
     }
+    playerConnect() {
+        this.playerCount++;
+        
+    } 
+    newPlayer(name,socket) {
+        // new Spieler (0,0,'white',this.playerLifes,'ArrowRight', this.cellSize,this.context, socket, name) //name muss geaddet werden
+        console.log('test');
+        server.sendDifficultyToClient(this.difficulty);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     /*
     // Startbildschirm
     startGame() {
@@ -135,8 +144,11 @@ class Game{
     }*/
     
 }
+module.exports = {
+    Game: Game
+}
 
-module.exports = Game;
+
 
 
 
