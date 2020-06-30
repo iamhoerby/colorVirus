@@ -1,6 +1,7 @@
 import { sendName } from "./main.js";
 import { sendDifficultyToServer } from "./main.js";
 import { Rendering } from "./Rendering.js";
+import { sendPlayerMovement } from "./main.js";
 
 export class KeyHandler {
   constructor() {
@@ -21,5 +22,16 @@ export class KeyHandler {
         sendDifficultyToServer(difficulty);
       }
     };
+  }
+  handleKeyUp(event) {
+    if (
+      event.code === "ArrowRight" ||
+      event.code === "ArrowLeft" ||
+      event.code === "ArrowUp" ||
+      event.code === "ArrowDown"
+    ) {
+      this.pressedKey = event.code;
+      sendPlayerMovement(this.pressedKey);
+    }
   }
 }

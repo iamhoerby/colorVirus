@@ -33,6 +33,7 @@ io.on("connection", function (socket) {
     console.log("Recieved message difficulty");
     newGame.difficulty = difficulty;
   });
+  socket.on("player_movement", (pressedKey) => this.player.update(pressedKey, socket.id));
 
   // socket.on('player_position', (args) => Game.damage(args));
 });
