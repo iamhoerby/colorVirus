@@ -1,7 +1,6 @@
 import { Rendering } from "./Rendering.js";
 import { KeyHandler } from "./eventHandler.js";
 import { Game } from "./Game.js";
-import { Monster } from "./Monster.js";
 
 let canvas = document.getElementById("myCanvas");
 
@@ -34,10 +33,9 @@ socket.on("connect", () =>
   console.log(`connected to socket.io as ${socket.id}`)
 );
 
-socket.on("monster_position", () => {
-  rendering.monster.draw(monX, monY);
-});
-
+socket.on("monster_position", data => {
+  rendering.monster.draw(data.x, data.y);
+})
 // socket.emit('player1_damage', this.game.damage());
 
 export function sendPlayerMovement(pressedKey) {
@@ -47,4 +45,4 @@ export function sendPlayerMovement(pressedKey) {
 }
 //To Do
 //alles abholen, was gebraucht wird um Spieler zu rendern: Koordinaten, Farbe, Leben (cellSize, context)
-socket.on("player_newPosition", this.player.update());
+//socket.on("player_newPosition", this.player.update());

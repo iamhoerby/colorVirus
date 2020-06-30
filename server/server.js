@@ -19,8 +19,8 @@ io.on("connection", function (socket) {
   console.log(`A socket connected with id ${socket.id}`);
   var monster = new Monster(10, 5, socket, true, 2);
   socket.emit("monster_position", {
-    monX: monster.x,
-    monY: monster.y,
+    x: monster.x,
+    y: monster.y,
   });
 });
 

@@ -21,21 +21,4 @@ export class Monster {
       this.cellSize
     );
   }
-  update() {
-    if (this.vertical) {
-      if (this.y === this.extent - 2) {
-        this.move = -1;
-      } else if (this.y === 1) {
-        this.move = 1;
-      }
-      this.y += this.move;
-    } else {
-      if (this.x === this.extent - 2) {
-        this.move = -1;
-      } else if (this.x === 1) {
-        this.move = 1;
-      }
-      this.x += this.move;
-    }
-  }
 }
