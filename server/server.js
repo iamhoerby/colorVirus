@@ -8,13 +8,8 @@ const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const path = require("path");
-const game = require("game.js")
-const Monster = require('Monster.js')
-var monster = new Monster(10, 5, socket, true, 2)
+const Monster = require('./Monster.js')
 
-// internal dependencies are imported with require("./path/to/file.js")
-const functionFromLocalFile = require("./node-style-require.js");
-functionFromLocalFile();
 
 /**
  * As JavaScript paths work relatively from the executed file, we navigate
@@ -28,7 +23,7 @@ app.use(express.static(clientPath));
 
 io.on("connection", (socket) => {
   console.log(`A socket connected with id ${socket.id}`);
-  socket.on('player_position', (args) => this.game.damage(args));
+  var monster = new Monster(10, 5, socket, true, 2)
   socket.emit('monster_position', {
       monX: monster.x,
       monY: monster.y
