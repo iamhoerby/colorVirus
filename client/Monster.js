@@ -8,7 +8,7 @@ export class Monster {
    * @param {number} life number of lives
    * @param {number} cellSize width / extent
    * @param {number} extent extent of the field
-   * 
+   *
    */
 
   constructor(x, y, color, vertical, life, cellSize, context, extent) {
@@ -16,7 +16,7 @@ export class Monster {
     this.y = y;
     this.color = color;
     this.life = life;
-    this.canvas = context
+    this.canvas = context;
     this.extent = extent;
     this.vertical = vertical;
     this.cellSize = cellSize;
@@ -25,7 +25,12 @@ export class Monster {
   }
   draw() {
     this.context.fillStyle = this.color;
-    this.context.fillRect(this.x * this.cellSize, this.y * this.cellSize, this.cellSize, this.cellSize);
+    this.context.fillRect(
+      this.x * this.cellSize,
+      this.y * this.cellSize,
+      this.cellSize,
+      this.cellSize
+    );
   }
   update() {
     if (this.vertical) {
