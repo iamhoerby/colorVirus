@@ -32,5 +32,4 @@ module.exports = class Monster {
       this.x += this.move;
     }
   }
-}
-
+};
