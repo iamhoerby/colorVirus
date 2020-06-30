@@ -1,42 +1,29 @@
 const server = require("./server.js");
 
-class Game{
-    constructor(extent) {
-        this.extent = extent;
-        this.canvas = 0; 
-        this.cellSize = this.canvas.width / this.extent;
-        // this.context = this.canvas.getContext('2d');
-        // this.room = new Room(this.canvas, this.extent, 1); 
-        this.difficulty = 0;
-        // this.startGame();
-        this.levelCounter = 0;  
-        this.pause = false; 
-        this.playerLifes = 3; 
-        this.playerCount = 0;
-    }
-    playerConnect() {
-        this.playerCount++;
-        
-    } 
-    newPlayer(name,socket) {
-        // new Spieler (0,0,'white',this.playerLifes,'ArrowRight', this.cellSize,this.context, socket, name) //name muss geaddet werden
-        console.log('test');
-        server.sendDifficultyToClient(this.difficulty);
+class Game {
+  constructor(extent) {
+    this.extent = extent;
+    this.canvas = 0;
+    this.cellSize = this.canvas.width / this.extent;
+    // this.context = this.canvas.getContext('2d');
+    // this.room = new Room(this.canvas, this.extent, 1);
+    this.difficulty = 0;
+    // this.startGame();
+    this.levelCounter = 0;
+    this.pause = false;
+    this.playerLifes = 3;
+    this.playerCount = 0;
+  }
+  playerConnect() {
+    this.playerCount++;
+  }
+  newPlayer(name, socket) {
+    // new Spieler (0,0,'white',this.playerLifes,'ArrowRight', this.cellSize,this.context, socket, name) //name muss geaddet werden
+    console.log("test");
+    // server.sendDifficultyToClient(this.difficulty);
+  }
 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
+  /*
     // Startbildschirm
     startGame() {
         //TO-DO:  draw Startbildschirm 
@@ -48,46 +35,51 @@ class Game{
             play();
         }
     } */
-    // Spiel-Timer 
-    timer() {
-        let minuten = 0; 
-        switch (this.difficulty) {
-            case 1: 
-                minuten = 0;
-                break;
-            case 2: 
-                minuten = 10; 
-                break;
-            case 3: 
-                minuten = 5;
-                break;
-        }
-        if (minuten != 0) {
-            let timerMin = minuten;
-            let timerSek = 0; 
-            document.getElementById("pause").onclick = function() {this.pause = true}; //TO-DO Brauchen wir das?
-            let timer = window.setInterval(function() {
-                // TO-DO draw Timer
-                if (!this.pause) {
-                    if (timerSek === 0 && timerMin === 0) {
-                        clearInterval(timer);
-                        this.gameOver();
-                    } else if (timerSek === 0) {
-                        timerMin--;
-                        timerSek += 60; 
-                    } else {
-                        timerSek--;
-                    }
-                }
-            }, 1000)
-        }
+  // Spiel-Timer
+  timer() {
+    let minuten = 0;
+    switch (this.difficulty) {
+      case 1:
+        minuten = 0;
+        break;
+      case 2:
+        minuten = 10;
+        break;
+      case 3:
+        minuten = 5;
+        break;
     }
-    damage(playerPosition) {
-        if(playerPosition.x === monsterPostion.x && playerPosition.y === monsterPosition.y) {
-            socket.broadcast.emit('player1_damage');
+    if (minuten != 0) {
+      let timerMin = minuten;
+      let timerSek = 0;
+      document.getElementById("pause").onclick = function () {
+        this.pause = true;
+      }; //TO-DO Brauchen wir das?
+      let timer = window.setInterval(function () {
+        // TO-DO draw Timer
+        if (!this.pause) {
+          if (timerSek === 0 && timerMin === 0) {
+            clearInterval(timer);
+            this.gameOver();
+          } else if (timerSek === 0) {
+            timerMin--;
+            timerSek += 60;
+          } else {
+            timerSek--;
+          }
         }
+      }, 1000);
     }
-    /*
+  }
+  damage(playerPosition) {
+    if (
+      playerPosition.x === monsterPostion.x &&
+      playerPosition.y === monsterPosition.y
+    ) {
+      socket.broadcast.emit("player1_damage");
+    }
+  }
+  /*
     // Room laden + Level starten
     play() {
         levelCounter++;
@@ -142,13 +134,7 @@ class Game{
         clearInterval(running);
         document.getElementById("end").onclick = startGame(); 
     }*/
-    
 }
 module.exports = {
-    Game: Game
-}
-
-
-
-
-
+  Game: Game,
+};
