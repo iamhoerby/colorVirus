@@ -1,9 +1,12 @@
-// Render Class *** Sebastian *** 25.6.2020
+import { Monster } from "./Monster.js";
+
 export class Rendering {
   constructor(canvas, extent) {
     this.canvas = canvas;
+    this.context = canvas.getContext("2d");
     this.extent = extent;
     this.cellSize = this.canvas.width / this.extent;
+    this.monster = new Monster("green", this.cellSize, this.context);
   }
   // Start Screen with Name Input
   inputName() {
