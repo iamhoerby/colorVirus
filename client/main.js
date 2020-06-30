@@ -10,4 +10,5 @@ new Game(document.getElementById("myCanvas"),64,socket);
 socket.on("connect", () =>
   console.log(`connected to socket.io as ${socket.id}`)
 );
-socket.on('player1_damage', this.game.damage()); 
+//alles abholen, was gebraucht wird um Spieler zu rendern: Koordinaten, Farbe, Leben (cellSize, context)
+socket.on('player_newPosition', this.player.update()); //neue Koordinaten der Spieler abholen mit Farbe

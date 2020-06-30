@@ -26,7 +26,7 @@ app.use(express.static(clientPath));
 
 io.on("connection", (socket) => {
   console.log(`A socket connected with id ${socket.id}`);
-  socket.on('player_position', (args) => this.game.damage(args));
+  socket.on('player_movement', (args) => this.player.update(args));
 });
 
 http.listen(3000, () => {
