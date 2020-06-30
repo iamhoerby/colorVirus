@@ -10,7 +10,6 @@ export class Rendering {
       "green",
       this.cellSize,
       this.context,
-      this.extent
     );
   }
   // Start Screen with Name Input
