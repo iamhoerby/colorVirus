@@ -11,20 +11,27 @@
     <div>
       <p id="timer"></p>
     </div>
-    <div class="canvas">
+    <div class="canvas displayNone">
       <canvas id="myCanvas" width="640" height="640"></canvas>
+    </div>
+    <div id="startName" class = "displayNone">
+      <h3>Name:</h3>
+      <input type="text" id="inputName">
+      <button id="submitName">Submit</button>
     </div>
     <div class="buttons">
       <div>
-        <button id="start">Start Game</button>
+        <button id="start" class="displayNone">Start Game</button>
       </div>
-      <div>
+      <div id="difficulty" class="displayNone">
         <h3>Change Difficulty</h3>
         <button id="easy">Easy</button>
         <button id="middle">Middle</button>
         <button id="hard">Hard</button>
+        <button id="submitDifficulty">Submit</button>
       </div>
-      <div>
+      <div><button id="ready" class="displayNone">READY</button></div>
+      <div id="nextLevel" class="displayNone">
         <button id="next">Next Level</button>
       </div>
     </div>
