@@ -4,7 +4,6 @@ import { Game } from "./Game.js"
 import { Monster } from "./Monster.js"
 
 let canvas = document.getElementById("myCanvas")
-let context = canvas.getContext('2d')
 
 const socket = io();
 const extent = 64;
@@ -34,7 +33,6 @@ export function sendDifficultyToServer(difficultyClient) {
 socket.on("connect", () =>
   console.log(`connected to socket.io as ${socket.id}`)
 );
-socket.on('player1_damage', this.game.damage()); 
 
 socket.on("monster_position", () => {
   rendering.monster.draw(monX, monY)

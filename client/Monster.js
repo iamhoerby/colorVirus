@@ -6,16 +6,17 @@ export class Monster {
    *
    */
 
-  constructor(color, cellSize, context) {
+  constructor(color, cellSize, context, extent) {
     this.color = color;
     this.cellSize = cellSize;
     this.context = context;
+    this.extent = extent;
   }
   draw(x, y) {
     this.context.fillStyle = this.color;
     this.context.fillRect(
-      this.x * this.cellSize,
-      this.y * this.cellSize,
+      x * this.cellSize,
+      y * this.cellSize,
       this.cellSize,
       this.cellSize
     );
