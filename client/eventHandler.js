@@ -1,6 +1,7 @@
 import { sendName } from "./main.js";
 import { sendDifficultyToServer } from "./main.js";
 import { Rendering } from "./Rendering.js";
+import { sendPlayerMovement } from "./main.js";
 
 export class KeyHandler {
   constructor() {
@@ -23,12 +24,14 @@ export class KeyHandler {
     };
   }
   handleKeyUp(event) {
-    if (event.code === 'ArrowRight' ||
-        event.code === 'ArrowLeft' ||
-        event.code === 'ArrowUp' ||
-        event.code === 'ArrowDown') {
-        this.pressedKey = event.code;
-        this.socket.emit('player_movement', {pressedKey: this.pressedKey, socketID: this.socket.id});
-        }
-}
+    if (
+      event.code === "ArrowRight" ||
+      event.code === "ArrowLeft" ||
+      event.code === "ArrowUp" ||
+      event.code === "ArrowDown"
+    ) {
+      this.pressedKey = event.code;
+      sendPlayerMovement(this.pressedKey);
+    }
+  }
 }
