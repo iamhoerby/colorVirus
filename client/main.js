@@ -33,9 +33,9 @@ socket.on("connect", () =>
   console.log(`connected to socket.io as ${socket.id}`)
 );
 
-socket.on("monster_position", data => {
+socket.on("monster_position", (data) => {
   rendering.monster.draw(data.x, data.y);
-})
+});
 // socket.emit('player1_damage', this.game.damage());
 
 export function sendPlayerMovement(pressedKey) {

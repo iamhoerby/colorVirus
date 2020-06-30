@@ -6,11 +6,7 @@ export class Rendering {
     this.context = canvas.getContext("2d");
     this.extent = extent;
     this.cellSize = this.canvas.width / this.extent;
-    this.monster = new Monster(
-      "green",
-      this.cellSize,
-      this.context,
-    );
+    this.monster = new Monster("green", this.cellSize, this.context);
   }
   // Start Screen with Name Input
   inputName() {
