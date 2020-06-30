@@ -1,34 +1,61 @@
-/**
- * external dependencies are imported in nodejs using
- * require("module-name"). this method is called
- * "node-style require". It usually does not work in webbrowsers.
- */
+let game = require("./Game.js");
+let Game = game.Game;
+const extent = 64;
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const path = require("path");
-const game = require("game.js")
+const Monster = require("./Monster.js");
 
-// internal dependencies are imported with require("./path/to/file.js")
-const functionFromLocalFile = require("./node-style-require.js");
-functionFromLocalFile();
-
-/**
- * As JavaScript paths work relatively from the executed file, we navigate
- * from the current path (__dirname) one directory back ('..') and from
- * there into the directory client ('client'). Using global paths is
- * prohibited for security reasons.
- */
 const clientPath = path.join(__dirname, "..", "client");
 
 app.use(express.static(clientPath));
 
-io.on("connection", (socket) => {
+var newGame;
+let connectionCounter = 0;
+
+io.on("connection", function (socket) {
   console.log(`A socket connected with id ${socket.id}`);
-  socket.on('player_position', (args) => this.game.damage(args));
+  var monster = new Monster(10, 5, socket, true, 2);
+  socket.emit("monster_position", {
+    x: monster.x,
+    y: monster.y,
+  });
 });
+
+socket.on("player_connect", function (canvas) {
+  console.log(`Recieved message player_connect`);
+  if (connectionCounter === 0) {
+    newGame = new Game(extent);
+  }
+  connectionCounter++;
+  // newGame.playerConnect();
+  newGame.canvas = canvas;
+});
+
+socket.on("playerName", function (name) {
+  console.log(`Recieved message playerName`);
+  newGame.newPlayer(name, socket);
+});
+
+socket.on("difficulty", function (difficulty) {
+  console.log("Recieved message difficulty");
+  newGame.difficulty = difficulty;
+});
+
+socket.on("player_movement", (pressedKey) =>
+  this.player.update(pressedKey, socket.id)
+);
+
+// socket.on('player_position', (args) => Game.damage(args));
+
+/* function sendDifficultyToClient(difficulty) {
+  io.emit('SetDifficulty', difficulty)
+} */
 
 http.listen(3000, () => {
   console.log(`Serving ${clientPath} on *:3000.`);
 });
+
+// module.exports.sendDifficultyToClient = sendDifficultyToClient;
