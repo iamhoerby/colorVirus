@@ -55,15 +55,22 @@ export class Room {
     setInterval(this.draw(), 500);
   }
 
-  drawLine(x1, y1, x2, y2) {
+
+   // oder muss es in Game.js sein?
+  sendCoordinates () {
+    io.sockets.emit("coordinates", this.randCoord);
+  }
+
+
+  /*drawLine(x1, y1, x2, y2) {
     // function for simple line drawing
     this.context.beginPath();
     this.context.moveTo(x1, y1);
     this.context.lineTo(x2, y2);
     this.context.stroke();
   }
-
-  drawBorder() {
+*/
+/*  drawBorder() {
     //function for room borders drawing
     this.drawLine(0, 0, this.canvas.width, 0);
     this.drawLine(0, 0, 0, this.canvas.height);
@@ -71,8 +78,8 @@ export class Room {
     this.drawLine(0, this.canvas.height, this.canvas.width, this.canvas.height);
     console.log("Drawing gamefield");
   }
-
-  draw() {
+*/
+/*  draw() {
     //drawinr room itself: borders, door, obstacles
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBorder();
@@ -82,7 +89,8 @@ export class Room {
     }
     this.door.draw();
   }
-
+*/
+/*
   drawObstacle(Coord) {
     // function for obstacles drawing
     this.context.fillStyle = "black";
@@ -93,10 +101,12 @@ export class Room {
       (this.cellSize * this.extent) / 16
     );
   }
-
+*/
+/*
   update() {
     // seems like we don't need this function right now. Room updates in Room.draw().
   }
+  */
 }
 
 export class Door {
@@ -119,6 +129,7 @@ export class Door {
       (this.cellSize * this.extent) / 32
     );
   }
+  
 }
 
 // module.exports = Room;

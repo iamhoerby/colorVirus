@@ -38,6 +38,11 @@ socket.on("monster_position", (data) => {
 });
 // socket.emit('player1_damage', this.game.damage());
 
+// muss aber ein gamestate vorher initialisiert werden 
+socket.on("loop", (gamestate) => {
+  rendering.draw(gamestate); }); 
+
+
 export function sendPlayerMovement(pressedKey) {
   this.socket.emit("player_movement", {
     pressedKey: pressedKey,
