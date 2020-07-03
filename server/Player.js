@@ -1,17 +1,17 @@
 // Player update *** Janka *** 30.6.2020
 
 class Player {
-  /*constructor(x, y, color, lifes, pressedKey, cellSize, context, socket){ 
+  constructor(x, y, color, lifes, pressedKey, cellSize, socketID, name){ 
         this.x = x;
         this.y = y;
         this.color = color;
         this.lifes = lifes;
         this.pressedKey = pressedKey;
         this.cellSize = cellSize;
-        this.context = context;
-        this.socket = socket;
-        document.addEventListener('keyup', this.handleKeyUp.bind(this))
-    }*/
+        this.socketID = socketID;
+        this.name = name; 
+        this.ready = 0; 
+    }
 
   update(pressedKey, socketID) {
     if (pressedKey === "ArrowRight") {
@@ -50,3 +50,7 @@ class Player {
     });
   }
 }
+
+module.exports = {
+  Player: Player
+};

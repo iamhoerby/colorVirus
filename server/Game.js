@@ -1,4 +1,6 @@
-const server = require("./server.js");
+const server = require('./server.js')
+const player = require("./Player.js");
+const Player = player.Player;
 
 class Game {
   constructor(extent) {
@@ -8,33 +10,69 @@ class Game {
     // this.context = this.canvas.getContext('2d');
     // this.room = new Room(this.canvas, this.extent, 1);
     this.difficulty = 0;
-    // this.startGame();
     this.levelCounter = 0;
     this.pause = false;
     this.playerLifes = 3;
     this.playerCount = 0;
+    this.player1;
+    this.player2;
+    this.connectionCount = 0; 
+    /* this.gameState = {
+        room : 
+        player1 : 
+        player2 : 
+        monster : 
+    } */
   }
   playerConnect() {
     this.playerCount++;
+    console.log(this.playerCount)
   }
-  newPlayer(name, socket) {
-    // new Spieler (0,0,'white',this.playerLifes,'ArrowRight', this.cellSize,this.context, socket, name) //name muss geaddet werden
-    console.log("test");
-    // server.sendDifficultyToClient(this.difficulty);
+  playerDisconnect() {
+    this.playerCount--;
+    console.log(this.playerCount)
   }
-
-  /*
-    // Startbildschirm
-    startGame() {
-        //TO-DO:  draw Startbildschirm 
-        document.getElementById("easy").onclick = function() {this.difficulty = 1};
-        document.getElementById("middle").onclick = function() {this.difficulty = 2};
-        document.getElementById("hard").onclick = function() {this.difficulty = 3};
-        document.getElementById("start").onclick = function() {
-            timer();
-            play();
+  newPlayer(name, socketID) {
+    this.connectionCount++
+    console.log(this.connectionCount)
+    switch (this.connectionCount) {
+        case 1: 
+            this.player1 = new Player (0,0,'green',this.playerLifes,'ArrowRight', this.cellSize, socketID, name)
+            console.log('new Player') 
+            console.log(this.player1.socketID + ' ist spieler 1')
+            break;
+        case 2:
+            this.player2 = new Player (10,0,'red',this.playerLifes,'ArrowRight', this.cellSize, socketID, name) 
+            console.log(this.player2.socketID +  ' ist spieler 2')
+            break;
+        default: 
+            console.log("Game full")
+            break;
+    }
+    console.log(name);
+    server.sendDifficultyToClient(this.difficulty);
+  }
+  playerReady(socketID){
+    console.log(socketID + ' hat auf ready gedrückt');
+    console.log(this.player1.socketID + ' ist die SpielerID');
+    // Funktioniert brauchen wir aber noch nicht
+    /* if (socketID === this.player1.socketID) {
+        this.player1.ready = 1; 
+    } else {
+        this.player2.ready = 1; 
+    }
+    if (this.playerCount === 2) {
+        if (this.player1.ready === 1 && this.player2.ready === 1) {
+            this.startGame()
         }
-    } */
+    } */ 
+    this.startGame();
+  }
+  startGame() {
+    server.sendStartGame();
+    this.timer();
+    this.loop();
+  }
   // Spiel-Timer
   timer() {
     let minuten = 0;
@@ -52,24 +90,27 @@ class Game {
     if (minuten != 0) {
       let timerMin = minuten;
       let timerSek = 0;
-      document.getElementById("pause").onclick = function () {
+      /* document.getElementById("pause").onclick = function () {
         this.pause = true;
-      }; //TO-DO Brauchen wir das?
-      let timer = window.setInterval(function () {
-        // TO-DO draw Timer
-        if (!this.pause) {
-          if (timerSek === 0 && timerMin === 0) {
+      }; //TO-DO Brauchen wir das? */
+      let timer = setInterval(function () {
+        let time = (timerMin + ':' + timerSek)
+        server.sendTimer(time); 
+        console.log(time);
+        if (timerSek === 0 && timerMin === 0) {
             clearInterval(timer);
             this.gameOver();
-          } else if (timerSek === 0) {
+        } else if (timerSek === 0) {
             timerMin--;
-            timerSek += 60;
-          } else {
+            timerSek += 59;
+        } else {
             timerSek--;
-          }
         }
       }, 1000);
     }
+  }
+  loop() {
+
   }
   damage(playerPosition) {
     if (
