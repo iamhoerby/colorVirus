@@ -34,20 +34,21 @@ class Player {
     }
     pressedKey = "Stop";
 
-    if (connectionCounter != 0) {
+    /* if (connectionCounter != 0) {
       if (playerConnect[0] === socketID) {
         this.color = blue;
       }
       if (playerConnect[1] === socketID) {
         this.color = red;
       }
-    }
-
+    } */
+/* 
     socket.broadcast.emit("player_newPosition", {
       x: this.x,
       y: this.y,
       color: this.color,
     });
+  } */
   }
 }
 

@@ -25,6 +25,9 @@ socket.on('startGame', function() {
 socket.on('timer', function(time) {
   rendering.drawTimer(time);
 });
+socket.on("draw", function(gamestate) {
+  rendering.draw(gamestate); 
+}); 
 
 // Hier drunter nur ausgehende Nachrichten also Client -> Server in Funktionen die von eventHandler.js aufgerufen werden können
 // Alle Funktionen mit export function exportieren
@@ -41,14 +44,11 @@ export function sendReady() {
   socket.emit("playerReady")
 }
 
-socket.on("monster_position", (data) => {
-  rendering.monster.draw(data.x, data.y);
-});
+
 // socket.emit('player1_damage', this.game.damage());
 
 // muss aber ein gamestate vorher initialisiert werden 
-socket.on("loop", (gamestate) => {
-  rendering.draw(gamestate); }); 
+
 
 
 export function sendPlayerMovement(pressedKey) {

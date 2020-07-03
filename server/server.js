@@ -64,6 +64,7 @@ io.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrich
 module.exports.sendDifficultyToClient = difficulty => io.emit('setDifficulty', difficulty);
 module.exports.sendStartGame = () => io.emit('startGame');
 module.exports.sendTimer = (time) => io.emit('timer',time);
+module.exports.sendDraw = (gameState) => io.emit('draw', gameState); 
 
 function sendMonsterPosition(monsterPosition) {
   io.emit("monster_position", monsterPosition);

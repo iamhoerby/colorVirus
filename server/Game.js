@@ -1,6 +1,8 @@
 const server = require('./server.js')
 const player = require("./Player.js");
 const Player = player.Player;
+const room = require("./Room.js")
+const Room = room.Room;
 
 class Game {
   constructor(extent) {
@@ -8,7 +10,6 @@ class Game {
     this.canvas = 0;
     this.cellSize = this.canvas.width / this.extent;
     // this.context = this.canvas.getContext('2d');
-    // this.room = new Room(this.canvas, this.extent, 1);
     this.difficulty = 0;
     this.levelCounter = 0;
     this.pause = false;
@@ -17,12 +18,12 @@ class Game {
     this.player1;
     this.player2;
     this.connectionCount = 0; 
-    /* this.gameState = {
-        room : 
-        player1 : 
-        player2 : 
-        monster : 
-    } */
+    this.gameState = {
+        room : {coord : [], door: {x: 0, y: 0, color: 'white'}},
+        player1 : {x : 0 ,y : 0,color : 'white'},
+        player2 : {x : 0 ,y : 0,color : 'white'},
+        // monster : 
+    } 
   }
   playerConnect() {
     this.playerCount++;
@@ -71,6 +72,7 @@ class Game {
   startGame() {
     server.sendStartGame();
     this.timer();
+    this.room = new Room(this.extent, 1);
     this.loop();
   }
   // Spiel-Timer
@@ -110,7 +112,17 @@ class Game {
     }
   }
   loop() {
-
+    this.update();
+    this.draw(); 
+  }
+  update() {
+    this.gameState.player1 = this.player1.update();
+    // this.gameState.player2 = this.player2.update(); Brauchen wir dann für zweiten Spieler
+    this.gameState.room = this.room.update(); 
+    // this.gameState.door = this.door.update(); 
+  }
+  draw() {
+    server.sendDraw(this.gameState)
   }
   damage(playerPosition) {
     if (

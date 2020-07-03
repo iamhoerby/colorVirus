@@ -6,7 +6,6 @@ export class Rendering {
     this.context = canvas.getContext("2d");
     this.extent = extent;
     this.cellSize = this.canvas.width / this.extent;
-    this.monster = new Monster("green", this.cellSize, this.context);
   }
   // Start Screen with Name Input
   inputName() {
@@ -46,6 +45,18 @@ export class Rendering {
   }
   drawTimer(time) {
       document.getElementById('timer').innerHTML = time
+  }
+  draw(gameState) {
+    this.drawRoom(gameState.room);
+    this.drawPlayer(gameState.player1);
+    this.drawPlayer(gameState.player2);
+    this.drawDoor(gameState.door);
+  }
+  drawRoom() {
+
+  }
+  drawDoor() {
+    
   }
   drawPlayer() {
     if (this.color === "blue") {
