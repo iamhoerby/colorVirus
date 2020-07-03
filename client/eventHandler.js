@@ -2,6 +2,7 @@ import { sendName } from "./main.js";
 import { sendDifficultyToServer } from "./main.js";
 import { Rendering } from "./Rendering.js";
 import { sendPlayerMovement } from "./main.js";
+import { sendReady } from "./main.js";
 
 export class KeyHandler {
   constructor() {
@@ -22,6 +23,10 @@ export class KeyHandler {
         sendDifficultyToServer(difficulty);
       }
     };
+    //Ready 
+    document.getElementById("ready").onclick = function () {
+        sendReady()
+    }
   }
   handleKeyUp(event) {
     if (

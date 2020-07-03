@@ -1,17 +1,17 @@
 // Player update *** Janka *** 30.6.2020
 
 class Player {
-  /*constructor(x, y, color, lifes, pressedKey, cellSize, context, socket){ 
+  constructor(x, y, color, lifes, pressedKey, cellSize, socketID, name){ 
         this.x = x;
         this.y = y;
         this.color = color;
         this.lifes = lifes;
         this.pressedKey = pressedKey;
         this.cellSize = cellSize;
-        this.context = context;
-        this.socket = socket;
-        document.addEventListener('keyup', this.handleKeyUp.bind(this))
-    }*/
+        this.socketID = socketID;
+        this.name = name; 
+        this.ready = 0; 
+    }
 
   update(pressedKey, socketID) {
     if (pressedKey === "ArrowRight") {
@@ -34,19 +34,24 @@ class Player {
     }
     pressedKey = "Stop";
 
-    if (connectionCounter != 0) {
+    /* if (connectionCounter != 0) {
       if (playerConnect[0] === socketID) {
         this.color = blue;
       }
       if (playerConnect[1] === socketID) {
         this.color = red;
       }
-    }
-
+    } */
+/* 
     socket.broadcast.emit("player_newPosition", {
       x: this.x,
       y: this.y,
       color: this.color,
     });
+  } */
   }
 }
+
+module.exports = {
+  Player: Player
+};

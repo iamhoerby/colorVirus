@@ -1,6 +1,16 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
 }
+.all {
+    display:flex;
+    flex-direction: column;
+}
+.timer {
+    margin:auto;
+}
+#canvas {
+    margin:auto;
+}
 .buttons {
     display: flex;
     justify-content: space-between;
@@ -17,5 +27,9 @@ body {
     display:none; 
 }
 .locked {
-    background-color: 'green';
+    background-color: green;
+}
+#myCanvas {
+    box-shadow: 0px 0px 10px 4px #00000038;
+    border: 3px black solid;
 }

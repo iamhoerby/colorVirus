@@ -1,10 +1,7 @@
-export class Room {
-  constructor(canvas, extent, number) {
-    this.canvas = canvas;
+class Room {
+  constructor(extent, number) {
     this.extent = extent;
-    this.cellSize = this.canvas.width / this.extent;
     this.number = number;
-    this.context = this.canvas.getContext("2d");
     this.colours = ["red", "orange", "yellow", "green", "blue", "violet"]; //colours for door
     this.doorColour = this.colours[
       Math.floor(Math.random() * this.colours.length)
@@ -13,10 +10,10 @@ export class Room {
       this.doorColour,
       "Closed",
       { x: Math.floor(Math.random() * (this.extent - this.extent / 4)), y: 0 }, //random position for door
-      this.extent,
-      this.cellSize,
-      this.context
+      this.extent
     );
+    // this.monster = new Monster("green", this.cellSize, this.context);
+
     //coordinates x (random) and y (fixed) for obstacles, depending on extent size. Helps to use extent of any value: 16, 32, 64...
     this.randCoord = [
       {
@@ -52,14 +49,12 @@ export class Room {
         y: this.extent / 16 + (this.extent / 8) * 7,
       },
     ];
-    setInterval(this.draw(), 500);
+    // setInterval(this.draw(), 500);
   }
-
-
-   // oder muss es in Game.js sein?
-  sendCoordinates () {
-    io.sockets.emit("coordinates", this.randCoord);
+  update() {
+    return this.randCoord
   }
+}
 
 
   /*drawLine(x1, y1, x2, y2) {
@@ -107,16 +102,13 @@ export class Room {
     // seems like we don't need this function right now. Room updates in Room.draw().
   }
   */
-}
 
-export class Door {
+
+class Door {
   constructor(colour, state, position, extent, cellSize, context) {
     this.colour = colour;
     this.state = state;
     this.position = position;
-    this.extent = extent;
-    this.cellSize = cellSize;
-    this.context = context;
   }
 
   draw() {
@@ -132,6 +124,8 @@ export class Door {
   
 }
 
-// module.exports = Room;
-// module.exports = Door;
-//new Room(document.getElementById('myCanvas'), 64, 0);
+module.exports = {
+  Room: Room,
+  Door: Door
+}
+// new Room(document.getElementById('myCanvas'), 64, 0);
