@@ -51,9 +51,10 @@ io.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrich
     newGame.playerReady(socket.id);
   });
   
-  socket.on("player_movement", (pressedKey) =>
-    this.player.update(pressedKey, socket.id)
-  );
+  socket.on("player_movement", function (pressedKey){
+    console.log(`${socket.id} drückt ${pressedKey} Taste`)
+    //player.update(pressedKey, socket.id)
+  });
 });
 
 

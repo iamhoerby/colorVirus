@@ -52,11 +52,5 @@ export function sendReady() {
 
 
 export function sendPlayerMovement(pressedKey) {
-  this.socket.emit("player_movement", {
-    pressedKey: pressedKey,
-  });
+  socket.emit("player_movement", pressedKey);
 }
-
-//To Do
-//alles abholen, was gebraucht wird um Spieler zu rendern: Koordinaten, Farbe, Leben (cellSize, context)
-//socket.on("player_newPosition", this.player.update());
