@@ -1,19 +1,19 @@
 // Player update *** Janka *** 30.6.2020
 
+
 class Player {
-  constructor(x, y, color, lifes, pressedKey, cellSize, socketID, name){ 
+  constructor(x, y, color, lifes, pressedKey, socketID, name){ 
         this.x = x;
         this.y = y;
         this.color = color;
         this.lifes = lifes;
         this.pressedKey = pressedKey;
-        this.cellSize = cellSize;
         this.socketID = socketID;
         this.name = name; 
         this.ready = 0; 
     }
 
-  update(pressedKey, socketID) {
+  update(pressedKey) {
     if (pressedKey === "ArrowRight") {
       if (this.x < 63) {
         this.x += 1;

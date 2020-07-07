@@ -58,11 +58,11 @@ export class Rendering {
   drawDoor() {
     
   }
-  drawPlayer(color) {
-    this.context.fillStyle = color;
+  drawPlayer(gameStatePlayer) {
+    this.context.fillStyle = gameStatePlayer.color;
     this.context.fillRect(
-      this.x * this.cellSize,
-      this.y * this.cellSize,
+      gameStatePlayer.x * this.cellSize,
+      gameStatePlayer.y * this.cellSize,
       this.cellSize,
       this.cellSize
     );

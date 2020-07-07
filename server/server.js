@@ -11,6 +11,8 @@ app.use(express.static(clientPath));
 // Hier die Klassen importieren
 let game = require("./Game.js");
 let Game = game.Game;
+const player = require("./Player.js");
+const Player = player.Player;
 const extent = 64;
 const Monster = require("./Monster.js");
 
@@ -52,8 +54,9 @@ io.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrich
   });
   
   socket.on("player_movement", function (pressedKey){
-    console.log(`${socket.id} drückt ${pressedKey} Taste`)
-    //player.update(pressedKey, socket.id)
+    console.log(`${socket.id} drückt ${pressedKey} Taste`);
+    newGame.update(pressedKey);
+    //player.update(pressedKey)
   });
 });
 
