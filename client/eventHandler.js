@@ -27,16 +27,18 @@ export class KeyHandler {
     document.getElementById("ready").onclick = function () {
         sendReady()
     }
-  }
-  handleKeyUp(event) {
-    if (
-      event.code === "ArrowRight" ||
-      event.code === "ArrowLeft" ||
-      event.code === "ArrowUp" ||
-      event.code === "ArrowDown"
-    ) {
-      this.pressedKey = event.code;
-      sendPlayerMovement(this.pressedKey);
-    }
+
+    //player moves
+    document.addEventListener('keydown', event => {
+      if (
+        event.code === "ArrowRight" ||
+        event.code === "ArrowLeft" ||
+        event.code === "ArrowUp" ||
+        event.code === "ArrowDown"
+      ) {
+        let pressedKey = event.code;
+        sendPlayerMovement(pressedKey);
+      }
+    });
   }
 }

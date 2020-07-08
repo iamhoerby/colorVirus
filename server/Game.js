@@ -20,8 +20,8 @@ class Game {
     this.connectionCount = 0; 
     this.gameState = {
         room : {coord : [], door: {x: 0, y: 0, color: 'white'}},
-        player1 : {x : 0 ,y : 0,color : 'white'},
-        player2 : {x : 0 ,y : 0,color : 'white'},
+        player1 : {x : 0 ,y : 0,color : 'blue'},
+        player2 : {x : 0 ,y : 0,color : 'blue'},
         // monster : 
     } 
   }
@@ -38,12 +38,12 @@ class Game {
     console.log(this.connectionCount)
     switch (this.connectionCount) {
         case 1: 
-            this.player1 = new Player (0,0,'green',this.playerLifes,'ArrowRight', this.cellSize, socketID, name)
+            this.player1 = new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name)
             console.log('new Player') 
             console.log(this.player1.socketID + ' ist spieler 1')
             break;
         case 2:
-            this.player2 = new Player (10,0,'red',this.playerLifes,'ArrowRight', this.cellSize, socketID, name) 
+            this.player2 = new Player (10,0,'red',this.playerLifes,'ArrowRight', socketID, name) 
             console.log(this.player2.socketID +  ' ist spieler 2')
             break;
         default: 
@@ -115,8 +115,9 @@ class Game {
     this.update();
     this.draw(); 
   }
-  update() {
-    this.gameState.player1 = this.player1.update();
+
+  update(pressedKey) {
+    this.gameState.player1 = this.player1.update(pressedKey);
     // this.gameState.player2 = this.player2.update(); Brauchen wir dann für zweiten Spieler
     this.gameState.room = this.room.update(); 
     // this.gameState.door = this.door.update(); 
