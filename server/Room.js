@@ -2,12 +2,12 @@ class Room {
   constructor(extent, number) {
     this.extent = extent;
     this.number = number;
-    this.colours = ["red", "orange", "yellow", "green", "blue", "violet"]; //colours for door
-    this.doorColour = this.colours[
-      Math.floor(Math.random() * this.colours.length)
+    this.colors = ["red", "orange", "yellow", "green", "blue", "violet"]; //colours for door
+    this.doorColor = this.colors[
+      Math.floor(Math.random() * this.colors.length)
     ]; //picking random colour for door
     this.door = new Door(
-      this.doorColour,
+      this.doorColor,
       "Closed",
       { x: Math.floor(Math.random() * (this.extent - this.extent / 4)), y: 0 }, //random position for door
       this.extent
@@ -17,43 +17,49 @@ class Room {
     //coordinates x (random) and y (fixed) for obstacles, depending on extent size. Helps to use extent of any value: 16, 32, 64...
     this.randCoord = [
       {
-        x: Math.floor(Math.random() * (this.extent - this.extent / 8)),
+        x: this.randCoordX(),
         y: this.extent / 16 + (this.extent / 8) * 0,
       },
       {
-        x: Math.floor(Math.random() * (this.extent - this.extent / 8)),
+        x: this.randCoordX(),
         y: this.extent / 16 + (this.extent / 8) * 1,
       },
       {
-        x: Math.floor(Math.random() * (this.extent - this.extent / 8)),
+        x: this.randCoordX(),
         y: this.extent / 16 + (this.extent / 8) * 2,
       },
       {
-        x: Math.floor(Math.random() * (this.extent - this.extent / 8)),
+        x: this.randCoordX(),
         y: this.extent / 16 + (this.extent / 8) * 3,
       },
       {
-        x: Math.floor(Math.random() * (this.extent - this.extent / 8)),
+        x: this.randCoordX(),
         y: this.extent / 16 + (this.extent / 8) * 4,
       },
       {
-        x: Math.floor(Math.random() * (this.extent - this.extent / 8)),
+        x: this.randCoordX(),
         y: this.extent / 16 + (this.extent / 8) * 5,
       },
       {
-        x: Math.floor(Math.random() * (this.extent - this.extent / 8)),
+        x: this.randCoordX(),
         y: this.extent / 16 + (this.extent / 8) * 6,
       },
       {
-        x: Math.floor(Math.random() * (this.extent - this.extent / 8)),
+        x: this.randCoordX(),
         y: this.extent / 16 + (this.extent / 8) * 7,
       },
     ];
     // setInterval(this.draw(), 500);
   }
+
+  // Room update *** Andrej *** 08.7.2020
+  randCoordX(){
+    return Math.floor(Math.random() * (this.extent - this.extent / 8));
+    }
+
   update() {
-    return this.randCoord
-  }
+    return this.randCoord;
+    }
 }
 
 
@@ -105,21 +111,14 @@ class Room {
 
 
 class Door {
-  constructor(colour, state, position, extent, cellSize, context) {
-    this.colour = colour;
+  constructor(color, state, position, extent, cellSize, context) {
+    this.color = color;
     this.state = state;
     this.position = position;
   }
 
-  draw() {
-    //function for drawing a door
-    this.context.fillStyle = this.colour;
-    this.context.fillRect(
-      this.position.x * this.cellSize,
-      this.position.y * this.cellSize,
-      (this.cellSize * this.extent) / 8,
-      (this.cellSize * this.extent) / 32
-    );
+  update() {
+    return {color: this.color, state: this.state, position: this.position};
   }
   
 }
