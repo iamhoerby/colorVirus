@@ -19,7 +19,8 @@ class Game {
     this.player2;
     this.connectionCount = 0; 
     this.gameState = {
-        room : {coord : [], door: {x: 0, y: 0, color: 'white'}},
+        room : [],
+        door: {color: 'white', state: 'closed', position: {x : 0, y : 0}},
         player1 : {x : 0 ,y : 0,color : 'blue'},
         player2 : {x : 0 ,y : 0,color : 'blue'},
         // monster : 
@@ -120,9 +121,10 @@ class Game {
     this.gameState.player1 = this.player1.update(pressedKey);
     // this.gameState.player2 = this.player2.update(); Brauchen wir dann für zweiten Spieler
     this.gameState.room = this.room.update(); 
-    // this.gameState.door = this.door.update(); 
+    this.gameState.door = this.room.door.update(); 
   }
   draw() {
+
     server.sendDraw(this.gameState)
   }
   damage(playerPosition) {
