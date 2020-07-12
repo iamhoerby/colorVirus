@@ -3,6 +3,8 @@ const player = require("./Player.js");
 const Player = player.Player;
 const room = require("./Room.js")
 const Room = room.Room;
+const Monster = require("./Monster.js");
+
 
 class Game {
   constructor(extent) {
@@ -17,13 +19,35 @@ class Game {
     this.playerCount = 0;
     this.player1;
     this.player2;
-    this.connectionCount = 0; 
+    this.monster = new Monster(9, 3, 'purple', true, 2);
+    this.connectionCount = 0;
+    this.killed = false;
     this.gameState = {
-        room : {coord : [], door: {x: 0, y: 0, color: 'white'}},
-        player1 : {x : 0 ,y : 0,color : 'blue'},
-        player2 : {x : 0 ,y : 0,color : 'blue'},
-        // monster : 
-    } 
+      room: {
+        coord: [{x: 2, y: 3}, {x:3, y:3}],
+        door: {
+          x: 0,
+          y: 0,
+          color: 'white'
+        }
+      },
+      player1: {
+        x: 0,
+        y: 0,
+        color: 'blue'
+      },
+      player2: {
+        x: 0,
+        y: 0,
+        color: 'blue'
+      },
+      monster: {
+        x: this.monster.x,
+        y: this.monster.y,
+        vertical: this.monster.vertical,
+        color: this.monster.color
+      }
+    }
   }
   playerConnect() {
     this.playerCount++;
@@ -37,23 +61,23 @@ class Game {
     this.connectionCount++
     console.log(this.connectionCount)
     switch (this.connectionCount) {
-        case 1: 
-            this.player1 = new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name)
-            console.log('new Player') 
-            console.log(this.player1.socketID + ' ist spieler 1')
-            break;
-        case 2:
-            this.player2 = new Player (10,0,'red',this.playerLifes,'ArrowRight', socketID, name) 
-            console.log(this.player2.socketID +  ' ist spieler 2')
-            break;
-        default: 
-            console.log("Game full")
-            break;
+      case 1:
+        this.player1 = new Player(0, 0, 'blue', this.playerLifes, 'ArrowRight', socketID, name)
+        console.log('new Player')
+        console.log(this.player1.socketID + ' ist spieler 1')
+        break;
+      case 2:
+        this.player2 = new Player(10, 0, 'red', this.playerLifes, 'ArrowRight', socketID, name)
+        console.log(this.player2.socketID + ' ist spieler 2')
+        break;
+      default:
+        console.log("Game full")
+        break;
     }
     console.log(name);
     server.sendDifficultyToClient(this.difficulty);
   }
-  playerReady(socketID){
+  playerReady(socketID) {
     console.log(socketID + ' hat auf ready gedrückt');
     console.log(this.player1.socketID + ' ist die SpielerID');
     // Funktioniert brauchen wir aber noch nicht
@@ -66,14 +90,14 @@ class Game {
         if (this.player1.ready === 1 && this.player2.ready === 1) {
             this.startGame()
         }
-    } */ 
+    } */
     this.startGame();
   }
   startGame() {
     server.sendStartGame();
     this.timer();
     this.room = new Room(this.extent, 1);
-    this.loop();
+    setInterval(this.loop.bind(this), 33);
   }
   // Spiel-Timer
   timer() {
@@ -97,40 +121,46 @@ class Game {
       }; //TO-DO Brauchen wir das? */
       let timer = setInterval(function () {
         let time = (timerMin + ':' + timerSek)
-        server.sendTimer(time); 
+        server.sendTimer(time);
         console.log(time);
         if (timerSek === 0 && timerMin === 0) {
-            clearInterval(timer);
-            this.gameOver();
+          clearInterval(timer);
+          this.gameOver();
         } else if (timerSek === 0) {
-            timerMin--;
-            timerSek += 59;
+          timerMin--;
+          timerSek += 59;
         } else {
-            timerSek--;
+          timerSek--;
         }
       }, 1000);
     }
   }
   loop() {
     this.update();
-    this.draw(); 
+    this.draw();
   }
 
   update(pressedKey) {
-    this.gameState.player1 = this.player1.update(pressedKey);
+    if(!this.killed){
+      this.gameState.player1 = this.player1.update(pressedKey);
     // this.gameState.player2 = this.player2.update(); Brauchen wir dann für zweiten Spieler
-    this.gameState.room = this.room.update(); 
-    // this.gameState.door = this.door.update(); 
+    }
+    this.gameState.room = this.room.update();
+    // this.gameState.door = this.door.update();
+    this.monster.update();
+    this.gameState.monster.x = this.monster.x;
+    this.gameState.monster.y = this.monster.y;
+    this.damage(this.gameState.player1, this.gameState.monster)
   }
   draw() {
     server.sendDraw(this.gameState)
   }
-  damage(playerPosition) {
+  damage(player, monster) {
     if (
-      playerPosition.x === monsterPostion.x &&
-      playerPosition.y === monsterPosition.y
+      player.x === monster.x &&
+      player.y === monster.y
     ) {
-      socket.broadcast.emit("player1_damage");
+      this.killed = true;
     }
   }
   /*

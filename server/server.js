@@ -14,7 +14,7 @@ let Game = game.Game;
 const player = require("./Player.js");
 const Player = player.Player;
 const extent = 64;
-const Monster = require("./Monster.js");
+
 
 var newGame;
 let connectionCounter = 0;
@@ -69,10 +69,6 @@ module.exports.sendDifficultyToClient = difficulty => io.emit('setDifficulty', d
 module.exports.sendStartGame = () => io.emit('startGame');
 module.exports.sendTimer = (time) => io.emit('timer',time);
 module.exports.sendDraw = (gameState) => io.emit('draw', gameState); 
-
-function sendMonsterPosition(monsterPosition) {
-  io.emit("monster_position", monsterPosition);
-}
 
 
 http.listen(3000, () => {
