@@ -5,15 +5,13 @@ module.exports = class Monster {
    * @param {number} y y position of the monster
    * @param {boolean} vertical vertical or horizontal
    */
-
-  constructor(x, y, socket, vertical, life) {
+  constructor(x, y, color, vertical, life) {
     this.x = x;
     this.y = y;
-    this.socket = socket;
     this.life = life;
+    this.color = color;
     this.vertical = vertical;
     this.move = 1;
-    this.context = context;
   }
   update() {
     if (this.vertical) {

@@ -3,6 +3,7 @@ const player = require("./Player.js");
 const Player = player.Player;
 const room = require("./Room.js")
 const Room = room.Room;
+const Monster = require('./Monster.js');
 
 class Game {
   constructor(extent) {
@@ -17,14 +18,20 @@ class Game {
     this.playerCount = 0;
     this.player1;
     this.player2;
+    this.monster = new Monster(2, 9, 'purple', false, 2)
     this.connectionCount = 0; 
     this.gameState = {
         room : [],
         door: {color: 'white', state: 'closed', position: {x : 0, y : 0}},
         player1 : {x : 0 ,y : 0,color : 'blue'},
         player2 : {x : 0 ,y : 0,color : 'blue'},
-        // monster : 
-    } 
+        monster : {
+          x: this.monster.x,
+          y: this.monster.y,
+          color: this.monster.color,
+          vertical: this.monster.vertical
+        }
+    }
   }
   playerConnect() {
     this.playerCount++;
@@ -121,7 +128,11 @@ class Game {
     this.gameState.player1 = this.player1.update(pressedKey);
     // this.gameState.player2 = this.player2.update(); Brauchen wir dann für zweiten Spieler
     this.gameState.room = this.room.update(); 
-    this.gameState.door = this.room.door.update(); 
+    this.gameState.door = this.room.door.update();
+    
+    this.monster.update();
+    this.gameState.monster.x = this.monster.x;
+    this.gameState.monster.y = this.monster.y;
   }
   draw() {
 
