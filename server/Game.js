@@ -120,8 +120,10 @@ class Game {
     }
   }
   loop() {
-    this.update();
-    this.draw(); 
+    setInterval(() => {
+      this.update();
+      this.draw(); 
+    }, 10)
   }
 
   update(pressedKey) {
