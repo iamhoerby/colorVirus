@@ -7,7 +7,7 @@ const socket = io();
 const extent = 64;
 
 let rendering = new Rendering(canvas, extent);
-new KeyHandler();
+let keyHandler = new KeyHandler();
 
 // Hier drunter alle eingehenede Nachrichtien also Server -> Client 
 socket.on("connect", function () {
@@ -21,6 +21,7 @@ socket.on('setDifficulty', function(difficulty) {
 });
 socket.on('startGame', function() {
   rendering.startGame(); 
+  keyHandler.startGame();
 });
 socket.on('timer', function(time) {
   rendering.drawTimer(time);
