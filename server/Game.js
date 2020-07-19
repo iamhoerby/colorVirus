@@ -16,15 +16,14 @@ class Game {
     this.pause = false;
     this.playerLifes = 3;
     this.playerCount = 0;
-    this.player1;
-    this.player2;
+    this.players = new Map();
     this.monster = new Monster(2, 9, 'purple', false, 2)
     this.connectionCount = 0; 
+    this.readyCount = 0; 
     this.gameState = {
         room : [],
         door: {color: 'white', state: 'closed', position: {x : 0, y : 0}},
-        player1 : {x : 0 ,y : 0,color : 'blue'},
-        player2 : {x : 0 ,y : 0,color : 'blue'},
+        players: [],
         monster : {
           x: this.monster.x,
           y: this.monster.y,
@@ -44,7 +43,8 @@ class Game {
   newPlayer(name, socketID) {
     this.connectionCount++
     console.log(this.connectionCount)
-    switch (this.connectionCount) {
+    this.players.set(socketID,new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name))
+    /* switch (this.connectionCount) {
         case 1: 
             this.player1 = new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name)
             console.log('new Player') 
@@ -57,25 +57,17 @@ class Game {
         default: 
             console.log("Game full")
             break;
-    }
-    console.log(name);
-    server.sendDifficultyToClient(this.difficulty);
+    } */
+    console.log(this.players.get(socketID).name);
+    server.sendDifficultyToClient(socketID,this.difficulty);
   }
   playerReady(socketID){
-    console.log(socketID + ' hat auf ready gedrückt');
-    console.log(this.player1.socketID + ' ist die SpielerID');
     // Funktioniert brauchen wir aber noch nicht
-    /* if (socketID === this.player1.socketID) {
-        this.player1.ready = 1; 
-    } else {
-        this.player2.ready = 1; 
+    this.players.get(socketID).ready = 1;
+    this.readyCount++;
+    if (this.readyCount === this.connectionCount) {
+      this.startGame();
     }
-    if (this.playerCount === 2) {
-        if (this.player1.ready === 1 && this.player2.ready === 1) {
-            this.startGame()
-        }
-    } */ 
-    this.startGame();
   }
   startGame() {
     server.sendStartGame();
@@ -121,23 +113,33 @@ class Game {
   }
   loop() {
     setInterval(() => {
-      this.update();
-      this.draw(); 
-    }, 10)
+      this.updateGameState();
+      this.drawGameState(); 
+    }, 33)
   }
+  updateMovement(socketID, pressedKey) {
+    this.players.get(socketID).updateMovement(pressedKey);
+  }
+  updateGameState(){
+    let number = 0;
+    let gameStatePlayer = [];
+    for (var key of this.players.keys()) {
 
-  update(pressedKey) {
-    this.gameState.player1 = this.player1.update(pressedKey);
-    // this.gameState.player2 = this.player2.update(); Brauchen wir dann für zweiten Spieler
+    gameStatePlayer[number] = this.players.get(key).update();
+    number++;
+
+    }
+    this.gameState.players = gameStatePlayer;
     this.gameState.room = this.room.update(); 
     this.gameState.door = this.room.door.update();
     
     this.monster.update();
     this.gameState.monster.x = this.monster.x;
     this.gameState.monster.y = this.monster.y;
-  }
-  draw() {
 
+  }
+  drawGameState() {
+    console.log(this.gameState)
     server.sendDraw(this.gameState)
   }
   damage(playerPosition) {

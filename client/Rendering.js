@@ -3,7 +3,7 @@ export class Rendering {
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
     this.extent = extent;
-    this.cellSize = this.canvas.width / this.extent;
+    this.cellSize = 0;
   }
   // Start Screen with Name Input
   inputName() {
@@ -39,6 +39,9 @@ export class Rendering {
       console.log('Start Game');
       document.getElementById("difficulty").classList.add("displayNone");
       document.getElementById("ready").classList.add("displayNone");
+      document.getElementById("myCanvas").height = window.innerHeight * 0.75;
+      document.getElementById("myCanvas").width = document.getElementById("myCanvas").height;
+      this.cellSize = this.canvas.width / this.extent;
       document.getElementById("canvas").classList.remove("displayNone");  
   }
   drawTimer(time) {
@@ -125,10 +128,13 @@ export class Rendering {
   }
 
     draw(gameState) {
+      console.log(gameState)
+
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawRoom(gameState.room);
-      this.drawPlayer(gameState.player1);
-      this.drawPlayer(gameState.player2);
+      for (let x = 0; x < gameState.players.length; x++) {
+        this.drawPlayer(gameState.players[x]);
+      }
       this.drawDoor(gameState.door);
       this.drawMonster(gameState.room.coord, gameState.monster.x, gameState.monster.y, gameState.monster.color, gameState.monster.vertical);
     }

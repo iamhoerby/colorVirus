@@ -26,6 +26,7 @@ export class KeyHandler {
     //Ready 
     document.getElementById("ready").onclick = function () {
         sendReady()
+        document.getElementById("ready").disabled = true; 
     }
 
     //player moves

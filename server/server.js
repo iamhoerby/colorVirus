@@ -53,9 +53,9 @@ io.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrich
     newGame.playerReady(socket.id);
   });
   
-  socket.on("player_movement", function (pressedKey){
+  socket.on("playerMovement", function (pressedKey){
     console.log(`${socket.id} drückt ${pressedKey} Taste`);
-    newGame.update(pressedKey);
+    newGame.updateMovement(socket.id,pressedKey);
     //player.update(pressedKey)
   });
 });
@@ -65,7 +65,7 @@ io.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrich
 // Alle Funktionen exportieren mit module.exports. Bis jetzt hat keine schreibweise funktioniert bis auf diese. 
 // Also diese bitte benutzen 
 
-module.exports.sendDifficultyToClient = difficulty => io.emit('setDifficulty', difficulty);
+module.exports.sendDifficultyToClient = (socketID,difficulty) => io.to(socketID).emit('setDifficulty', difficulty);
 module.exports.sendStartGame = () => io.emit('startGame');
 module.exports.sendTimer = (time) => io.emit('timer',time);
 module.exports.sendDraw = (gameState) => io.emit('draw', gameState); 

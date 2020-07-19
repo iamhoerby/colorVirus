@@ -43,7 +43,9 @@ export function sendDifficultyToServer(difficultyClient) {
 export function sendReady() {
   socket.emit("playerReady")
 }
-
+export function sendPlayerMovement(pressedKey) {
+  socket.emit("playerMovement", pressedKey);
+}
 
 // socket.emit('player1_damage', this.game.damage());
 
@@ -51,6 +53,3 @@ export function sendReady() {
 
 
 
-export function sendPlayerMovement(pressedKey) {
-  socket.emit("player_movement", pressedKey);
-}
