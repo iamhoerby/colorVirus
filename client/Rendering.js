@@ -44,23 +44,15 @@ export class Rendering {
   drawTimer(time) {
       document.getElementById('timer').innerHTML = time
   }
-  drawMonster(coord, x, y, color, vertical){
-    // for( let i = 0; i < coord.length; i++){
-    //   if(coord[i].x === x && coord[i].y === y){
-    //     if(vertical){
-    //       return drawMonster(coord, x, y+1, color, vertical);
-    //     }else {
-    //       return drawMonster(coord, x+1, y, color, vertical);
-    //     }
-    //   } else {
-        this.context.fillStyle = color;
-        this.context.fillRect(
-        x* this.cellSize,
-        y* this.cellSize,
-        this.cellSize,
-        this.cellSize)
-    //   }
-    // }
+  drawMonster(monsters){
+    for(let i = 0; i < monsters.length; i++){
+      this.context.fillStyle = monsters[i].color;
+      this.context.fillRect(
+      monsters[i].x* this.cellSize,
+      monsters[i].y* this.cellSize,
+      this.cellSize,
+      this.cellSize)
+    }
   }
 
   drawPlayer(gameStatePlayer) {
@@ -130,6 +122,6 @@ export class Rendering {
       this.drawPlayer(gameState.player1);
       this.drawPlayer(gameState.player2);
       this.drawDoor(gameState.door);
-      this.drawMonster(gameState.room.coord, gameState.monster.x, gameState.monster.y, gameState.monster.color, gameState.monster.vertical);
+      this.drawMonster(gameState.monsters);
     }
 }
