@@ -1,6 +1,3 @@
-// Player update *** Janka *** 30.6.2020
-
-
 class Player {
   constructor(x, y, color, lifes, pressedKey, socketID, name){ 
         this.x = x;
@@ -34,68 +31,35 @@ class Player {
     pressedKey = "Stop";
   }
   updateLifes() {
-    if (this.color === "blue") {
-      if (this.lifes === 3) {
-        this.color = "navy";
+    if (this.color === "blue" || "navy" || "royalblue" || "lightsteelblue") {
+      switch (this.lifes){
+        case 3: this.color = "navy"; break;
+        case 2: this.color = "royalblue"; break;
+        case 1: this.color = "lightsteelblue"; break;
+        default: this.color = "white"; break;
       }
-      if (this.lifes === 2) {
-        this.color = "royalblue";
-      }
-      if (this.lifes === 1) {
-        this.color = "lightsteelblue";
-      }
-      if (this.lifes === 0) {
-        this.color = "white";
-      }
-    } else if (this.color === "red") {
-      if (this.lifes === 3) {
-        this.color = "darkred";
-      }
-      if (this.lifes === 2) {
-        this.color = "red";
-      }
-      if (this.lifes === 1) {
-        this.color = "lightcoral";
-      }
-      if (this.lifes === 0) {
-        this.color = "white";
+    } else if (this.color === "red" || "darkred" || "lightcoral") {
+      switch (this.lifes){
+        case 3: this.color = "darkred"; break;
+        case 2: this.color = "red"; break;
+        case 1: this.color = "lightcoral"; break;
+        default: this.color = "white"; break;
+
       }
     } else {
       //color green
-      if (this.lifes === 3) {
-        this.color = "darkgreen";
-      }
-      if (this.lifes === 2) {
-        this.color = "green";
-      }
-      if (this.lifes === 1) {
-        this.color = "mediumseagreen";
-      }
-      if (this.lifes === 0) {
-        this.color = "white";
+      switch (this.lifes){
+        case 3: this.color = "darkgreen"; break;
+        case 2: this.color = "green"; break;
+        case 1: this.color = "mediumseagreen"; break;
+        default: this.color = "white"; break;
+
       }
     }
   }
 
-
   update() {
     return {x: this.x, y: this.y, color: this.color}
-
-    /* if (connectionCounter != 0) {
-      if (playerConnect[0] === socketID) {
-        this.color = blue;
-      }
-      if (playerConnect[1] === socketID) {
-        this.color = red;
-      }
-    } */
-/* 
-    socket.broadcast.emit("player_newPosition", {
-      x: this.x,
-      y: this.y,
-      color: this.color,
-    });
-  } */
   }
 }
 
