@@ -12,7 +12,7 @@ export class KeyHandler {
       if (name !== "") {
         sendName(name);
       }
-    };
+    }
     // Input Difficulty *** Sebastian *** 25.6.2020
     let difficulty = 0;
     document.getElementById("easy").onclick = () => (difficulty = 1);
@@ -26,9 +26,11 @@ export class KeyHandler {
     //Ready 
     document.getElementById("ready").onclick = function () {
         sendReady()
+        document.getElementById("ready").disabled = true; 
     }
-
-    //player moves
+  }
+  //player moves
+  startGame() {
     document.addEventListener('keydown', event => {
       if (
         event.code === "ArrowRight" ||

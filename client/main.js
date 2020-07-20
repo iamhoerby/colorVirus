@@ -7,7 +7,7 @@ const socket = io();
 const extent = 64;
 
 let rendering = new Rendering(canvas, extent);
-new KeyHandler();
+let keyHandler = new KeyHandler();
 
 // Hier drunter alle eingehenede Nachrichtien also Server -> Client 
 socket.on("connect", function () {
@@ -21,6 +21,7 @@ socket.on('setDifficulty', function(difficulty) {
 });
 socket.on('startGame', function() {
   rendering.startGame(); 
+  keyHandler.startGame();
 });
 socket.on('timer', function(time) {
   rendering.drawTimer(time);
@@ -43,7 +44,9 @@ export function sendDifficultyToServer(difficultyClient) {
 export function sendReady() {
   socket.emit("playerReady")
 }
-
+export function sendPlayerMovement(pressedKey) {
+  socket.emit("playerMovement", pressedKey);
+}
 
 // socket.emit('player1_damage', this.game.damage());
 
@@ -51,6 +54,3 @@ export function sendReady() {
 
 
 
-export function sendPlayerMovement(pressedKey) {
-  socket.emit("player_movement", pressedKey);
-}

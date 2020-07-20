@@ -15,35 +15,18 @@ class Game {
     this.levelCounter = 0;
     this.pause = false;
     this.playerCount = 0;
-    this.player1;
-    this.player2;
-    this.connectionCount = 0;
-    this.frameCount = 0;
+    this.players = new Map();
+    this.connectionCount = 0; 
+    this.readyCount = 0; 
+    this.gameState = {
+        room : [],
+        door: {color: 'white', state: 'closed', position: {x : 0, y : 0}},
+        players: [],
+        monster :[]
+    }
     this.monsters = [];
     this.monsterColors;
     this.killed = false;
-    this.gameState = {
-      room: [],
-      door: {
-        color: 'white',
-        state: 'closed',
-        position: {
-          x: 0,
-          y: 0
-        }
-      },
-      player1: {
-        x: 0,
-        y: 0,
-        color: 'blue'
-      },
-      player2: {
-        x: 0,
-        y: 0,
-        color: 'blue'
-      },
-      monsters: []
-    }
   }
   playerConnect() {
     this.playerCount++;
@@ -56,38 +39,16 @@ class Game {
   newPlayer(name, socketID) {
     this.connectionCount++
     console.log(this.connectionCount)
-    switch (this.connectionCount) {
-      case 1:
-        this.player1 = new Player(0, 0, 'green', 3, 'ArrowRight', socketID, name)
-        console.log('new Player')
-        console.log(this.player1.socketID + ' ist spieler 1')
-        break;
-      case 2:
-        this.player2 = new Player(10, 0, 'red', 3, 'ArrowRight', socketID, name)
-        console.log(this.player2.socketID + ' ist spieler 2')
-        break;
-      default:
-        console.log("Game full")
-        break;
-    }
-    console.log(name);
-    server.sendDifficultyToClient(this.difficulty);
+    this.players.set(socketID,new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name))
+    console.log(this.players.get(socketID).name);
+    server.sendDifficultyToClient(socketID,this.difficulty);
   }
-  playerReady(socketID) {
-    console.log(socketID + ' hat auf ready gedrückt');
-    console.log(this.player1.socketID + ' ist die SpielerID');
-    // Funktioniert brauchen wir aber noch nicht
-    /* if (socketID === this.player1.socketID) {
-        this.player1.ready = 1; 
-    } else {
-        this.player2.ready = 1; 
+  playerReady(socketID){
+    this.players.get(socketID).ready = 1;
+    this.readyCount++;
+    if (this.readyCount === this.connectionCount) {
+      this.startGame();
     }
-    if (this.playerCount === 2) {
-        if (this.player1.ready === 1 && this.player2.ready === 1) {
-            this.startGame()
-        }
-    } */
-    this.startGame();
   }
   startGame() {
     server.sendStartGame();
@@ -110,7 +71,7 @@ class Game {
         minuten = 5;
         break;
     }
-    if (minuten != 0) {
+    if (minuten !== 0) {
       let timerMin = minuten;
       let timerSek = 0;
       /* document.getElementById("pause").onclick = function () {
@@ -134,17 +95,22 @@ class Game {
   }
   loop() {
     setInterval(() => {
-      this.update();
-      this.draw();
-      this.frameCount++;
-    }, 10)
+      this.updateGameState();
+      this.drawGameState(); 
+    }, 33)
   }
-
-  update(pressedKey) {
+  updateMovement(socketID, pressedKey) {
+    this.players.get(socketID).updateMovement(pressedKey);
+  }
+  updateGameState(){
+    let number = 0;
+    let gameStatePlayer = [];
+    for (var key of this.players.keys()) {
     if (!this.killed) {
-      this.gameState.player1 = this.player1.update(pressedKey);
+        gameStatePlayer[number] = this.players.get(key).update();
+        number++;
     }
-    // this.gameState.player2 = this.player2.update(); Brauchen wir dann für zweiten Spieler
+    }
     this.gameState.room = this.room.update();
     this.gameState.door = this.room.door.update();
     this.pickColor(this.gameState.door.color);
@@ -157,7 +123,7 @@ class Game {
       this.damage(this.player1, this.gameState.monsters[i]);
     }
   }
-  draw() {
+  drawGameState() {
     server.sendDraw(this.gameState)
   }
 

@@ -13,7 +13,7 @@ class Player {
         this.ready = 0; 
     }
 
-  update(pressedKey) {
+  updateMovement(pressedKey) {
     if (pressedKey === "ArrowRight") {
       if (this.x < 63) {
         this.x += 1;
@@ -32,7 +32,8 @@ class Player {
       }
     }
     pressedKey = "Stop";
-
+  }
+  updateLifes() {
     if (this.color === "blue") {
       if (this.lifes === 3) {
         this.color = "navy";
@@ -74,7 +75,10 @@ class Player {
         this.color = "white";
       }
     }
+  }
 
+
+  update() {
     return {x: this.x, y: this.y, color: this.color}
 
     /* if (connectionCounter != 0) {
