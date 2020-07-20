@@ -9,7 +9,7 @@ class Room {
     this.door = new Door(
       this.doorColor,
       "Closed",
-      { x: Math.floor(Math.random() * (this.extent - this.extent / 4)), y: 0 }, //random position for door
+      { x: Math.floor(Math.random() * (this.extent * (3/4) - this.extent / 4) + this.extent / 4), y: 0 }, //random position for door
       this.extent
     );
     // this.monster = new Monster("green", this.cellSize, this.context);
@@ -18,35 +18,35 @@ class Room {
     this.randCoord = [
       {
         x: this.randCoordX(),
-        y: this.extent / 16 + (this.extent / 8) * 0,
+        y: this.extent / 10 + (this.extent / 8) * 0,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 16 + (this.extent / 8) * 1,
+        y: this.extent / 10 + (this.extent / 8) * 1,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 16 + (this.extent / 8) * 2,
+        y: this.extent / 10 + (this.extent / 9) * 2,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 16 + (this.extent / 8) * 3,
+        y: this.extent / 10 + (this.extent / 9) * 3,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 16 + (this.extent / 8) * 4,
+        y: this.extent / 10 + (this.extent / 9) * 4,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 16 + (this.extent / 8) * 5,
+        y: this.extent / 10 + (this.extent / 9) * 5,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 16 + (this.extent / 8) * 6,
+        y: this.extent / 10 + (this.extent / 9) * 6,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 16 + (this.extent / 8) * 7,
+        y: this.extent / 10 + (this.extent / 9) * 7,
       },
     ];
     // setInterval(this.draw(), 500);
@@ -54,7 +54,7 @@ class Room {
 
   // Room update *** Andrej *** 08.7.2020
   randCoordX(){
-    return Math.floor(Math.random() * (this.extent - this.extent / 8));
+    return Math.floor(Math.random() * (this.extent * (7/8) - this.extent / 8) + this.extent / 8);
     }
 
   update() {

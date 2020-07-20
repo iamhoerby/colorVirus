@@ -97,16 +97,30 @@ export class Rendering {
     this.context.fillRect(
       coord.x * this.cellSize,
       coord.y * this.cellSize,
-      (this.cellSize * this.extent) / 16,
-      (this.cellSize * this.extent) / 16
+      (this.cellSize * this.extent) / 20,
+      (this.cellSize * this.extent) / 20
     );
     console.log("Drawing obstacle");
+  }
+
+  // creates color "aura" around obstacles. Pure cosmetic effect, has nothing to do with gameplay
+  drawObstEffect(coord) {
+    let colors = ["red", "orange", "yellow", "green", "blue", "violet"];
+    this.context.fillStyle = "light" + colors[Math.floor(Math.random() * colors.length)];
+    this.context.beginPath();
+    this.context.arc(coord.x * this.cellSize +  (this.cellSize * this.extent) / 40, 
+                      coord.y * this.cellSize + (this.cellSize * this.extent) / 40, 
+                      this.cellSize*2.5, 0, 2 * Math.PI);
+    this.context.fill();
+
+
   }
 
   drawRoom(gameStateRoomCoord) {
     //drawing room itself: borders, door, obstacles
     //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     //this.drawBorder();
+    this.drawObstEffect(gameStateRoomCoord[Math.floor(Math.random() * gameStateRoomCoord.length)]);
     for (let i = 0; i < 8; i++) {
       this.drawObstacle(gameStateRoomCoord[i]);
     }
@@ -123,6 +137,8 @@ export class Rendering {
     );
     console.log("Drawing door");
   }
+
+ 
 
     draw(gameState) {
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
