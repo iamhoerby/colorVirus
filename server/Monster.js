@@ -11,7 +11,7 @@ module.exports = class Monster {
     this.color = color;
     this.vertical = Boolean(Math.floor(Math.random() * 2));
     this.move = 1;
-    this.speed = 15;
+    this.speed = 12;
   }
   update(frames, coord, door) {
     this.collisionObs(coord);
@@ -85,7 +85,7 @@ module.exports = class Monster {
           this.x === door.x + 5 ||
           this.x === door.x + 6 ||
           this.x === door.x + 7) && (this.y === 0 || this.y === 1)) {
-        this.move = -1;
+        this.move = 1;
       }
     }
   }

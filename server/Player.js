@@ -8,6 +8,7 @@ class Player {
         this.socketID = socketID;
         this.name = name; 
         this.ready = 0; 
+        this.alive = true;
     }
 
   updateMovement(pressedKey) {
