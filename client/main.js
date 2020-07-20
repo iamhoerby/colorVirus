@@ -3,7 +3,7 @@ import { KeyHandler } from "./eventHandler.js";
 
 let canvas = document.getElementById("myCanvas");
 
-const socket = io();
+const socket = io('/game-space');
 const extent = 64;
 
 let rendering = new Rendering(canvas, extent);

@@ -6,6 +6,7 @@ const io = require("socket.io")(http);
 const path = require("path");
 const clientPath = path.join(__dirname, "..", "client");
 app.use(express.static(clientPath));
+const nsp = io.of('/game-space')
 
 // Game requiries
 // Hier die Klassen importieren
@@ -21,7 +22,7 @@ let connectionCounter = 0;
 
 
 
-io.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrichten also Client -> Server
+nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrichten also Client -> Server
   console.log(`A socket connected with id ${socket.id}`);
   socket.on('disconnect', function() { 
     console.log(socket.id + ' disconnected')
@@ -40,6 +41,9 @@ io.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrich
   
   socket.on("playerName", function (name) {
     console.log(`Recieved message playerName`);
+    socket.join('GameRoom');
+    console.log(`${socket.id} joined GameRoom`)
+    console.log(Object.keys(socket.rooms));
     newGame.newPlayer(name, socket.id);
   });
   
@@ -65,10 +69,10 @@ io.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrich
 // Alle Funktionen exportieren mit module.exports. Bis jetzt hat keine schreibweise funktioniert bis auf diese. 
 // Also diese bitte benutzen 
 
-module.exports.sendDifficultyToClient = (socketID,difficulty) => io.to(socketID).emit('setDifficulty', difficulty);
-module.exports.sendStartGame = () => io.emit('startGame');
-module.exports.sendTimer = (time) => io.emit('timer',time);
-module.exports.sendDraw = (gameState) => io.emit('draw', gameState); 
+module.exports.sendDifficultyToClient = (difficulty) => nsp.to('GameRoom').emit('setDifficulty', difficulty);
+module.exports.sendStartGame = () => nsp.emit('startGame');
+module.exports.sendTimer = (time) => nsp.emit('timer',time);
+module.exports.sendDraw = (gameState) => nsp.emit('draw', gameState); 
 
 
 http.listen(3000, () => {

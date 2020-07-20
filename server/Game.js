@@ -59,13 +59,13 @@ class Game {
             break;
     } */
     console.log(this.players.get(socketID).name);
-    server.sendDifficultyToClient(socketID,this.difficulty);
+    server.sendDifficultyToClient(this.difficulty);
   }
   playerReady(socketID){
     // Funktioniert brauchen wir aber noch nicht
     this.players.get(socketID).ready = 1;
     this.readyCount++;
-    if (this.readyCount === this.connectionCount) {
+    if (this.readyCount === this.playerCount) {
       this.startGame();
     }
   }
@@ -139,7 +139,6 @@ class Game {
 
   }
   drawGameState() {
-    console.log(this.gameState)
     server.sendDraw(this.gameState)
   }
   damage(playerPosition) {
