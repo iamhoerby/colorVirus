@@ -133,7 +133,7 @@ class Game {
   }
 
   damage(player, monster) {
-    /* if (player.x === monster.x && player.y === monster.y) {
+    if (player.x === monster.x && player.y === monster.y) {
       //socket.broadcast.emit("player1_damage");
       if (player.lifes === 0) {
         this.killed = true;
@@ -142,7 +142,7 @@ class Game {
         player.x = 0;
         player.y = 0;
       }
-    } */
+    } 
   }
 
   monsterCreator() {
