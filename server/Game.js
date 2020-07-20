@@ -27,7 +27,6 @@ class Game {
     }
     this.monsters = [];
     this.monsterColors;
-    this.killed = false;
   }
   playerConnect() {
     this.playerCount++;
@@ -40,7 +39,7 @@ class Game {
   newPlayer(name, socketID) {
     this.connectionCount++
     console.log(this.connectionCount)
-    this.players.set(socketID,new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name))
+    this.players.set(socketID,new Player (0,0,'darkgreen',3,'ArrowRight', socketID, name))
     console.log(this.players.get(socketID).name);
     server.sendDifficultyToClient(socketID,this.difficulty);
   }
@@ -108,7 +107,7 @@ class Game {
     let number = 0;
     let gameStatePlayer = [];
     for (var key of this.players.keys()) {
-    if (!this.killed) {
+    if (this.players.get(key).alive) {
         gameStatePlayer[number] = this.players.get(key).update();
         number++;
     }
@@ -135,8 +134,8 @@ class Game {
   damage(player, monster) {
     if (player.x === monster.x && player.y === monster.y) {
       //socket.broadcast.emit("player1_damage");
-      if (player.lifes === 0) {
-        this.killed = true;
+      if (player.lifes === 1) {
+        player.alive = false;
       } else {
         player.lifes--;
         player.x = 0;
