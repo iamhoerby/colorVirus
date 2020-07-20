@@ -14,23 +14,35 @@ class Game {
     this.difficulty = 0;
     this.levelCounter = 0;
     this.pause = false;
-    this.playerLifes = 3;
     this.playerCount = 0;
     this.player1;
     this.player2;
-    this.monster = new Monster(2, 9, 'purple', false, 2)
-    this.connectionCount = 0; 
+    this.connectionCount = 0;
+    this.frameCount = 0;
+    this.monsters = [];
+    this.monsterColors;
+    this.killed = false;
     this.gameState = {
-        room : [],
-        door: {color: 'white', state: 'closed', position: {x : 0, y : 0}},
-        player1 : {x : 0 ,y : 0,color : 'blue'},
-        player2 : {x : 0 ,y : 0,color : 'blue'},
-        monster : {
-          x: this.monster.x,
-          y: this.monster.y,
-          color: this.monster.color,
-          vertical: this.monster.vertical
+      room: [],
+      door: {
+        color: 'white',
+        state: 'closed',
+        position: {
+          x: 0,
+          y: 0
         }
+      },
+      player1: {
+        x: 0,
+        y: 0,
+        color: 'blue'
+      },
+      player2: {
+        x: 0,
+        y: 0,
+        color: 'blue'
+      },
+      monsters: []
     }
   }
   playerConnect() {
@@ -45,23 +57,23 @@ class Game {
     this.connectionCount++
     console.log(this.connectionCount)
     switch (this.connectionCount) {
-        case 1: 
-            this.player1 = new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name)
-            console.log('new Player') 
-            console.log(this.player1.socketID + ' ist spieler 1')
-            break;
-        case 2:
-            this.player2 = new Player (10,0,'red',this.playerLifes,'ArrowRight', socketID, name) 
-            console.log(this.player2.socketID +  ' ist spieler 2')
-            break;
-        default: 
-            console.log("Game full")
-            break;
+      case 1:
+        this.player1 = new Player(0, 0, 'green', 3, 'ArrowRight', socketID, name)
+        console.log('new Player')
+        console.log(this.player1.socketID + ' ist spieler 1')
+        break;
+      case 2:
+        this.player2 = new Player(10, 0, 'red', 3, 'ArrowRight', socketID, name)
+        console.log(this.player2.socketID + ' ist spieler 2')
+        break;
+      default:
+        console.log("Game full")
+        break;
     }
     console.log(name);
     server.sendDifficultyToClient(this.difficulty);
   }
-  playerReady(socketID){
+  playerReady(socketID) {
     console.log(socketID + ' hat auf ready gedrückt');
     console.log(this.player1.socketID + ' ist die SpielerID');
     // Funktioniert brauchen wir aber noch nicht
@@ -74,13 +86,14 @@ class Game {
         if (this.player1.ready === 1 && this.player2.ready === 1) {
             this.startGame()
         }
-    } */ 
+    } */
     this.startGame();
   }
   startGame() {
     server.sendStartGame();
     this.timer();
     this.room = new Room(this.extent, 1);
+    this.monsterCreator();
     this.loop();
   }
   // Spiel-Timer
@@ -105,16 +118,16 @@ class Game {
       }; //TO-DO Brauchen wir das? */
       let timer = setInterval(function () {
         let time = (timerMin + ':' + timerSek)
-        server.sendTimer(time); 
-        console.log(time);
+        server.sendTimer(time);
+        //console.log(time);
         if (timerSek === 0 && timerMin === 0) {
-            clearInterval(timer);
-            this.gameOver();
+          clearInterval(timer);
+          this.gameOver();
         } else if (timerSek === 0) {
-            timerMin--;
-            timerSek += 59;
+          timerMin--;
+          timerSek += 59;
         } else {
-            timerSek--;
+          timerSek--;
         }
       }, 1000);
     }
@@ -122,32 +135,117 @@ class Game {
   loop() {
     setInterval(() => {
       this.update();
-      this.draw(); 
+      this.draw();
+      this.frameCount++;
     }, 10)
   }
 
   update(pressedKey) {
-    this.gameState.player1 = this.player1.update(pressedKey);
+    if (!this.killed) {
+      this.gameState.player1 = this.player1.update(pressedKey);
+    }
     // this.gameState.player2 = this.player2.update(); Brauchen wir dann für zweiten Spieler
-    this.gameState.room = this.room.update(); 
+    this.gameState.room = this.room.update();
     this.gameState.door = this.room.door.update();
-    
-    this.monster.update();
-    this.gameState.monster.x = this.monster.x;
-    this.gameState.monster.y = this.monster.y;
-  }
-  draw() {
+    this.pickColor(this.gameState.door.color);
 
-    server.sendDraw(this.gameState)
-  }
-  damage(playerPosition) {
-    if (
-      playerPosition.x === monsterPostion.x &&
-      playerPosition.y === monsterPosition.y
-    ) {
-      socket.broadcast.emit("player1_damage");
+    for (let i = 0; i < this.monsters.length; i++) {
+      this.monsters[i].update(this.frameCount, this.gameState.room, this.gameState.door.position);
+      this.gameState.monsters[i].x = this.monsters[i].x;
+      this.gameState.monsters[i].y = this.monsters[i].y;
+      this.gameState.monsters[i].color = this.monsterColors[i];
+      this.damage(this.player1, this.gameState.monsters[i]);
     }
   }
+  draw() {
+    server.sendDraw(this.gameState)
+  }
+
+  damage(player, monster) {
+    if (player.x === monster.x && player.y === monster.y) {
+      //socket.broadcast.emit("player1_damage");
+      if (player.lifes === 0) {
+        this.killed = true;
+      } else {
+        player.lifes--;
+        player.x = 0;
+        player.y = 0;
+      }
+    }
+  }
+
+  monsterCreator() {
+    var numberMonsters;
+    switch (this.difficulty) {
+      case 1:
+        numberMonsters = 2;
+        break;
+      case 2:
+        numberMonsters = 3;
+        break;
+      case 3:
+        numberMonsters = 4;
+        break;
+    }
+    for (let i = 0; i < numberMonsters; i++) {
+      this.monsters.push(new Monster(
+        Math.floor(Math.random() * 63),
+        Math.floor(Math.random() * 63 + 2),
+        'white'));
+      this.gameState.monsters.push({
+        x: 0,
+        y: 0,
+        color: 'white'
+      });
+    }
+  }
+
+  pickColor(color) {
+    if (this.monsters.length === 2) {
+      if (color === 'red') {
+        this.monsterColors = ['yellow', '#ff00ff']
+      } else if (color === 'orange') {
+        this.monsterColors = ['yellow', 'red']
+      } else if (color === 'yellow') {
+        this.monsterColors = ['red', 'green']
+      } else if (color === 'green') {
+        this.monsterColors = ['yellow', 'blue']
+      } else if (color === 'blue') {
+        this.monsterColors = ['	#00FFFF', '#ff00ff']
+      } else {
+        this.monsterColors = ['blue', 'red']
+      }
+    } else if (this.monsters.length === 3) {
+      if (color === 'red') {
+        this.monsterColors = ['yellow', 'pink', 'purple']
+      } else if (color === 'orange') {
+        this.monsterColors = ['yellow', 'brown', '#ff00ff']
+      } else if (color === 'yellow') {
+        this.monsterColors = ['red', 'green', '#f5f5dc']
+      } else if (color === 'green') {
+        this.monsterColors = ['yellow', '#00FFFF', '#ff00ff']
+      } else if (color === 'blue') {
+        this.monsterColors = ['#00FFFF', 'pink', 'purple']
+      } else {
+        this.monsterColors = ['blue', 'yellow', 'purple']
+      }
+    } else if (this.monsters.length === 4) {
+      if (color === 'red') {
+        this.monsterColors = ['yellow', 'pink', 'purple', 'blue']
+      } else if (color === 'orange') {
+        this.monsterColors = ['yellow', 'yellow', '#ff00ff', 'brown']
+      } else if (color === 'yellow') {
+        this.monsterColors = ['red', 'green', '#f5f5dc', 'violet']
+      } else if (color === 'green') {
+        this.monsterColors = ['yellow', '#00FFFF', '#ff00ff', 'pink']
+      } else if (color === 'blue') {
+        this.monsterColors = ['#00FFFF', 'pink', 'purple', 'purple']
+      } else {
+        this.monsterColors = ['blue', 'yellow', 'purple', 'green']
+      }
+    }
+  }
+
   /*
     // Room laden + Level starten
     play() {
@@ -204,6 +302,7 @@ class Game {
         document.getElementById("end").onclick = startGame(); 
     }*/
 }
+
 module.exports = {
   Game: Game,
 };
