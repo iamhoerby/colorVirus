@@ -35,52 +35,55 @@ class Player {
     pressedKey = "Stop";
   }
   updateLifes() {
+    let result = '';
     if (this.color === "blue") {
       if (this.lifes === 3) {
-        this.color = "navy";
+        result = "navy";
       }
       if (this.lifes === 2) {
-        this.color = "royalblue";
+        result = "royalblue";
       }
       if (this.lifes === 1) {
-        this.color = "lightsteelblue";
+        result = "lightsteelblue";
       }
       if (this.lifes === 0) {
-        this.color = "white";
+        result = "white";
       }
     } else if (this.color === "red") {
       if (this.lifes === 3) {
-        this.color = "darkred";
+        result = "darkred";
       }
       if (this.lifes === 2) {
-        this.color = "red";
+        result = "red";
       }
       if (this.lifes === 1) {
-        this.color = "lightcoral";
+        result = "lightcoral";
       }
       if (this.lifes === 0) {
-        this.color = "white";
+        result = "white";
       }
     } else {
       //color green
       if (this.lifes === 3) {
-        this.color = "darkgreen";
+        result = "darkgreen";
       }
       if (this.lifes === 2) {
-        this.color = "green";
+        result = "green";
       }
       if (this.lifes === 1) {
-        this.color = "mediumseagreen";
+        result = "mediumseagreen";
       }
       if (this.lifes === 0) {
-        this.color = "white";
+        result = "white";
       }
     }
+    return result; 
   }
 
 
   update() {
-    return {x: this.x, y: this.y, color: this.color}
+    let drawColor = this.updateLifes()
+    return {x: this.x, y: this.y, color: drawColor}
 
     /* if (connectionCounter != 0) {
       if (playerConnect[0] === socketID) {

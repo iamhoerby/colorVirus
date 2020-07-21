@@ -126,7 +126,6 @@ class Game {
       this.gameState.monsters[i].color = this.monsterColors[i];
       for (var key of this.players.keys()) {
         this.damage(key, this.gameState.monsters[i]);
-        this.players.get(key).updateLifes;
       }
     }
   }
