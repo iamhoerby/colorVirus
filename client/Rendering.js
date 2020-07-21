@@ -67,6 +67,16 @@ export class Rendering {
       this.cellSize
     );
   }
+
+  drawBullet(gameStatePlayer){
+    this.context.fillStyle = black;
+    this.context.fillRect(
+      gameStatePlayer.x +1 * this.cellSize,
+      gameStatePlayer.y * this.cellSize,
+      this.cellSize,
+      this.cellSize
+    )
+  }
 // Rendering update *** Andrej *** 08.7.2020
 
  /* drawLine(x1, y1, x2, y2) {
@@ -142,6 +152,9 @@ export class Rendering {
       this.drawRoom(gameState.room);
       for (let x = 0; x < gameState.players.length; x++) {
         this.drawPlayer(gameState.players[x]);
+        /*if(gameState.players[x].shoot = true){
+          this.drawBullet(gameState.players[x]);
+        }*/
       }
       this.drawDoor(gameState.door);
       this.drawMonster(gameState.monsters);

@@ -1,5 +1,5 @@
 class Player {
-  constructor(x, y, color, lifes, pressedKey, socketID, name){ 
+  constructor(x, y, color, lifes, pressedKey, socketID, name, direction, shoot){ 
         this.x = x;
         this.y = y;
         this.color = color;
@@ -7,28 +7,37 @@ class Player {
         this.pressedKey = pressedKey;
         this.socketID = socketID;
         this.name = name; 
-        this.ready = 0; 
+        this.direction = direction;
+        this.shoot = shoot;
+        this.ready = 0; //wofür ist die?
     }
 
   updateMovement(pressedKey) {
     if (pressedKey === "ArrowRight") {
       if (this.x < 63) {
         this.x += 1;
+        this.direction = "right";
       }
     } else if (pressedKey === "ArrowDown") {
       if (this.y < 63) {
         this.y += 1;
+        this.direction = "down";
       }
     } else if (pressedKey === "ArrowLeft") {
       if (this.x > 0) {
         this.x -= 1;
+        this.direction = "left";
       }
     } else if (pressedKey === "ArrowUp") {
       if (this.y > 0) {
         this.y -= 1;
+        this.direction = "up";
       }
+    } else if (pressedKey === "Space") {
+      this.shoot = true;
+      //let bullet = new Bullet (this.x, this.y, this.direction, 20, "black", this.shoot);
     }
-    pressedKey = "Stop";
+    //pressedKey = "Stop";
   }
   updateLifes() {
     if (this.color === "blue" || "navy" || "royalblue" || "lightsteelblue") {
@@ -59,10 +68,29 @@ class Player {
   }
 
   update() {
-    return {x: this.x, y: this.y, color: this.color}
+    return {x: this.x, y: this.y, color: this.color, shoot: this.shoot}
+  }
+}
+
+class Bullet {
+  constructor (x, y, direction, speed, color, shoot){
+    this.x = x;
+    this.y = y;
+    this.direction = direction;
+    this.speed = speed;
+    this.color = color;
+    this.shoot = shoot;
+  }
+  update(){
+    this.x += this.speed;
+    if (this.x > 63){
+      this.shoot = false;
+    }
+    return {x: this.x, y: this.y, direction: this.direction, color: this.color}
   }
 }
 
 module.exports = {
-  Player: Player
+  Player: Player,
+  Bullet: Bullet
 };

@@ -40,7 +40,7 @@ class Game {
   newPlayer(name, socketID) {
     this.connectionCount++
     console.log(this.connectionCount)
-    this.players.set(socketID,new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name))
+    this.players.set(socketID,new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name, "right", false))
     console.log(this.players.get(socketID).name);
     server.sendDifficultyToClient(socketID,this.difficulty);
   }
