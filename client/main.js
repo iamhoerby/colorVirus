@@ -16,7 +16,7 @@ socket.on("connect", function () {
   rendering.inputName();
 });
 socket.on('setDifficulty', function(difficulty) {
-  console.log('Recieved Message SetDifficulty')
+  console.log('Recieved Message SetDifficulty' + difficulty)
   rendering.chooseDifficulty(difficulty)
 });
 socket.on('startGame', function() {

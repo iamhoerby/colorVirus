@@ -41,14 +41,11 @@ nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachric
   
   socket.on("playerName", function (name) {
     console.log(`Recieved message playerName`);
-    socket.join('GameRoom');
-    console.log(`${socket.id} joined GameRoom`)
-    console.log(Object.keys(socket.rooms));
-    newGame.newPlayer(name, socket.id);
+    socket.join('GameRoom', () => newGame.newPlayer(name, socket.id));
   });
   
   socket.on("sendDifficulty", function (difficulty) {
-    console.log("Recieved message difficulty");
+    console.log("Recieved message difficulty" + difficulty);
     newGame.difficulty = difficulty;
   });
   
