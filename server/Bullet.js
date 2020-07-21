@@ -15,10 +15,30 @@ class Bullet {
       this.shoot = shoot;
     }
     update(){
-      this.x += this.speed;
-      if (this.x > 63){
-        this.shoot = false;
-      }
+        if (this.direction === "right"){
+            this.x += this.speed;
+            if (this.x > 63){
+                this.shoot = false;
+            }
+        }
+        else if (this.direction === "left"){
+            this.x -= this.speed;
+            if (this.x < 0){
+                this.shoot = false;
+            }
+        }
+        else if (this.direction === "up"){
+            this.y -= this.speed;
+            if (this.y < 0){
+                this.shoot = false;
+            }
+        }
+        else if (this.direction === "down"){
+            this.y += this.speed;
+            if (this.y > 63){
+                this.shoot = false;
+            }
+        }
       return {x: this.x, y: this.y, direction: this.direction, color: this.color}
     }
 }
