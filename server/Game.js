@@ -19,6 +19,7 @@ class Game {
     this.connectionCount = 0; 
     this.readyCount = 0; 
     this.frameCount = 0;
+    this.playerLifes = 3;
     this.gameState = {
         room : [],
         door: {color: 'white', state: 'closed', position: {x : 0, y : 0}},
@@ -108,12 +109,12 @@ class Game {
     let number = 0;
     let gameStatePlayer = [];
     for (var key of this.players.keys()) {
-    if (!this.killed) {
+      if (!this.players.get(key).dead) {
         gameStatePlayer[number] = this.players.get(key).update();
         number++;
+      }
     }
     this.gameState.players = gameStatePlayer;
-    }
     this.gameState.room = this.room.update();
     this.gameState.door = this.room.door.update();
     this.pickColor(this.gameState.door.color);
@@ -124,7 +125,8 @@ class Game {
       this.gameState.monsters[i].y = this.monsters[i].y;
       this.gameState.monsters[i].color = this.monsterColors[i];
       for (var key of this.players.keys()) {
-        this.damage(this.players.get(key), this.gameState.monsters[i]);
+        this.damage(key, this.gameState.monsters[i]);
+        this.players.get(key).updateLifes;
       }
     }
   }
@@ -132,15 +134,17 @@ class Game {
     server.sendDraw(this.gameState)
   }
 
-  damage(player, monster) {
-    if (player.x === monster.x && player.y === monster.y) {
-      //socket.broadcast.emit("player1_damage");
-      if (player.lifes === 0) {
-        this.killed = true;
+  damage(key, monster) {
+    if (this.players.get(key).x === monster.x && this.players.get(key).y === monster.y) {
+      console.log(key + ' damaged')
+      this.players.get(key).lifes--;
+      console.log(key + ' leben: ' + this.players.get(key).lifes)
+      if (this.players.get(key).lifes === 0) {
+        this.players.get(key).dead = true;   
+        console.log(key + ' killed')  
       } else {
-        player.lifes--;
-        player.x = 0;
-        player.y = 0;
+        this.players.get(key).x = 0;
+        this.players.get(key).y = 0;
       }
     } 
   }
