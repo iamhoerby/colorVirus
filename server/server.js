@@ -55,7 +55,7 @@ nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachric
   });
   
   socket.on("playerMovement", function (pressedKey){
-    console.log(`${socket.id} drückt ${pressedKey} Taste`);
+    // console.log(`${socket.id} drückt ${pressedKey} Taste`);
     newGame.updateMovement(socket.id,pressedKey);
     //player.update(pressedKey)
   });

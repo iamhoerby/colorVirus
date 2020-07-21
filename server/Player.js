@@ -32,35 +32,38 @@ class Player {
     pressedKey = "Stop";
   }
   updateLifes() {
-    if (this.color === "blue" || "navy" || "royalblue" || "lightsteelblue") {
+    let result = '';
+    if (this.color === "blue") {
       switch (this.lifes){
-        case 3: this.color = "navy"; break;
-        case 2: this.color = "royalblue"; break;
-        case 1: this.color = "lightsteelblue"; break;
-        default: this.color = "white"; break;
+        case 3: result = "navy"; break;
+        case 2: result = "royalblue"; break;
+        case 1: result = "lightsteelblue"; break;
+        default: result = "white"; break;
       }
-    } else if (this.color === "red" || "darkred" || "lightcoral") {
+    } else if (this.color === "red") {
       switch (this.lifes){
-        case 3: this.color = "darkred"; break;
-        case 2: this.color = "red"; break;
-        case 1: this.color = "lightcoral"; break;
-        default: this.color = "white"; break;
+        case 3: result = "darkred"; break;
+        case 2: result = "red"; break;
+        case 1: result = "lightcoral"; break;
+        default: result = "white"; break;
 
       }
     } else {
       //color green
       switch (this.lifes){
-        case 3: this.color = "darkgreen"; break;
-        case 2: this.color = "green"; break;
-        case 1: this.color = "mediumseagreen"; break;
-        default: this.color = "white"; break;
+        case 3: result = "darkgreen"; break;
+        case 2: result = "green"; break;
+        case 1: result = "mediumseagreen"; break;
+        default: result = "white"; break;
 
       }
     }
+    return result; 
   }
 
   update() {
-    return {x: this.x, y: this.y, color: this.color}
+    let drawColor = this.updateLifes()
+    return {x: this.x, y: this.y, color: drawColor}
   }
 }
 
