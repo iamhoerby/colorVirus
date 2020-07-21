@@ -3,7 +3,7 @@ import { KeyHandler } from "./eventHandler.js";
 
 let canvas = document.getElementById("myCanvas");
 
-const socket = io();
+const socket = io('/game-space');
 const extent = 64;
 
 let rendering = new Rendering(canvas, extent);
@@ -16,7 +16,7 @@ socket.on("connect", function () {
   rendering.inputName();
 });
 socket.on('setDifficulty', function(difficulty) {
-  console.log('Recieved Message SetDifficulty')
+  console.log('Recieved Message SetDifficulty' + difficulty)
   rendering.chooseDifficulty(difficulty)
 });
 socket.on('startGame', function() {

@@ -41,12 +41,12 @@ class Game {
     console.log(this.connectionCount)
     this.players.set(socketID,new Player (0,0,'darkgreen',3,'ArrowRight', socketID, name))
     console.log(this.players.get(socketID).name);
-    server.sendDifficultyToClient(socketID,this.difficulty);
+    server.sendDifficultyToClient(this.difficulty);
   }
   playerReady(socketID){
     this.players.get(socketID).ready = 1;
     this.readyCount++;
-    if (this.readyCount === this.connectionCount) {
+    if (this.readyCount === this.playerCount) {
       this.startGame();
     }
   }
