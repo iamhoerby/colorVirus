@@ -35,7 +35,7 @@ class Player {
       }
     } else if (pressedKey === "Space") {
       this.shoot = true;
-      //let bullet = new Bullet (this.x, this.y, this.direction, 20, "black", this.shoot);
+      let bullet = new Bullet (this.x, this.y, this.direction, 20, "black", this.shoot);
     }
     //pressedKey = "Stop";
   }
@@ -68,7 +68,8 @@ class Player {
   }
 
   update() {
-    return {x: this.x, y: this.y, color: this.color, shoot: this.shoot}
+    let bullet1 = this.bullet.update();
+    return {x: this.x, y: this.y, color: this.color, shoot: this.shoot, bullet: bullet1}
   }
 }
 

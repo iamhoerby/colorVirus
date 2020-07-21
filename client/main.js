@@ -27,6 +27,7 @@ socket.on('timer', function(time) {
   rendering.drawTimer(time);
 });
 socket.on("draw", function(gamestate) {
+  console.log(gamestate);
   rendering.draw(gamestate); 
 }); 
 

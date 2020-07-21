@@ -53,8 +53,8 @@ export class Rendering {
       this.context.fillRect(
       monsters[i].x* this.cellSize,
       monsters[i].y* this.cellSize,
-      this.cellSize,
-      this.cellSize)
+      this.cellSize * 2,
+      this.cellSize * 2)
     }
   }
 
@@ -63,16 +63,16 @@ export class Rendering {
     this.context.fillRect(
       gameStatePlayer.x * this.cellSize,
       gameStatePlayer.y * this.cellSize,
-      this.cellSize,
-      this.cellSize
+      this.cellSize *2,
+      this.cellSize *2
     );
   }
 
   drawBullet(gameStatePlayer){
-    this.context.fillStyle = black;
+    this.context.fillStyle = gameStatePlayer.bullet1.color;
     this.context.fillRect(
-      gameStatePlayer.x +1 * this.cellSize,
-      gameStatePlayer.y * this.cellSize,
+      gameStatePlayer.bullet1.x * this.cellSize,
+      gameStatePlayer.bullet1.y * this.cellSize,
       this.cellSize,
       this.cellSize
     )
@@ -152,9 +152,9 @@ export class Rendering {
       this.drawRoom(gameState.room);
       for (let x = 0; x < gameState.players.length; x++) {
         this.drawPlayer(gameState.players[x]);
-        /*if(gameState.players[x].shoot = true){
+        if(gameState.players[x].shoot === true){
           this.drawBullet(gameState.players[x]);
-        }*/
+        }
       }
       this.drawDoor(gameState.door);
       this.drawMonster(gameState.monsters);
