@@ -1,3 +1,6 @@
+const bullet = require("./Bullet.js");
+const Bullet = bullet.Bullet;
+
 class Player {
   constructor(x, y, color, lifes, pressedKey, socketID, name, direction, shoot){ 
         this.x = x;
@@ -9,7 +12,8 @@ class Player {
         this.name = name; 
         this.direction = direction;
         this.shoot = shoot;
-        this.ready = 0; //wofür ist die?
+        this.ready = 0;
+        this.bullet;
     }
 
   updateMovement(pressedKey) {
@@ -35,7 +39,7 @@ class Player {
       }
     } else if (pressedKey === "Space") {
       this.shoot = true;
-      let bullet = new Bullet (this.x, this.y, this.direction, 20, "black", this.shoot);
+      this.bullet = new Bullet (this.x, this.y, this.direction, 2, "black", this.shoot);
     }
     //pressedKey = "Stop";
   }
@@ -68,30 +72,16 @@ class Player {
   }
 
   update() {
-    let bullet1 = this.bullet.update();
-    return {x: this.x, y: this.y, color: this.color, shoot: this.shoot, bullet: bullet1}
-  }
-}
-
-class Bullet {
-  constructor (x, y, direction, speed, color, shoot){
-    this.x = x;
-    this.y = y;
-    this.direction = direction;
-    this.speed = speed;
-    this.color = color;
-    this.shoot = shoot;
-  }
-  update(){
-    this.x += this.speed;
-    if (this.x > 63){
-      this.shoot = false;
+    if (this.shoot){
+      let bullet1 = this.bullet.update();
+      return {x: this.x, y: this.y, color: this.color, shoot: this.shoot, bullet: bullet1}
     }
-    return {x: this.x, y: this.y, direction: this.direction, color: this.color}
+    else{
+      return {x: this.x, y: this.y, color: this.color, shoot: this.shoot, bullet: {}}
+    }
   }
 }
 
 module.exports = {
   Player: Player,
-  Bullet: Bullet
 };

@@ -69,10 +69,10 @@ export class Rendering {
   }
 
   drawBullet(gameStatePlayer){
-    this.context.fillStyle = gameStatePlayer.bullet1.color;
+    this.context.fillStyle = gameStatePlayer.bullet.color;
     this.context.fillRect(
-      gameStatePlayer.bullet1.x * this.cellSize,
-      gameStatePlayer.bullet1.y * this.cellSize,
+      gameStatePlayer.bullet.x * this.cellSize,
+      gameStatePlayer.bullet.y * this.cellSize,
       this.cellSize,
       this.cellSize
     )
