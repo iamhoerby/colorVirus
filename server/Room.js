@@ -18,36 +18,32 @@ class Room {
     this.randCoord = [
       {
         x: this.randCoordX(),
-        y: this.extent / 10 + (this.extent / 8) * 0,
+        y: this.extent / 8 + (this.extent / 8) * 0,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 10 + (this.extent / 8) * 1,
+        y: this.extent / 8 + (this.extent / 8) * 1,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 10 + (this.extent / 9) * 2,
+        y: this.extent / 8 + (this.extent / 8) * 2,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 10 + (this.extent / 9) * 3,
+        y: this.extent / 8 + (this.extent / 8) * 3,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 10 + (this.extent / 9) * 4,
+        y: this.extent / 8 + (this.extent / 8) * 4,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 10 + (this.extent / 9) * 5,
+        y: this.extent / 8 + (this.extent / 8) * 5,
       },
       {
         x: this.randCoordX(),
-        y: this.extent / 10 + (this.extent / 9) * 6,
-      },
-      {
-        x: this.randCoordX(),
-        y: this.extent / 10 + (this.extent / 9) * 7,
-      },
+        y: this.extent / 8 + (this.extent / 8) * 6,
+      }      
     ];
     // setInterval(this.draw(), 500);
   }
