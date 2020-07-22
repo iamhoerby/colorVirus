@@ -92,8 +92,8 @@ export class Rendering {
     this.context.fillRect(
       coord.x * this.cellSize,
       coord.y * this.cellSize,
-      (this.cellSize * this.extent) / 20,
-      (this.cellSize * this.extent) / 20
+      (this.cellSize * this.extent) / 16,
+      (this.cellSize * this.extent) / 16
     );
     console.log("Drawing obstacle");
   }
@@ -103,9 +103,9 @@ export class Rendering {
     let colors = ["red", "orange", "yellow", "green", "blue", "violet"];
     this.context.fillStyle = "light" + colors[Math.floor(Math.random() * colors.length)];
     this.context.beginPath();
-    this.context.arc(coord.x * this.cellSize +  (this.cellSize * this.extent) / 40, 
-                      coord.y * this.cellSize + (this.cellSize * this.extent) / 40, 
-                      this.cellSize*2.5, 0, 2 * Math.PI);
+    this.context.arc(coord.x * this.cellSize +  (this.cellSize * this.extent) / 32, 
+                      coord.y * this.cellSize + (this.cellSize * this.extent) / 32, 
+                      this.cellSize*3, 0, 2 * Math.PI);
     this.context.fill();
 
 
@@ -115,8 +115,7 @@ export class Rendering {
     //drawing room itself: borders, door, obstacles
     //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     //this.drawBorder();
-    this.drawObstEffect(gameStateRoomCoord[Math.floor(Math.random() * gameStateRoomCoord.length)]);
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < gameStateRoomCoord.length; i++) {
       this.drawObstacle(gameStateRoomCoord[i]);
     }
     //this.door.draw();
@@ -133,6 +132,18 @@ export class Rendering {
     console.log("Drawing door");
   }
 
+  makeGlow(obstacle, monsters) {
+    for (let i = 0; i < obstacle.length; i++){
+      for (let j = 0; j< monsters.length; j++){
+        if (monsters[j].x >= obstacle[i].x - 1 &&
+          monsters[j].x <= obstacle[i].x + 4 &&
+          monsters[j].y >= obstacle[i].y - 1 &&
+          monsters[j].y <= obstacle[i].y + 4)
+          this.drawObstEffect(obstacle[i]);
+
+       }
+    }
+  }
  
 
     draw(gameState) {
@@ -140,10 +151,12 @@ export class Rendering {
 
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawRoom(gameState.room);
+      this.drawDoor(gameState.door);
+      this.makeGlow(gameState.room, gameState.monsters);
       for (let x = 0; x < gameState.players.length; x++) {
         this.drawPlayer(gameState.players[x]);
       }
-      this.drawDoor(gameState.door);
+      
       this.drawMonster(gameState.monsters);
     }
 }
