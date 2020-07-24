@@ -14,20 +14,20 @@ module.exports = class Monster {
     this.speed = 7;
     this.alive = true;
   }
-  update(frames, coord, door) {
+  update(frames, coord, door, extent) {
     this.collisionObs(coord);
     this.collisionDoor(door);
 
     if (frames % this.speed === 0) {
       if (this.vertical) {
-        if (this.y === 63) {
+        if (this.y === extent - 2) {
           this.move = -1;
         } else if (this.y === 0) {
           this.move = 1;
         }
         this.y += this.move;
       } else {
-        if (this.x === 63) {
+        if (this.x === extent - 2) {
           this.move = -1;
         } else if (this.x === 0) {
           this.move = 1;

@@ -53,8 +53,8 @@ export class Rendering {
       this.context.fillRect(
       monsters[i].x* this.cellSize,
       monsters[i].y* this.cellSize,
-      this.cellSize * 2,
-      this.cellSize * 2)
+      this.cellSize,
+      this.cellSize)
     }
   }
 
@@ -63,8 +63,8 @@ export class Rendering {
     this.context.fillRect(
       gameStatePlayer.x * this.cellSize,
       gameStatePlayer.y * this.cellSize,
-      this.cellSize *2,
-      this.cellSize *2
+      this.cellSize,
+      this.cellSize
     );
   }
 
@@ -73,8 +73,8 @@ export class Rendering {
     this.context.fillRect(
       gameStatePlayer.bullet.x * this.cellSize,
       gameStatePlayer.bullet.y * this.cellSize,
-      this.cellSize,
-      this.cellSize
+      this.cellSize/2,
+      this.cellSize/2
     )
   }
 

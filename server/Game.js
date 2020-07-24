@@ -120,7 +120,7 @@ class Game {
 
     for (let i = 0; i < this.monsters.length; i++) {
       if(this.monsters[i].alive){
-        this.monsters[i].update(this.frameCount, this.gameState.room, this.gameState.door.position);
+        this.monsters[i].update(this.frameCount, this.gameState.room, this.gameState.door.position, this.extent);
         this.gameState.monsters[i].x = this.monsters[i].x;
         this.gameState.monsters[i].y = this.monsters[i].y;
       }
@@ -137,24 +137,27 @@ class Game {
   }
 
   killMonster(key, monster) {
-    if (this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y === monster.y) {
+    if ((this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y === monster.y) ||
+    (this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y+1 === monster.y) ||
+    (this.players.get(key).bullet.x+1 === monster.x && this.players.get(key).bullet.y === monster.y) ||
+    (this.players.get(key).bullet.x+1 === monster.x && this.players.get(key).bullet.y+1 === monster.y)) {
       monster.alive = false;
     }
   }
 
   damage(key, monster) {
-    if (this.players.get(key).x === monster.x && this.players.get(key).y === monster.y) {
-      console.log(key + ' damaged')
-      this.players.get(key).lifes--;
-      console.log(key + ' leben: ' + this.players.get(key).lifes)
-      if (this.players.get(key).lifes === 0) {
-        this.players.get(key).alive = false;   
-        console.log(key + ' killed')  
-      } else {
-        this.players.get(key).x = 0;
-        this.players.get(key).y = 0;
+      if (this.players.get(key).x === monster.x && this.players.get(key).y === monster.y) {
+        console.log(key + ' damaged')
+        this.players.get(key).lifes--;
+        console.log(key + ' leben: ' + this.players.get(key).lifes)
+        if (this.players.get(key).lifes === 0) {
+          this.players.get(key).alive = false;   
+          console.log(key + ' killed')  
+        } else {
+          this.players.get(key).x = 0;
+          this.players.get(key).y = 0;
+        }
       }
-    } 
   }
 
   monsterCreator() {
@@ -172,8 +175,8 @@ class Game {
     }
     for (let i = 0; i < numberMonsters; i++) {
       this.monsters.push(new Monster(
-        Math.floor(Math.random() * 63),
-        Math.floor(Math.random() * 63 + 2),
+        Math.floor(Math.random() * 32),
+        Math.floor(Math.random() * 32 + 2),
         'white'));
       this.gameState.monsters.push({
         x: 0,
