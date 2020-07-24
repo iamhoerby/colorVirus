@@ -119,9 +119,11 @@ class Game {
     this.pickColor(this.gameState.door.color);
 
     for (let i = 0; i < this.monsters.length; i++) {
-      this.monsters[i].update(this.frameCount, this.gameState.room, this.gameState.door.position);
-      this.gameState.monsters[i].x = this.monsters[i].x;
-      this.gameState.monsters[i].y = this.monsters[i].y;
+      if(this.monsters[i].alive){
+        this.monsters[i].update(this.frameCount, this.gameState.room, this.gameState.door.position);
+        this.gameState.monsters[i].x = this.monsters[i].x;
+        this.gameState.monsters[i].y = this.monsters[i].y;
+      }
       this.gameState.monsters[i].color = this.monsterColors[i];
       for (var key of this.players.keys()) {
         this.damage(key, this.gameState.monsters[i]);
