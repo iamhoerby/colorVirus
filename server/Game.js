@@ -168,9 +168,9 @@ class Game {
 
   killMonster(key, monster) {
     if ((this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y === monster.y) ||
-    (this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y+1 === monster.y) ||
-    (this.players.get(key).bullet.x+1 === monster.x && this.players.get(key).bullet.y === monster.y) ||
-    (this.players.get(key).bullet.x+1 === monster.x && this.players.get(key).bullet.y+1 === monster.y)) {
+    (this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y === monster.y+1) ||
+    (this.players.get(key).bullet.x === monster.x+1 && this.players.get(key).bullet.y === monster.y) ||
+    (this.players.get(key).bullet.x === monster.x+1 && this.players.get(key).bullet.y === monster.y+1)) {
       monster.alive = false;
     }
   }
