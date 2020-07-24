@@ -77,6 +77,7 @@ export class Rendering {
       this.cellSize
     )
   }
+
 // Rendering update *** Andrej *** 08.7.2020
 
  /* drawLine(x1, y1, x2, y2) {
@@ -102,14 +103,14 @@ export class Rendering {
     this.context.fillRect(
       coord.x * this.cellSize,
       coord.y * this.cellSize,
-      (this.cellSize * this.extent) / 16,
-      (this.cellSize * this.extent) / 16
+      (this.cellSize * this.extent) / 32,
+      (this.cellSize * this.extent) / 32
     );
     console.log("Drawing obstacle");
   }
 
   // creates color "aura" around obstacles. Pure cosmetic effect, has nothing to do with gameplay
-  drawObstEffect(coord) {
+/*  drawObstEffect(coord) {
     let colors = ["red", "orange", "yellow", "green", "blue", "violet"];
     this.context.fillStyle = "light" + colors[Math.floor(Math.random() * colors.length)];
     this.context.beginPath();
@@ -117,9 +118,8 @@ export class Rendering {
                       coord.y * this.cellSize + (this.cellSize * this.extent) / 32, 
                       this.cellSize*3, 0, 2 * Math.PI);
     this.context.fill();
-
-
   }
+  */
 
   drawRoom(gameStateRoomCoord) {
     //drawing room itself: borders, door, obstacles
@@ -128,10 +128,12 @@ export class Rendering {
     for (let i = 0; i < gameStateRoomCoord.length; i++) {
       this.drawObstacle(gameStateRoomCoord[i]);
     }
+    console.log(gameStateRoomCoord);
     //this.door.draw();
   }
   //function for drawing a door
   drawDoor(gameStateDoor) {
+    console.log();
     this.context.fillStyle = gameStateDoor.color;
     this.context.fillRect(
       gameStateDoor.position.x * this.cellSize,
@@ -142,7 +144,7 @@ export class Rendering {
     console.log("Drawing door");
   }
 
-  makeGlow(obstacle, monsters) {
+ /* makeGlow(obstacle, monsters) {
     for (let i = 0; i < obstacle.length; i++){
       for (let j = 0; j< monsters.length; j++){
         if (monsters[j].x >= obstacle[i].x - 1 &&
@@ -154,22 +156,19 @@ export class Rendering {
        }
     }
   }
- 
+ */
 
     draw(gameState) {
-      console.log(gameState)
-
       this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawRoom(gameState.room);
       this.drawDoor(gameState.door);
-      this.makeGlow(gameState.room, gameState.monsters);
+      //this.makeGlow(gameState.room, gameState.monsters);
       for (let x = 0; x < gameState.players.length; x++) {
         this.drawPlayer(gameState.players[x]);
         if(gameState.players[x].shoot === true){
           this.drawBullet(gameState.players[x]);
         }
       }
-      
       this.drawMonster(gameState.monsters);
     }
 }

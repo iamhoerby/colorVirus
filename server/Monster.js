@@ -41,29 +41,29 @@ module.exports = class Monster {
       if (!this.vertical) {
         if (this.x + 1 === coord[i].x && (
             this.y === coord[i].y ||
-            this.y === coord[i].y + 1 ||
-            this.y === coord[i].y + 2 ||
-            this.y === coord[i].y + 3)) {
+            this.y === coord[i].y + 1 /*||    // Andrej 24.07: Das kleinste Element eines Hindernisses ist 2x2 jetzt.  
+            this.y === coord[i].y + 2 ||      // D.h. zwei untere Zeile in Bedienungsblock sind derzeit nicht nötig.
+            this.y === coord[i].y + 3*/)) {
           this.move = -1;
-        } else if (this.x - 1 === coord[i].x + 3 && (
+        } else if (this.x - 1 === coord[i].x + 1 /*3*/ && (
             this.y === coord[i].y ||
-            this.y === coord[i].y + 1 ||
+            this.y === coord[i].y + 1 /*||
             this.y === coord[i].y + 2 ||
-            this.y === coord[i].y + 3)) {
+            this.y === coord[i].y + 3*/)) {
           this.move = 1;
         }
       } else {
         if (this.y + 1 === coord[i].y && (
             this.x === coord[i].x ||
-            this.x === coord[i].x + 1 ||
+            this.x === coord[i].x + 1 /*||
             this.x === coord[i].x + 2 ||
-            this.x === coord[i].x + 3)) {
+            this.x === coord[i].x + 3*/)) {
           this.move = -1;
-        } else if (this.y - 1 === coord[i].y + 3 && (
+        } else if (this.y - 1 === coord[i].y + 1 /*3*/ && (
             this.x === coord[i].x ||
-            this.x === coord[i].x + 1 ||
+            this.x === coord[i].x + 1 /*||
             this.x === coord[i].x + 2 ||
-            this.x === coord[i].x + 3)) {
+            this.x === coord[i].x + 3*/)) {
           this.move = 1;
         }
       }
