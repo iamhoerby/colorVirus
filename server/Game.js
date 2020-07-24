@@ -31,17 +31,44 @@ class Game {
   }
   playerConnect() {
     this.playerCount++;
-    console.log(this.playerCount)
+    console.log('playerCount: ' + this.playerCount)
   }
   playerDisconnect() {
     this.playerCount--;
-    console.log(this.playerCount)
+    console.log('playerCount: ' + this.playerCount)
   }
   newPlayer(name, socketID) {
     this.connectionCount++
-    console.log(this.connectionCount)
-    this.players.set(socketID,new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name, "right", false))
-    console.log(this.players.get(socketID).name);
+    console.log('connectionCount' + this.connectionCount)
+    let positionX = 0;
+    let positionY = 0;
+    let colorNr = 0;
+    switch (this.connectionCount % 4){
+      case 0: 
+        positionX = 1;
+        positionY = 1;
+        colorNr = 1;
+        break;
+      case 1: 
+        positionX = 0;
+        positionY = 0; 
+        colorNr = 3;
+        break;
+      case 2: 
+        positionX = 1; 
+        positionY = 0;
+        colorNr = 2; 
+        break;
+      case 3: 
+        positionX = 0;
+        positionY = 1;
+        colorNr = 3;
+        break;
+
+    }
+    let color = this.colorDecode(colorNr);
+    this.players.set(socketID,new Player (positionX * (this.extent - 1),positionY * (this.extent - 1),color,3,'ArrowRight', socketID, name))
+    console.log(this.players.get(socketID).name + ' x: ' + this.players.get(socketID).x + ' y: ' + this.players.get(socketID).y );
     server.sendDifficultyToClient(this.difficulty);
   }
   playerReady(socketID){
@@ -131,6 +158,9 @@ class Game {
         this.killMonster(key, this.monsters[i])
       }
     }
+    for (var key of this.players.keys()) {
+      this.checkPositions(key)
+    }
   }
   drawGameState() {
     server.sendDraw(this.gameState)
@@ -158,8 +188,78 @@ class Game {
           this.players.get(key).y = 0;
         }
       }
-  }
+    }
 
+  checkPositions(key){
+    for (var key2 of this.players.keys()){
+      if (
+        key !== key2 && 
+        this.players.get(key).x === this.players.get(key2).x && 
+        this.players.get(key).y === this.players.get(key2).y
+        ) {
+          console.log('ColorSwitch: ' + key + ' ' + key2)
+          this.colorSwitch(key,key2)
+      }
+    }
+  }
+  colorSwitch(key1,key2) {
+    let color1 = this.colorCode(this.players.get(key1).color);
+    let color2 = this.colorCode(this.players.get(key2).color);
+    if (color1 !== color2) {
+      let colorSwitch = color1 + color2 + 1;
+      let result = this.colorDecode(colorSwitch);
+      this.players.get(key1).color = result;
+      this.players.get(key2).color = result;
+    }
+  }
+  colorCode(color) {
+    let colorNr = 0; 
+    switch (color) {
+      case 'white': colorNr = 0; 
+        break; 
+      case 'yellow': colorNr = 1; 
+        break; 
+      case 'blue': colorNr = 2;
+        break;
+      case 'red': colorNr = 3; 
+        break;
+      case 'green': colorNr = 4; 
+        break;
+      case 'orange': colorNr = 5;
+        break;
+      case 'violet': colorNr = 6; 
+        break; 
+      case 'brown': colorNr = 7; 
+        break;
+    }
+    return colorNr;
+  }
+  colorDecode(nummer) {
+    let color = 0; 
+    if (nummer <= 7) {
+      switch (nummer) {
+        case 0: color = 'white';
+          break;
+        case 1: color = 'yellow'; 
+          break; 
+        case 2: color = 'blue';
+          break;
+        case 3: color = 'red'; 
+          break;
+        case 4: color = 'green'; 
+          break;
+        case 5: color = 'orange';
+          break;
+        case 6: color = 'violet'; 
+          break; 
+        case 7: color = 'brown'; 
+          break;
+      } 
+    } else {
+      color = 'brown'
+    }
+    return color;
+  }
   monsterCreator() {
     var numberMonsters;
     switch (this.difficulty) {
