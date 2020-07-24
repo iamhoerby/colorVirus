@@ -36,7 +36,8 @@ export class KeyHandler {
         event.code === "ArrowRight" ||
         event.code === "ArrowLeft" ||
         event.code === "ArrowUp" ||
-        event.code === "ArrowDown"
+        event.code === "ArrowDown" ||
+        event.code === "Space"
       ) {
         let pressedKey = event.code;
         sendPlayerMovement(pressedKey);

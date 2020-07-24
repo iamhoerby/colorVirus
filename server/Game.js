@@ -40,7 +40,7 @@ class Game {
   newPlayer(name, socketID) {
     this.connectionCount++
     console.log(this.connectionCount)
-    this.players.set(socketID,new Player (0,0,'darkgreen',3,'ArrowRight', socketID, name))
+    this.players.set(socketID,new Player (0,0,'green',this.playerLifes,'ArrowRight', socketID, name, "right", false))
     console.log(this.players.get(socketID).name);
     server.sendDifficultyToClient(this.difficulty);
   }
@@ -125,13 +125,21 @@ class Game {
         this.gameState.monsters[i].y = this.monsters[i].y;
       }
       this.gameState.monsters[i].color = this.monsterColors[i];
+
       for (var key of this.players.keys()) {
         this.damage(key, this.gameState.monsters[i]);
+        this.killMonster(key, this.monsters[i])
       }
     }
   }
   drawGameState() {
     server.sendDraw(this.gameState)
+  }
+
+  killMonster(key, monster) {
+    if (this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y === monster.y) {
+      monster.alive = false;
+    }
   }
 
   damage(key, monster) {

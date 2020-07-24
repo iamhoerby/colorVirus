@@ -53,8 +53,8 @@ export class Rendering {
       this.context.fillRect(
       monsters[i].x* this.cellSize,
       monsters[i].y* this.cellSize,
-      this.cellSize,
-      this.cellSize)
+      this.cellSize * 2,
+      this.cellSize * 2)
     }
   }
 
@@ -63,9 +63,19 @@ export class Rendering {
     this.context.fillRect(
       gameStatePlayer.x * this.cellSize,
       gameStatePlayer.y * this.cellSize,
+      this.cellSize *2,
+      this.cellSize *2
+    );
+  }
+
+  drawBullet(gameStatePlayer){
+    this.context.fillStyle = gameStatePlayer.bullet.color;
+    this.context.fillRect(
+      gameStatePlayer.bullet.x * this.cellSize,
+      gameStatePlayer.bullet.y * this.cellSize,
       this.cellSize,
       this.cellSize
-    );
+    )
   }
 // Rendering update *** Andrej *** 08.7.2020
 
@@ -155,6 +165,9 @@ export class Rendering {
       this.makeGlow(gameState.room, gameState.monsters);
       for (let x = 0; x < gameState.players.length; x++) {
         this.drawPlayer(gameState.players[x]);
+        if(gameState.players[x].shoot === true){
+          this.drawBullet(gameState.players[x]);
+        }
       }
       
       this.drawMonster(gameState.monsters);
