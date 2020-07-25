@@ -15,95 +15,117 @@ class Room {
     // this.monster = new Monster("green", this.cellSize, this.context);
 
     //coordinates x (random) and y (fixed) for obstacles, depending on extent size. Helps to use extent of any value: 16, 32, 64...
-    this.randCoord = [
-      {
-        x: this.randCoordX(),
-        y: this.extent / 8 + (this.extent / 8) * 0,
-      },
-      {
-        x: this.randCoordX(),
-        y: this.extent / 8 + (this.extent / 8) * 1,
-      },
-      {
-        x: this.randCoordX(),
-        y: this.extent / 8 + (this.extent / 8) * 2,
-      },
-      {
-        x: this.randCoordX(),
-        y: this.extent / 8 + (this.extent / 8) * 3,
-      },
-      {
-        x: this.randCoordX(),
-        y: this.extent / 8 + (this.extent / 8) * 4,
-      },
-      {
-        x: this.randCoordX(),
-        y: this.extent / 8 + (this.extent / 8) * 5,
-      },
-      {
-        x: this.randCoordX(),
-        y: this.extent / 8 + (this.extent / 8) * 6,
-      }      
-    ];
+    this.randCoord = this.setObstCoord();
+    this.moreRandCoord = this.randomize(this.randCoord); ///!!!
     // setInterval(this.draw(), 500);
   }
 
-  // Room update *** Andrej *** 08.7.2020
+  // Room update *** Andrej *** 23.7.2020
   randCoordX(){
     return Math.floor(Math.random() * (this.extent * (7/8) - this.extent / 8) + this.extent / 8);
     }
-
-  update() {
-    return this.randCoord;
+  notSoRandCoordY(number) {
+    return this.extent / 8 + (this.extent / 8)*number;
     }
+
+  setObstCoord(){
+    let coord = [];
+    for (let i = 0; i < 7; i++){
+      coord.push({
+        x: this.randCoordX(),
+        y: this.notSoRandCoordY(i)})
+    }
+    return coord;
+    }
+
+notWest(){
+  let checkxy = {East: true, West: false, South: true, North: true};
+  return checkxy;
+}
+
+notNorth(){
+  let checkxy = {East: true, West: true, South: true, North: false};
+  return checkxy;
+}
+
+notEast(){
+  let checkxy = {East: false, West: true, South: true, North: true};
+  return checkxy;
+}
+
+notSouth (){
+  let checkxy = {East: true, West: true, South: false, North: true};
+  return checkxy;
+}
+
+/*Andrej 24.07*/ 
+//This funcktion will randomize the obstacles by splitting it on four 2x2 blocks and drawing them in random sequence
+randomize(somecoord){
+  let newCoord = [];
+  for (let i = 0; i < somecoord.length; i++){ // we take elements from original semirandom-generated array
+    newCoord.push({x: somecoord[i].x, y: somecoord[i].y}); //original element will always be copied 
+    let cloneCoord = somecoord[i]; //pivot element for every figure. Modified after every loop
+    let checkXY = {East: true, West: true, South: true, North: true}; //this variable helps us to not overlay the blocks
+    for (let j = 0; j < 3; j++ ){ // drawing 3 additional elements to original from source array
+      let caseXY = Math.round(Math.random()); //flip a coin, 0 or 1
+        if (caseXY === 0) { // if 0, new block will be added on x-axis 
+          if (checkXY.East === false){ //if previously block was drawn on east side, we drawing new on the west
+            newCoord.push({x: cloneCoord.x - 2, y: cloneCoord.y}); // adding new value to the output array
+            cloneCoord = {x: cloneCoord.x - 2, y: cloneCoord.y}; // modifying the pivot
+              }
+          else if (checkXY.West === false) { //if previously block was drawn on west side, we drawing new on the east
+            newCoord.push({x: cloneCoord.x + 2, y: cloneCoord.y});
+            cloneCoord = {x: cloneCoord.x + 2, y: cloneCoord.y};
+              }
+          else {
+            let casePM = Math.round(Math.random()); //flip a coin again.
+            if (casePM === 0) { // if 0, new block will be added on the east
+              newCoord.push({x: cloneCoord.x + 2, y: cloneCoord.y});
+              checkXY = this.notWest();
+              cloneCoord = {x: cloneCoord.x + 2, y: cloneCoord.y};
+              }
+            else { // if 1, new block will be added on the west
+              newCoord.push({x: cloneCoord.x - 2, y: cloneCoord.y});
+              checkXY = this.notEast();
+              cloneCoord = {x: cloneCoord.x - 2, y: cloneCoord.y};
+              }
+            }
+          }
+        else {  // same for the y-axis
+          if (checkXY.South === false){
+            newCoord.push({x: cloneCoord.x - 2, y: cloneCoord.y});
+            cloneCoord = {x: cloneCoord.x, y: cloneCoord.y - 2};
+            }
+          else if (checkXY.North === false) {
+            newCoord.push({x: cloneCoord.x + 2, y: cloneCoord.y});
+            cloneCoord = {x: cloneCoord.x, y: cloneCoord.y + 2};
+            }
+          else {
+            let casePM = Math.round(Math.random());
+            if (casePM === 0) {
+              newCoord.push({x: cloneCoord.x, y: cloneCoord.y + 2})
+              checkXY = this.notNorth();
+              cloneCoord = {x: cloneCoord.x, y: cloneCoord.y + 2};
+              }
+            else {
+              newCoord.push({x: cloneCoord.x, y: cloneCoord.y - 2})
+              checkXY = this.notSouth();
+              cloneCoord = {x: cloneCoord.x, y: cloneCoord.y - 2};
+              }
+            }
+        }
+      }
+    }
+  return newCoord;
 }
 
 
-  /*drawLine(x1, y1, x2, y2) {
-    // function for simple line drawing
-    this.context.beginPath();
-    this.context.moveTo(x1, y1);
-    this.context.lineTo(x2, y2);
-    this.context.stroke();
-  }
-*/
-/*  drawBorder() {
-    //function for room borders drawing
-    this.drawLine(0, 0, this.canvas.width, 0);
-    this.drawLine(0, 0, 0, this.canvas.height);
-    this.drawLine(this.canvas.width, 0, this.canvas.width, this.canvas.height);
-    this.drawLine(0, this.canvas.height, this.canvas.width, this.canvas.height);
-    console.log("Drawing gamefield");
-  }
-*/
-/*  draw() {
-    //drawinr room itself: borders, door, obstacles
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.drawBorder();
-
-    for (let i = 0; i < 8; i++) {
-      this.drawObstacle(this.randCoord[i]);
-    }
-    this.door.draw();
-  }
-*/
-/*
-  drawObstacle(Coord) {
-    // function for obstacles drawing
-    this.context.fillStyle = "black";
-    this.context.fillRect(
-      Coord.x * this.cellSize,
-      Coord.y * this.cellSize,
-      (this.cellSize * this.extent) / 16,
-      (this.cellSize * this.extent) / 16
-    );
-  }
-*/
-/*
   update() {
-    // seems like we don't need this function right now. Room updates in Room.draw().
-  }
-  */
+   // return this.randCoord;
+   return this.moreRandCoord;
+    }
+}
+
 
 
 class Door {

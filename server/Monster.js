@@ -11,22 +11,23 @@ module.exports = class Monster {
     this.color = color;
     this.vertical = Boolean(Math.floor(Math.random() * 2));
     this.move = 1;
-    this.speed = 12;
+    this.speed = 7;
+    this.alive = true;
   }
-  update(frames, coord, door) {
+  update(frames, coord, door, extent) {
     this.collisionObs(coord);
     this.collisionDoor(door);
 
     if (frames % this.speed === 0) {
       if (this.vertical) {
-        if (this.y === 63) {
+        if (this.y === extent - 2) {
           this.move = -1;
         } else if (this.y === 0) {
           this.move = 1;
         }
         this.y += this.move;
       } else {
-        if (this.x === 63) {
+        if (this.x === extent - 2) {
           this.move = -1;
         } else if (this.x === 0) {
           this.move = 1;
@@ -40,29 +41,29 @@ module.exports = class Monster {
       if (!this.vertical) {
         if (this.x + 1 === coord[i].x && (
             this.y === coord[i].y ||
-            this.y === coord[i].y + 1 ||
-            this.y === coord[i].y + 2 ||
-            this.y === coord[i].y + 3)) {
+            this.y === coord[i].y + 1 /*||    // Andrej 24.07: Das kleinste Element eines Hindernisses ist 2x2 jetzt.  
+            this.y === coord[i].y + 2 ||      // D.h. zwei untere Zeile in Bedienungsblock sind derzeit nicht nötig.
+            this.y === coord[i].y + 3*/)) {
           this.move = -1;
-        } else if (this.x - 1 === coord[i].x + 3 && (
+        } else if (this.x - 1 === coord[i].x + 1 /*3*/ && (
             this.y === coord[i].y ||
-            this.y === coord[i].y + 1 ||
+            this.y === coord[i].y + 1 /*||
             this.y === coord[i].y + 2 ||
-            this.y === coord[i].y + 3)) {
+            this.y === coord[i].y + 3*/)) {
           this.move = 1;
         }
       } else {
         if (this.y + 1 === coord[i].y && (
             this.x === coord[i].x ||
-            this.x === coord[i].x + 1 ||
+            this.x === coord[i].x + 1 /*||
             this.x === coord[i].x + 2 ||
-            this.x === coord[i].x + 3)) {
+            this.x === coord[i].x + 3*/)) {
           this.move = -1;
-        } else if (this.y - 1 === coord[i].y + 3 && (
+        } else if (this.y - 1 === coord[i].y + 1 /*3*/ && (
             this.x === coord[i].x ||
-            this.x === coord[i].x + 1 ||
+            this.x === coord[i].x + 1 /*||
             this.x === coord[i].x + 2 ||
-            this.x === coord[i].x + 3)) {
+            this.x === coord[i].x + 3*/)) {
           this.move = 1;
         }
       }
@@ -84,7 +85,7 @@ module.exports = class Monster {
           this.x === door.x + 4 ||
           this.x === door.x + 5 ||
           this.x === door.x + 6 ||
-          this.x === door.x + 7) && (this.y === 0 || this.y === 1)) {
+          this.x === door.x + 7) && this.y === 2) {
         this.move = 1;
       }
     }
