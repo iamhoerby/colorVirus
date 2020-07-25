@@ -17,7 +17,8 @@ class Player {
         this.bullet = new Bullet (this.x, this.y, this.direction, 2, "black", this.shoot);
     }
 
-  updateMovement(pressedKey) {
+  updateMovement(pressedKey, coord) {
+    this.collisionObstacles(coord);
     if (pressedKey === "ArrowRight") {
       if (this.x < 63) {
         this.x += 1;
@@ -73,6 +74,34 @@ class Player {
     }
     return result; 
   }
+
+  collisionObstacles(coord){
+    for (let i = 0; i < coord.length; i++) {
+      if (this.direction === "right") {
+        if (this.x + 1 === coord[i].x && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
+          this.x--;
+        } 
+      }
+      if (this.direction === "left"){
+        if (this.x - 1 === coord[i].x + 1 && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
+          this.x++;
+        }
+      }
+      //funktioniert noch nicht
+      if (this.direction === "down") {
+        if (this.y + 1 === coord[i].y && (this.x === coord[i].x || this.x === coord[i].x + 1)) {
+          this.y--;
+        } 
+      }
+      //funktioniert noch nicht
+      if (this.direction === "up"){
+        if (this.y - 1 === coord[i].y + 1 && (this.x === coord[i].x ||this.x === coord[i].x + 1)) {
+          this.y++;
+        }
+      }
+    }
+  }
+
 
   update() {
     let drawColor = this.updateLifes()

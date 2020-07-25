@@ -129,7 +129,7 @@ class Game {
     }, 33)
   }
   updateMovement(socketID, pressedKey) {
-    this.players.get(socketID).updateMovement(pressedKey);
+    this.players.get(socketID).updateMovement(pressedKey, this.gameState.room);
   }
   updateGameState(){
     let number = 0;
