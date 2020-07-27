@@ -41,7 +41,7 @@ class Player {
       }
     } else if (pressedKey === "Space") {
       this.shoot = true;
-      this.bullet = new Bullet (this.x, this.y, this.direction, 2, "black", this.shoot);
+      this.bullet = new Bullet (this.x, this.y, this.direction, 2, "black", this.shoot, coord);
     }
     //pressedKey = "Stop";
   }
