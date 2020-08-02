@@ -17,6 +17,8 @@ class Room {
     //coordinates x (random) and y (fixed) for obstacles, depending on extent size. Helps to use extent of any value: 16, 32, 64...
     this.randCoord = this.setObstCoord();
     this.moreRandCoord = this.randomize(this.randCoord); ///!!!
+
+
     // setInterval(this.draw(), 500);
   }
 
@@ -58,6 +60,23 @@ notSouth (){
   return checkxy;
 }
 
+stepWest (coord) {
+  return {x: coord.x - 2, y: coord.y};
+}
+
+stepEast (coord) {
+  return {x: coord.x + 2, y: coord.y};
+}
+
+stepNorth (coord) {
+  return {x: coord.x, y: coord.y - 2};
+}
+
+stepSouth (coord) {
+  return {x: coord.x, y: coord.y + 2};
+}
+
+
 /*Andrej 24.07*/ 
 //This funcktion will randomize the obstacles by splitting it on four 2x2 blocks and drawing them in random sequence
 randomize(somecoord){
@@ -70,47 +89,47 @@ randomize(somecoord){
       let caseXY = Math.round(Math.random()); //flip a coin, 0 or 1
         if (caseXY === 0) { // if 0, new block will be added on x-axis 
           if (checkXY.East === false){ //if previously block was drawn on east side, we drawing new on the west
-            newCoord.push({x: cloneCoord.x - 2, y: cloneCoord.y}); // adding new value to the output array
-            cloneCoord = {x: cloneCoord.x - 2, y: cloneCoord.y}; // modifying the pivot
+            newCoord.push(this.stepWest(cloneCoord)); // adding new value to the output array
+            cloneCoord = this.stepWest(cloneCoord); // modifying the pivot
               }
           else if (checkXY.West === false) { //if previously block was drawn on west side, we drawing new on the east
-            newCoord.push({x: cloneCoord.x + 2, y: cloneCoord.y});
-            cloneCoord = {x: cloneCoord.x + 2, y: cloneCoord.y};
+            newCoord.push(this.stepEast(cloneCoord));
+            cloneCoord = this.stepEast(cloneCoord);
               }
           else {
             let casePM = Math.round(Math.random()); //flip a coin again.
             if (casePM === 0) { // if 0, new block will be added on the east
-              newCoord.push({x: cloneCoord.x + 2, y: cloneCoord.y});
+              newCoord.push(this.stepEast(cloneCoord));
               checkXY = this.notWest();
-              cloneCoord = {x: cloneCoord.x + 2, y: cloneCoord.y};
+              cloneCoord = this.stepEast(cloneCoord);
               }
             else { // if 1, new block will be added on the west
-              newCoord.push({x: cloneCoord.x - 2, y: cloneCoord.y});
+              newCoord.push(this.stepWest(cloneCoord));
               checkXY = this.notEast();
-              cloneCoord = {x: cloneCoord.x - 2, y: cloneCoord.y};
+              cloneCoord = this.stepWest(cloneCoord);
               }
             }
           }
         else {  // same for the y-axis
           if (checkXY.South === false){
-            newCoord.push({x: cloneCoord.x - 2, y: cloneCoord.y});
-            cloneCoord = {x: cloneCoord.x, y: cloneCoord.y - 2};
+            newCoord.push(this.stepNorth(cloneCoord));
+            cloneCoord = this.stepNorth(cloneCoord);
             }
           else if (checkXY.North === false) {
-            newCoord.push({x: cloneCoord.x + 2, y: cloneCoord.y});
-            cloneCoord = {x: cloneCoord.x, y: cloneCoord.y + 2};
+            newCoord.push(this.stepSouth(cloneCoord));
+            cloneCoord = this.stepSouth(cloneCoord);
             }
           else {
             let casePM = Math.round(Math.random());
             if (casePM === 0) {
-              newCoord.push({x: cloneCoord.x, y: cloneCoord.y + 2})
+              newCoord.push(this.stepSouth(cloneCoord));
               checkXY = this.notNorth();
-              cloneCoord = {x: cloneCoord.x, y: cloneCoord.y + 2};
+              cloneCoord = this.stepSouth(cloneCoord);
               }
             else {
-              newCoord.push({x: cloneCoord.x, y: cloneCoord.y - 2})
+              newCoord.push(this.stepNorth(cloneCoord));
               checkXY = this.notSouth();
-              cloneCoord = {x: cloneCoord.x, y: cloneCoord.y - 2};
+              cloneCoord = this.stepNorth(cloneCoord);
               }
             }
         }
