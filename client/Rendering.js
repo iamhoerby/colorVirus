@@ -36,25 +36,35 @@ export class Rendering {
     }
   }
   startGame() {
-      console.log('Start Game');
-      document.getElementById("difficulty").classList.add("displayNone");
-      document.getElementById("ready").classList.add("displayNone");
-      document.getElementById("myCanvas").height = window.innerHeight * 0.75;
-      document.getElementById("myCanvas").width = document.getElementById("myCanvas").height;
-      this.cellSize = this.canvas.width / this.extent;
-      document.getElementById("canvas").classList.remove("displayNone");  
+    console.log('Start Game');
+    document.getElementById("difficulty").classList.add("displayNone");
+    document.getElementById("ready").classList.add("displayNone");
+    document.getElementById("myCanvas").height = window.innerHeight * 0.75;
+    document.getElementById("myCanvas").width = document.getElementById("myCanvas").height;
+    this.cellSize = this.canvas.width / this.extent;
+    document.getElementById("canvas").classList.remove("displayNone");
   }
   drawTimer(time) {
-      document.getElementById('timer').innerHTML = time
+    document.getElementById('timer').innerHTML = time
   }
-  drawMonster(monsters){
-    for(let i = 0; i < monsters.length; i++){
-      this.context.fillStyle = monsters[i].color;
-      this.context.fillRect(
-      monsters[i].x* this.cellSize,
-      monsters[i].y* this.cellSize,
-      this.cellSize,
-      this.cellSize)
+  drawMonster(monsters) {
+    for (let i = 0; i < monsters.length; i++) {
+      if (monsters[i].alive) {
+        this.context.fillStyle = monsters[i].color;
+        this.context.fillRect(
+          monsters[i].x * this.cellSize,
+          monsters[i].y * this.cellSize,
+          this.cellSize,
+          this.cellSize)
+      } else {
+          this.context.fillStyle = monsters[i].color;
+          this.context.beginPath();
+          this.context.arc(
+            (monsters[i].x + 0.5) * this.cellSize,
+            (monsters[i].y + 0.5) * this.cellSize,
+            this.cellSize / 2, 0, Math.PI * 2, true);
+          this.context.fill();
+        }
     }
   }
 
@@ -68,13 +78,13 @@ export class Rendering {
     );
   }
 
-  drawBullet(gameStatePlayer){
+  drawBullet(gameStatePlayer) {
     this.context.fillStyle = gameStatePlayer.bullet.color;
     this.context.fillRect(
       gameStatePlayer.bullet.x * this.cellSize,
       gameStatePlayer.bullet.y * this.cellSize,
-      this.cellSize/2,
-      this.cellSize/2
+      this.cellSize / 2,
+      this.cellSize / 2
     )
   }
 
@@ -141,18 +151,20 @@ export class Rendering {
       }
     }
   }*/
-  
-    draw(gameState) {
-      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+
+  draw(gameState) {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     //  this.makeGlow(gameState.room, gameState.monsters);
-      this.drawRoom(gameState.room);
-      this.drawDoor(gameState.door);
-      for (let x = 0; x < gameState.players.length; x++) {
-        this.drawPlayer(gameState.players[x]);
-        if(gameState.players[x].shoot === true){
-          this.drawBullet(gameState.players[x]);
-        }
+    this.drawRoom(gameState.room);
+    this.drawDoor(gameState.door);
+    for (let x = 0; x < gameState.players.length; x++) {
+      this.drawPlayer(gameState.players[x]);
+      if (gameState.players[x].shoot === true) {
+        this.drawBullet(gameState.players[x]);
       }
-      this.drawMonster(gameState.monsters);
     }
+    this.drawMonster(gameState.monsters);
+  }
 }
