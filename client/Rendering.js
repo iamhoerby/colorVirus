@@ -88,25 +88,6 @@ export class Rendering {
     )
   }
 
-  // Rendering update *** Andrej *** 08.7.2020
-
-  /* drawLine(x1, y1, x2, y2) {
-    // function for simple line drawing
-    this.context.beginPath();
-    this.context.moveTo(x1, y1);
-    this.context.lineTo(x2, y2);
-    this.context.stroke();
-  }
-
-   drawBorder() {
-    //function for room borders drawing
-    this.drawLine(0, 0, this.canvas.width, 0);
-    this.drawLine(0, 0, 0, this.canvas.height);
-    this.drawLine(this.canvas.width, 0, this.canvas.width, this.canvas.height);
-    this.drawLine(0, this.canvas.height, this.canvas.width, this.canvas.height);
-    console.log("Drawing gamefield");
-  }
-*/
   drawObstacle(coord) {
     // function for obstacles drawing
     this.context.fillStyle = "black";
@@ -120,16 +101,16 @@ export class Rendering {
   }
 
   // creates color "aura" around obstacles. Pure cosmetic effect, has nothing to do with gameplay
-  /*  drawObstEffect(coord) {
-      let colors = ["red", "orange", "yellow", "green", "blue", "violet"];
-      this.context.fillStyle = "light" + colors[Math.floor(Math.random() * colors.length)];
-      this.context.beginPath();
-      this.context.arc(coord.x * this.cellSize +  (this.cellSize * this.extent) / 32, 
-                        coord.y * this.cellSize + (this.cellSize * this.extent) / 32, 
-                        this.cellSize*3, 0, 2 * Math.PI);
-      this.context.fill();
-    }
-    */
+ /* drawObstEffect(coord) {
+    let colors = ["red", "orange", "yellow", "green", "blue", "violet"];
+    this.context.fillStyle = "light" + colors[Math.floor(Math.random() * colors.length)];
+    this.context.beginPath();
+    this.context.arc(coord.x * this.cellSize +  (this.cellSize * this.extent) / 32, 
+                      coord.y * this.cellSize + (this.cellSize * this.extent) / 32, 
+                      this.cellSize*3, 0, 2 * Math.PI);
+    this.context.fill();
+  }
+*/
 
   drawRoom(gameStateRoomCoord) {
     //drawing room itself: borders, door, obstacles
@@ -154,25 +135,30 @@ export class Rendering {
     console.log("Drawing door");
   }
 
-  /* makeGlow(obstacle, monsters) {
-     for (let i = 0; i < obstacle.length; i++){
-       for (let j = 0; j< monsters.length; j++){
-         if (monsters[j].x >= obstacle[i].x - 1 &&
-           monsters[j].x <= obstacle[i].x + 4 &&
-           monsters[j].y >= obstacle[i].y - 1 &&
-           monsters[j].y <= obstacle[i].y + 4)
-           this.drawObstEffect(obstacle[i]);
+ /* makeGlow(obstacle, gameStatePlayer) {
+    for (let i = 0; i < obstacle.length; i++){
+      if (gameStatePlayer.bullet.x + 1 === obstacle[i].x &&
+          gameStatePlayer.bullet.y === obstacle[i].y ||
+          gameStatePlayer.bullet.y === obstacle[i].y + 1) 
+          {
+          this.drawObstEffect(obstacle[i]);
+          }
+      else if (gameStatePlayer.bullet.x - 1 === obstacle[i].x + 1 && 
+          this.y === obstacle[i].y ||
+          this.y === obstacle[i].y + 1) 
+          {
+          this.move = 1;
+      }
+    }
+  }*/
 
-        }
-     }
-   }
-  */
 
   draw(gameState) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    //  this.makeGlow(gameState.room, gameState.monsters);
     this.drawRoom(gameState.room);
     this.drawDoor(gameState.door);
-    //this.makeGlow(gameState.room, gameState.monsters);
     for (let x = 0; x < gameState.players.length; x++) {
       this.drawPlayer(gameState.players[x]);
       if (gameState.players[x].shoot === true) {
