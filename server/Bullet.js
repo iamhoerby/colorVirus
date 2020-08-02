@@ -47,25 +47,25 @@ class Bullet {
   collisionObstacles(coord){
     for (let i = 0; i < coord.length; i++) {
       if (this.direction === "right") {
-        if (this.x + 1 === coord[i].x && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
-          this.color = "white";
+        if (this.x === coord[i].x && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
+          this.x--;
         } 
       }
       if (this.direction === "left"){
-        if (this.x - 1 === coord[i].x + 1 && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
-          this.color = "white";
+        if (this.x === coord[i].x + 1 && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
+          this.x++;
         }
       }
       //funktioniert noch nicht
       if (this.direction === "down") {
-        if (this.y + 1 === coord[i].y && (this.x === coord[i].x || this.x === coord[i].x + 1)) {
-          this.color = "white";
+        if (this.y === coord[i].y && (this.x === coord[i].x || this.x === coord[i].x + 1)) {
+          this.y--;
         } 
       }
       //funktioniert noch nicht
       if (this.direction === "up"){
-        if (this.y - 1 === coord[i].y + 1 && (this.x === coord[i].x ||this.x === coord[i].x + 1)) {
-          this.color = "white";
+        if (this.y === coord[i].y + 1 && (this.x === coord[i].x ||this.x === coord[i].x + 1)) {
+          this.y++;
         }
       }
     }
