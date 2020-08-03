@@ -129,7 +129,7 @@ class Game {
     }, 33)
   }
   updateMovement(socketID, pressedKey) {
-    this.players.get(socketID).updateMovement(pressedKey);
+    this.players.get(socketID).updateMovement(pressedKey, this.gameState.room);
   }
   updateGameState(){
     let number = 0;
@@ -167,6 +167,31 @@ class Game {
   }
   drawGameState() {
     server.sendDraw(this.gameState)
+  }
+
+  playerVsPlayer(key){ 
+    for (var key2 of this.players.keys()){
+      if (key !== key2 && this.players.get(key).bullet.x === this.players.get(key2).x && this.players.get(key).bullet.y === this.players.get(key2).y) {
+        this.players.get(key2).lifes--;
+        if (this.players.get(key2).lifes === 0){
+          this.players.get(key2).alive = false;  
+        }
+        else{
+          this.players.get(key2).x = 0;
+          this.players.get(key2).y = 0;
+        }
+      }
+      if (key !== key2 && this.players.get(key2).bullet.x === this.players.get(key).x && this.players.get(key2).bullet.y === this.players.get(key).y) {
+        this.players.get(key).lifes--;
+        if (this.players.get(key).lifes === 0){
+          this.players.get(key).alive = false;  
+        }
+        else{
+          this.players.get(key).x = 0;
+          this.players.get(key).y = 0;
+        }
+      }
+    }
   }
 
   killMonster(key, monster) {
