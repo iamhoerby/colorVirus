@@ -134,7 +134,7 @@ class Game {
   updateGameState(){
     let number = 0;
     let gameStatePlayer = [];
-    for (var key of this.players.keys()) {
+    for (var key of this.players.keys(this.gameState.room)) {
       if (this.players.get(key).alive) {
         gameStatePlayer[number] = this.players.get(key).update();
         number++;
@@ -154,9 +154,11 @@ class Game {
       this.gameState.monsters[i].color = this.monsterColors[i];
 
       for (var key of this.players.keys()) {
-        this.damage(key, this.gameState.monsters[i]);
-        this.killMonster(key, this.monsters[i]);
-        this.playerVsPlayer(key);
+        if(this.gameState.monsters[i].alive){
+          this.damage(key, this.gameState.monsters[i]);
+        }
+        this.killMonster(key, this.monsters[i])
+        this.gameState.monsters[i].alive = this.monsters[i].alive;
       }
     }
     for (var key of this.players.keys()) {
@@ -307,7 +309,8 @@ class Game {
       this.gameState.monsters.push({
         x: 0,
         y: 0,
-        color: 'white'
+        color: 'white',
+        alive: true
       });
     }
   }
