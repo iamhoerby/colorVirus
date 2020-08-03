@@ -60,17 +60,45 @@ class Player {
         case 2: result = "red"; break;
         case 1: result = "lightcoral"; break;
         default: result = "white"; break;
-
       }
-    } else {
+    } else if (this.color === "yellow") {
+      switch (this.lifes){
+        case 3: result = "gold"; break;
+        case 2: result = "yellow"; break;
+        case 1: result = "lightyellow"; break;
+        default: result = "white"; break;
+      }
+    } else if (this.color === "green") {
       //color green
       switch (this.lifes){
         case 3: result = "darkgreen"; break;
         case 2: result = "green"; break;
         case 1: result = "mediumseagreen"; break;
         default: result = "white"; break;
-
       }
+    } else if (this.color === "orange") {
+      switch (this.lifes) {
+        case 3: result = "DarkOrange"; break;
+        case 2: result = "Orange"; break;
+        case 1: result = "LightSalmon"; break;
+        default: result = "white"; break;
+      }
+    } else if (this.color === "violet") {
+      switch (this.lifes) {
+        case 3: result = "MediumVioletRed"; break;
+        case 2: result = "HotPink"; break;
+        case 1: result = "LightPink"; break;
+        default: result = "white"; break;
+      }
+    } else if (this.color === "brown") {
+      switch (this.lifes) {
+        case 3: result = "SaddleBrown"; break; 
+        case 2: result = "Peru"; break; 
+        case 1: result = "BurlyWood"; break;
+        default: result = "white"; break;
+      }
+    } else {
+      result = "white"
     }
     return result; 
   }

@@ -20,6 +20,7 @@ class Game {
     this.readyCount = 0; 
     this.frameCount = 0;
     this.playerLifes = 3;
+    this.colors = ['white','yellow','blue','red','green','orange','violet','brown']
     this.gameState = {
         room : [],
         door: {color: 'white', state: 'closed', position: {x : 0, y : 0}},
@@ -71,6 +72,10 @@ class Game {
     console.log(this.players.get(socketID).name + ' x: ' + this.players.get(socketID).x + ' y: ' + this.players.get(socketID).y );
     server.sendDifficultyToClient(this.difficulty);
   }
+  setDifficulty(difficulty) {
+    this.difficulty = difficulty;
+    server.sendDifficultyToClient(this.difficulty)
+  }
   playerReady(socketID){
     this.players.get(socketID).ready = 1;
     this.readyCount++;
@@ -102,11 +107,16 @@ class Game {
     if (minuten !== 0) {
       let timerMin = minuten;
       let timerSek = 0;
+      let time = null;
       /* document.getElementById("pause").onclick = function () {
         this.pause = true;
       }; //TO-DO Brauchen wir das? */
       let timer = setInterval(function () {
-        let time = (timerMin + ':' + timerSek)
+        if (timerSek < 10) {
+          time = (timerMin + ':0' + timerSek)
+        } else {
+          time = (timerMin + ':' + timerSek)
+        }
         server.sendTimer(time);
         //console.log(time);
         if (timerSek === 0 && timerMin === 0) {
@@ -232,57 +242,25 @@ class Game {
   }
   colorSwitch(key1,key2) {
     let color1 = this.colorCode(this.players.get(key1).color);
+    console.log(color1)
     let color2 = this.colorCode(this.players.get(key2).color);
+    console.log(color2)
     if (color1 !== color2) {
       let colorSwitch = color1 + color2 + 1;
       let result = this.colorDecode(colorSwitch);
+      console.log(result)
       this.players.get(key1).color = result;
       this.players.get(key2).color = result;
     }
   }
   colorCode(color) {
-    let colorNr = 0; 
-    switch (color) {
-      case 'white': colorNr = 0; 
-        break; 
-      case 'yellow': colorNr = 1; 
-        break; 
-      case 'blue': colorNr = 2;
-        break;
-      case 'red': colorNr = 3; 
-        break;
-      case 'green': colorNr = 4; 
-        break;
-      case 'orange': colorNr = 5;
-        break;
-      case 'violet': colorNr = 6; 
-        break; 
-      case 'brown': colorNr = 7; 
-        break;
-    }
+    let colorNr = this.colors.indexOf(color); 
     return colorNr;
   }
   colorDecode(nummer) {
     let color = 0; 
     if (nummer <= 7) {
-      switch (nummer) {
-        case 0: color = 'white';
-          break;
-        case 1: color = 'yellow'; 
-          break; 
-        case 2: color = 'blue';
-          break;
-        case 3: color = 'red'; 
-          break;
-        case 4: color = 'green'; 
-          break;
-        case 5: color = 'orange';
-          break;
-        case 6: color = 'violet'; 
-          break; 
-        case 7: color = 'brown'; 
-          break;
-      } 
+      color = this.colors[nummer]
     } else {
       color = 'brown'
     }
