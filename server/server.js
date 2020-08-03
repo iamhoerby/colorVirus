@@ -46,7 +46,7 @@ nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachric
   
   socket.on("sendDifficulty", function (difficulty) {
     console.log("Recieved message difficulty" + difficulty);
-    newGame.difficulty = difficulty;
+    newGame.setDifficulty(difficulty)
   });
   
   socket.on("playerReady", function() {
