@@ -37,8 +37,8 @@ class Player {
     this.obstacle = 0;
     this.colors = [ ["navy", "royalblue", "lightsteelblue"], 
                     ["darkred", "red", "lightcoral"], 
-                    ["darkgreen", "green", "mediumseagreen"], 
                     ["gold", "yellow", "lightyellow"], 
+                    ["darkgreen", "green", "mediumseagreen"], 
                     ["DarkOrange", "Orange", "LightSalmon"],
                     ["MediumVioletRed", "HotPink", "LightPink"],
                     ["SaddleBrown", "Peru", "BurlyWood"]
