@@ -11,7 +11,8 @@ class Player {
     socketID,
     name,
     direction,
-    shoot
+    shoot,
+    extent
   ) {
     this.x = x;
     this.y = y;
@@ -23,6 +24,7 @@ class Player {
     this.alive = true;
     this.direction = direction;
     this.shoot = shoot;
+    this.extent = extent;
     this.ready = 0;
     this.bullet = new Bullet(
       this.x,
@@ -32,117 +34,128 @@ class Player {
       "black",
       this.shoot
     );
+    this.obstacle = 0;
+    this.colors = [ ["navy", "royalblue", "lightsteelblue"], 
+                    ["darkred", "red", "lightcoral"], 
+                    ["darkgreen", "green", "mediumseagreen"], 
+                    ["gold", "yellow", "lightyellow"], 
+                    ["DarkOrange", "Orange", "LightSalmon"],
+                    ["MediumVioletRed", "HotPink", "LightPink"],
+                    ["SaddleBrown", "Peru", "BurlyWood"]
+                  ]; 
+
+    /*this.blues = ["navy", "royalblue", "lightsteelblue"];
+    this.reds = ["darkred", "red", "lightcoral"];
+    this.greens = ["darkgreen", "green", "mediumseagreen"];
+    this.yellows = ["gold", "yellow", "lightyellow"];
+    this.oranges = ["DarkOrange", "Orange", "LightSalmon"];
+    this.violets = ["MediumVioletRed", "HotPink", "LightPink"];
+    this.browns =  ["SaddleBrown", "Peru", "BurlyWood"];*/
   }
 
   updateMovement(pressedKey, coord) {
-    this.collisionObstacles(coord);
     if (pressedKey === "ArrowRight") {
-      if (this.x < 63) {
+      this.direction = "right";
+      this.collisionObstacles(coord);
+      if (this.x < this.extent - 1 && this.obstacle != 1) {
         this.x += 1;
-        this.direction = "right";
       }
     } else if (pressedKey === "ArrowDown") {
-      if (this.y < 63) {
+      this.direction = "down";
+      this.collisionObstacles(coord);
+      if (this.y < this.extent - 1 && this.obstacle != 2) {
         this.y += 1;
-        this.direction = "down";
       }
     } else if (pressedKey === "ArrowLeft") {
-      if (this.x > 0) {
+      this.direction = "left";
+      this.collisionObstacles(coord);
+      if (this.x > 0 && this.obstacle != 3) {
         this.x -= 1;
-        this.direction = "left";
       }
     } else if (pressedKey === "ArrowUp") {
-      if (this.y > 0) {
+      this.direction = "up";
+      this.collisionObstacles(coord);
+      if (this.y > 0 && this.obstacle != 4) {
         this.y -= 1;
-        this.direction = "up";
       }
     } else if (pressedKey === "Space") {
       this.shoot = true;
-      this.bullet = new Bullet(
-        this.x,
-        this.y,
-        this.direction,
-        1,
-        "black",
-        this.shoot,
-        coord
-      );
+      this.bullet = new Bullet (this.x, this.y, this.direction, 1, "black", this.shoot, coord);
     }
-    //pressedKey = "Stop";
   }
+
   updateLifes() {
     let result = "";
     if (this.color === "blue") {
       switch (this.lifes) {
-        case 3:
-          result = "navy";
+        case 3: 
+          result = this.colors[0][0]; 
           break;
-        case 2:
-          result = "royalblue";
+        case 2: 
+          result = this.colors[0][1]; 
           break;
-        case 1:
-          result = "lightsteelblue";
+        case 1: 
+          result = this.colors[0][2]; 
           break;
-        default:
-          result = "white";
+        default: 
+          result = "white"; 
           break;
       }
     } else if (this.color === "red") {
-      switch (this.lifes) {
-        case 3:
-          result = "darkred";
+      switch (this.lifes){
+        case 3: 
+          result = this.colors[1][0]; 
           break;
-        case 2:
-          result = "red";
+        case 2: 
+          result = this.colors[1][1]; 
           break;
-        case 1:
-          result = "lightcoral";
+        case 1: 
+          result = this.colors[1][2]; 
           break;
-        default:
-          result = "white";
+        default: 
+          result = "white"; 
           break;
       }
     } else if (this.color === "yellow") {
       switch (this.lifes) {
-        case 3:
-          result = "gold";
+        case 3: 
+          result = this.colors[2][0]; 
           break;
-        case 2:
-          result = "yellow";
+        case 2: 
+          result = this.colors[2][1]; 
           break;
-        case 1:
-          result = "lightyellow";
+        case 1: 
+          result = this.colors[2][2]; 
           break;
         default:
           result = "white";
           break;
       }
     } else if (this.color === "green") {
-      //color green
       switch (this.lifes) {
-        case 3:
-          result = "darkgreen";
+        case 3: 
+          result = this.colors[3][0]; 
           break;
-        case 2:
-          result = "green";
+        case 2: 
+          result = this.colors[3][1]; 
           break;
-        case 1:
-          result = "mediumseagreen";
+        case 1: 
+          result = this.colors[3][2]; 
           break;
-        default:
-          result = "white";
+        default: 
+          result = "white"; 
           break;
       }
     } else if (this.color === "orange") {
       switch (this.lifes) {
-        case 3:
-          result = "DarkOrange";
+        case 3: 
+          result = this.colors[4][0]; 
           break;
-        case 2:
-          result = "Orange";
+        case 2: 
+          result = this.colors[4][1]; 
           break;
-        case 1:
-          result = "LightSalmon";
+        case 1: 
+          result = this.colors[4][2]; 
           break;
         default:
           result = "white";
@@ -150,14 +163,14 @@ class Player {
       }
     } else if (this.color === "violet") {
       switch (this.lifes) {
-        case 3:
-          result = "MediumVioletRed";
+        case 3: 
+          result = this.colors[5][0]; 
           break;
-        case 2:
-          result = "HotPink";
+        case 2: 
+          result = this.colors[5][1]; 
           break;
-        case 1:
-          result = "LightPink";
+        case 1: 
+          result = this.colors[5][2]; 
           break;
         default:
           result = "white";
@@ -165,14 +178,14 @@ class Player {
       }
     } else if (this.color === "brown") {
       switch (this.lifes) {
-        case 3:
-          result = "SaddleBrown";
+        case 3: 
+          result = this.colors[6][0]; 
           break;
-        case 2:
-          result = "Peru";
+        case 2: 
+          result = this.colors[6][1]; 
           break;
-        case 1:
-          result = "BurlyWood";
+        case 1: 
+          result = this.colors[6][2]; 
           break;
         default:
           result = "white";
@@ -187,38 +200,30 @@ class Player {
   collisionObstacles(coord) {
     for (let i = 0; i < coord.length; i++) {
       if (this.direction === "right") {
-        if (
-          this.x + 1 === coord[i].x &&
-          (this.y === coord[i].y || this.y === coord[i].y + 1)
-        ) {
-          this.x--;
-        }
+        if (this.x + 1 === coord[i].x && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
+          this.obstacle = 1;
+          return;
+        } else this.obstacle = 0;
       }
-      if (this.direction === "left") {
-        if (
-          this.x - 1 === coord[i].x + 1 &&
-          (this.y === coord[i].y || this.y === coord[i].y + 1)
-        ) {
-          this.x++;
-        }
+      //funktioniert nicht
+      else if (this.direction === "left") {
+        if (this.x - 1 === coord[i].x + 1 && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
+          this.obstacle = 2;
+          return;
+        } else this.obstacle = 0;
       }
-      //funktioniert noch nicht
-      if (this.direction === "down") {
-        if (
-          this.y + 1 === coord[i].y &&
-          (this.x === coord[i].x || this.x === coord[i].x + 1)
-        ) {
-          this.y--;
-        }
+      //funktioniert nicht
+      else if (this.direction === "down") {
+        if (this.y + 1 === coord[i].y && (this.x === coord[i].x || this.x === coord[i].x + 1)) {
+          this.obstacle = 3;
+          return;
+        } else this.obstacle = 0;
       }
-      //funktioniert noch nicht
-      if (this.direction === "up") {
-        if (
-          this.y - 1 === coord[i].y + 1 &&
-          (this.x === coord[i].x || this.x === coord[i].x + 1)
-        ) {
-          this.y++;
-        }
+      else if (this.direction === "up") {
+        if (this.y - 1 === coord[i].y + 1 && (this.x === coord[i].x ||this.x === coord[i].x + 1)) {
+          this.obstacle = 4;
+          return;
+        } else this.obstacle = 0;
       }
     }
   }
