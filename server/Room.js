@@ -1,11 +1,10 @@
 class Room {
-  constructor(extent, number) {
+  constructor(extent, number, playerCount) {
+    this.playerCount = playerCount;
     this.extent = extent;
     this.number = number;
-    this.colors = ["red", "orange", "yellow", "green", "blue", "violet"]; //colours for door
-    this.doorColor = this.colors[
-      Math.floor(Math.random() * this.colors.length)
-    ]; //picking random colour for door
+    this.colors = ["red", "blue", "yellow", "green", "orange", "violet"]; //colours for door
+    this.doorColor = this.pickColor() //picking random colour for door
     this.door = new Door(
       this.doorColor,
       "Closed",
@@ -21,7 +20,13 @@ class Room {
 
     // setInterval(this.draw(), 500);
   }
-
+  pickColor() {
+    if (this.playerCount > 1) {
+      return this.colors[Math.floor(Math.random() * this.colors.length)];
+    } else {
+      return this.colors[Math.floor(Math.random() * 3)];
+    }
+  }
   // Room update *** Andrej *** 23.7.2020
   randCoordX(){
     return Math.floor(Math.random() * (this.extent * (7/8) - this.extent / 8) + this.extent / 8);
