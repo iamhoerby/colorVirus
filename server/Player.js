@@ -55,13 +55,13 @@ class Player {
     } else if (pressedKey === "ArrowDown") {
       this.direction = "down";
       this.collisionObstacles(coord);
-      if (this.y < this.extent - 1 && this.obstacle != 2) {
+      if (this.y < this.extent - 1 && this.obstacle != 3) {
         this.y += 1;
       }
     } else if (pressedKey === "ArrowLeft") {
       this.direction = "left";
       this.collisionObstacles(coord);
-      if (this.x > 0 && this.obstacle != 3) {
+      if (this.x > 0 && this.obstacle != 2) {
         this.x -= 1;
       }
     } else if (pressedKey === "ArrowUp") {
@@ -197,14 +197,12 @@ class Player {
           return;
         } else this.obstacle = 0;
       }
-      //funktioniert nicht
       else if (this.direction === "left") {
         if (this.x - 1 === coord[i].x + 1 && (this.y === coord[i].y || this.y === coord[i].y + 1)) {
           this.obstacle = 2;
           return;
         } else this.obstacle = 0;
       }
-      //funktioniert nicht
       else if (this.direction === "down") {
         if (this.y + 1 === coord[i].y && (this.x === coord[i].x || this.x === coord[i].x + 1)) {
           this.obstacle = 3;
