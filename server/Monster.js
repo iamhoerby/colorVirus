@@ -70,14 +70,7 @@ module.exports = class Monster {
         this.move = 1;
       }
     } else {
-      if ((this.x === door.x ||
-          this.x === door.x + 1 ||
-          this.x === door.x + 2 ||
-          this.x === door.x + 3 ||
-          this.x === door.x + 4 ||
-          this.x === door.x + 5 ||
-          this.x === door.x + 6 ||
-          this.x === door.x + 7) && this.y === 2) {
+      if ((this.x >= door.x && this.x <= door.x + 7) && this.y === 2) {
         this.move = 1;
       }
     }

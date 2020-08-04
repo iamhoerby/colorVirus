@@ -28,19 +28,18 @@ class Game {
         monsters :[]
     }
     this.monsters = [];
-    this.monsterColors;
+    this.monsterColors = ['yellow', 'blue', 'red'];
+    this.loopIntervall; 
+    this.timerInterval;
   }
   playerConnect() {
     this.playerCount++;
-    console.log('playerCount: ' + this.playerCount)
   }
   playerDisconnect() {
     this.playerCount--;
-    console.log('playerCount: ' + this.playerCount)
   }
   newPlayer(name, socketID) {
     this.connectionCount++
-    console.log('connectionCount' + this.connectionCount)
     let positionX = 0;
     let positionY = 0;
     let colorNr = 0;
@@ -69,7 +68,6 @@ class Game {
     }
     let color = this.colorDecode(colorNr);
     this.players.set(socketID,new Player (positionX * (this.extent - 1),positionY * (this.extent - 1),color,3,'ArrowRight', socketID, name))
-    console.log(this.players.get(socketID).name + ' x: ' + this.players.get(socketID).x + ' y: ' + this.players.get(socketID).y );
     server.sendDifficultyToClient(this.difficulty);
   }
   setDifficulty(difficulty) {
@@ -86,9 +84,13 @@ class Game {
   startGame() {
     server.sendStartGame();
     this.timer();
-    this.room = new Room(this.extent, 1);
+    this.room = new Room(this.extent, 1, this.playerCount);
     this.monsterCreator();
     this.loop();
+  }
+  gameOver() {
+    clearInterval(this.timerInterval)
+    server.sendGameOver(this.levelCounter);
   }
   // Spiel-Timer
   timer() {
@@ -108,17 +110,13 @@ class Game {
       let timerMin = minuten;
       let timerSek = 0;
       let time = null;
-      /* document.getElementById("pause").onclick = function () {
-        this.pause = true;
-      }; //TO-DO Brauchen wir das? */
-      let timer = setInterval(function () {
+      this.timerInterval = setInterval(function () {
         if (timerSek < 10) {
           time = (timerMin + ':0' + timerSek)
         } else {
           time = (timerMin + ':' + timerSek)
         }
         server.sendTimer(time);
-        //console.log(time);
         if (timerSek === 0 && timerMin === 0) {
           clearInterval(timer);
           this.gameOver();
@@ -132,7 +130,7 @@ class Game {
     }
   }
   loop() {
-    setInterval(() => {
+    this.loopIntervall = setInterval(() => {
       this.updateGameState();
       this.drawGameState(); 
       this.frameCount++;
@@ -153,7 +151,6 @@ class Game {
     this.gameState.players = gameStatePlayer;
     this.gameState.room = this.room.update();
     this.gameState.door = this.room.door.update();
-    this.pickColor(this.gameState.door.color);
 
     for (let i = 0; i < this.monsters.length; i++) {
       if(this.monsters[i].alive){
@@ -161,19 +158,19 @@ class Game {
         this.gameState.monsters[i].x = this.monsters[i].x;
         this.gameState.monsters[i].y = this.monsters[i].y;
       }
-      this.gameState.monsters[i].color = this.monsterColors[i];
+      this.gameState.monsters[i].color = this.monsterColors[i % 3];
 
       for (var key of this.players.keys()) {
-        if(this.gameState.monsters[i].alive){
-          this.damage(key, this.gameState.monsters[i]);
-        }
+        this.damage(key, this.gameState.monsters[i])
         this.killMonster(key, this.monsters[i])
         this.gameState.monsters[i].alive = this.monsters[i].alive;
       }
     }
     for (var key of this.players.keys()) {
       this.checkPositions(key)
+      this.openDoor(key,this.gameState.door)
     }
+  
   }
   drawGameState() {
     server.sendDraw(this.gameState)
@@ -214,19 +211,23 @@ class Game {
   }
 
   damage(key, monster) {
+    if (monster.alive === true) {
       if (this.players.get(key).x === monster.x && this.players.get(key).y === monster.y) {
-        console.log(key + ' damaged')
         this.players.get(key).lifes--;
-        console.log(key + ' leben: ' + this.players.get(key).lifes)
         if (this.players.get(key).lifes === 0) {
           this.players.get(key).alive = false;   
-          console.log(key + ' killed')  
+          this.gameOver();
         } else {
           this.players.get(key).x = 0;
           this.players.get(key).y = 0;
         }
       }
+    } else {
+      if (this.players.get(key).x === monster.x && this.players.get(key).y === monster.y) {
+        this.players.get(key).color = monster.color;
+      }
     }
+  }
 
   checkPositions(key){
     for (var key2 of this.players.keys()){
@@ -235,20 +236,16 @@ class Game {
         this.players.get(key).x === this.players.get(key2).x && 
         this.players.get(key).y === this.players.get(key2).y
         ) {
-          console.log('ColorSwitch: ' + key + ' ' + key2)
           this.colorSwitch(key,key2)
       }
     }
   }
   colorSwitch(key1,key2) {
     let color1 = this.colorCode(this.players.get(key1).color);
-    console.log(color1)
     let color2 = this.colorCode(this.players.get(key2).color);
-    console.log(color2)
     if (color1 !== color2) {
       let colorSwitch = color1 + color2 + 1;
       let result = this.colorDecode(colorSwitch);
-      console.log(result)
       this.players.get(key1).color = result;
       this.players.get(key2).color = result;
     }
@@ -270,13 +267,13 @@ class Game {
     var numberMonsters;
     switch (this.difficulty) {
       case 1:
-        numberMonsters = 2;
-        break;
-      case 2:
         numberMonsters = 3;
         break;
+      case 2:
+        numberMonsters = 6;
+        break;
       case 3:
-        numberMonsters = 4;
+        numberMonsters = 9;
         break;
     }
     for (let i = 0; i < numberMonsters; i++) {
@@ -339,61 +336,47 @@ class Game {
     }
   }
 
-  /*
-    // Room laden + Level starten
-    play() {
-        levelCounter++;
-        this.room = new Room(this.canvas, this.extent, levelCounter); // TO-DO: constructor , beinhaltet levelCounter! 
-        // document.getElementById("play").onclick = this.runLevel.bind(this);    //Level auf Knopfdruck starten   // TO-DO
-        this.runLevel();   // Level startet automatisch
-    }
-    // Level spielen + Pause Option + Restart Option
-    runLevel() {
-        this.room.reset();  //TO-DO:  An class Room anpassen 
-        this.pause = false; 
-        let frameCount = 0; 
-        let running = window.setInterval(function() {
-            this.loop(frameCount).bind(this);
-            if (this.player1.leben === 0 && this.player2.leben === 0) { 
-                clearInterval(running);
-                // TO-DO: Draw Restart Screen 
-                document.getElementById("play").onclick = this.runLevel.bind(this);  // Möglichkeit das Level neu zu starten 
-            };
-            if (this.room.complete === 1) {
-                clearInterval(running); 
-                // TO-DO: Draw Next Level Screen
-                this.pause = true; 
-                document.getElementById("next").onclick = this.play(); 
-            }
+  openDoor(key,door) {
+    if (this.players.get(key).y <= 2 && this.players.get(key).x >= door.position.x && this.players.get(key).x <= door.position.x + 7 && this.players.get(key).color === door.color) {
+      this.levelCounter++;
+      clearInterval(this.loopIntervall);
+      this.monsters = [];
+      this.room = new Room(this.extent, 1, this.playerCount);
+      for (var key of this.players.keys()) {
+        let positionX = 0;
+        let positionY = 0;
+        let colorNr = 0;
+        switch (this.connectionCount % 4){
+          case 0: 
+            positionX = 1;
+            positionY = 1;
+            colorNr = 1;
+            break;
+          case 1: 
+            positionX = 0;
+            positionY = 0; 
+            colorNr = 3;
+            break;
+          case 2: 
+            positionX = 1; 
+            positionY = 0;
+            colorNr = 2; 
+            break;
+          case 3: 
+            positionX = 0;
+            positionY = 1;
+            colorNr = 3;
+            break;
+
         }
-        , 33); 
-        document.getElementById("pause").onclick = clearInterval(running); //Brauchen wir das? // TO-DO
+        this.players.get(key).x = positionX;
+        this.players.get(key).y = positionY;
+        this.players.get(key).color = this.colorDecode(colorNr);
+      } 
+      this.monsterCreator();
+      this.loop();
     }
-    // Game-Loop
-    loop(frameCount) {
-        frameCount++;
-        this.update();
-        this.draw(frameCount);
-    }
-    // Update in jedem Loop
-    update() {
-        this.room.update();
-        this.player.update(); 
-        // this.monster1.update(); 
-    }
-    // Zeichnen in jedem Loop
-    draw(frameCount) {
-        this.room.draw(frameCount)
-        this.player1.draw(frameCount)
-        this.player2.draw(frameCount)
-        // this.monster1.draw(frameCount);  // TO-DO
-    }
-    // GameOver Bildschirm
-    gameOver() {
-        // TO-DO: drawgameOverBilschirm
-        clearInterval(running);
-        document.getElementById("end").onclick = startGame(); 
-    }*/
+  }
 }
 
 module.exports = {

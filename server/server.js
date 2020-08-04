@@ -30,7 +30,6 @@ nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachric
     connectionCounter--;
   });
   socket.on("playerConnect", function (canvas) {
-    console.log(`Recieved message player_connect`);
     if (connectionCounter === 0) {
       newGame = new Game(extent);
     }
@@ -40,12 +39,10 @@ nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachric
   });
   
   socket.on("playerName", function (name) {
-    console.log(`Recieved message playerName`);
     socket.join('GameRoom', () => newGame.newPlayer(name, socket.id));
   });
   
   socket.on("sendDifficulty", function (difficulty) {
-    console.log("Recieved message difficulty" + difficulty);
     newGame.setDifficulty(difficulty)
   });
   
@@ -55,7 +52,6 @@ nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachric
   });
   
   socket.on("playerMovement", function (pressedKey){
-    // console.log(`${socket.id} drückt ${pressedKey} Taste`);
     newGame.updateMovement(socket.id,pressedKey);
     //player.update(pressedKey)
   });
@@ -70,6 +66,7 @@ module.exports.sendDifficultyToClient = (difficulty) => nsp.to('GameRoom').emit(
 module.exports.sendStartGame = () => nsp.emit('startGame');
 module.exports.sendTimer = (time) => nsp.emit('timer',time);
 module.exports.sendDraw = (gameState) => nsp.emit('draw', gameState); 
+module.exports.sendGameOver = (levelCount) => nsp.emit('gameOver',levelCount);
 
 
 http.listen(3000, () => {

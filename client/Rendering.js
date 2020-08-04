@@ -36,7 +36,6 @@ export class Rendering {
     }
   }
   startGame() {
-    console.log('Start Game');
     document.getElementById("difficulty").classList.add("displayNone");
     document.getElementById("ready").classList.add("displayNone");
     document.getElementById("myCanvas").height = window.innerHeight * 0.75;
@@ -97,7 +96,6 @@ export class Rendering {
       (this.cellSize * this.extent) / 32,
       (this.cellSize * this.extent) / 32
     );
-    console.log("Drawing obstacle");
   }
 
   // creates color "aura" around obstacles. Pure cosmetic effect, has nothing to do with gameplay
@@ -119,12 +117,10 @@ export class Rendering {
     for (let i = 0; i < gameStateRoomCoord.length; i++) {
       this.drawObstacle(gameStateRoomCoord[i]);
     }
-    console.log(gameStateRoomCoord);
     //this.door.draw();
   }
   //function for drawing a door
   drawDoor(gameStateDoor) {
-    console.log();
     this.context.fillStyle = gameStateDoor.color;
     this.context.fillRect(
       gameStateDoor.position.x * this.cellSize,
@@ -132,7 +128,6 @@ export class Rendering {
       (this.cellSize * this.extent) / 8,
       (this.cellSize * this.extent) / 32
     );
-    console.log("Drawing door");
   }
 
  /* makeGlow(obstacle, gameStatePlayer) {
@@ -166,5 +161,11 @@ export class Rendering {
       }
     }
     this.drawMonster(gameState.monsters);
+  }
+  drawGameOver(levelCount) {
+    document.getElementById("canvas").classList.add("displayNone");
+    document.getElementById("timer").classList.add("displayNone")
+    document.getElementById("gameOver").classList.remove("displayNone");
+    document.getElementById("levelCounter").innerHTML = "Du hast " + levelCount + " Level geschafft!"
   }
 }

@@ -11,12 +11,10 @@ let keyHandler = new KeyHandler();
 
 // Hier drunter alle eingehenede Nachrichtien also Server -> Client 
 socket.on("connect", function () {
-  console.log(`connected to socket.io as ${socket.id}`);
   socket.emit("playerConnect", canvas);
   rendering.inputName();
 });
 socket.on('setDifficulty', function(difficulty) {
-  console.log('Recieved Message SetDifficulty' + difficulty)
   rendering.chooseDifficulty(difficulty)
 });
 socket.on('startGame', function() {
@@ -27,9 +25,12 @@ socket.on('timer', function(time) {
   rendering.drawTimer(time);
 });
 socket.on("draw", function(gamestate) {
-  console.log(gamestate);
+  // console.log(gamestate);
   rendering.draw(gamestate); 
 }); 
+socket.on("gameOver", function(levelCount) {
+  rendering.drawGameOver(levelCount);
+});
 
 // Hier drunter nur ausgehende Nachrichten also Client -> Server in Funktionen die von eventHandler.js aufgerufen werden können
 // Alle Funktionen mit export function exportieren
@@ -39,7 +40,6 @@ export function sendName(name) {
 }
 export function sendDifficultyToServer(difficultyClient) {
   socket.emit("sendDifficulty", difficultyClient);
-  console.log("test");
   rendering.chooseDifficulty(difficultyClient)
 }
 export function sendReady() {
