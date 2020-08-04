@@ -43,14 +43,6 @@ class Player {
                     ["MediumVioletRed", "HotPink", "LightPink"],
                     ["SaddleBrown", "Peru", "BurlyWood"]
                   ]; 
-
-    /*this.blues = ["navy", "royalblue", "lightsteelblue"];
-    this.reds = ["darkred", "red", "lightcoral"];
-    this.greens = ["darkgreen", "green", "mediumseagreen"];
-    this.yellows = ["gold", "yellow", "lightyellow"];
-    this.oranges = ["DarkOrange", "Orange", "LightSalmon"];
-    this.violets = ["MediumVioletRed", "HotPink", "LightPink"];
-    this.browns =  ["SaddleBrown", "Peru", "BurlyWood"];*/
   }
 
   updateMovement(pressedKey, coord) {
