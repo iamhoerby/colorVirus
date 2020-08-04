@@ -1,4 +1,4 @@
-// Server requiries 
+// Server requiries
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
@@ -6,7 +6,7 @@ const io = require("socket.io")(http);
 const path = require("path");
 const clientPath = path.join(__dirname, "..", "client");
 app.use(express.static(clientPath));
-const nsp = io.of('/game-space')
+const nsp = io.of("/game-space");
 
 // Game requiries
 // Hier die Klassen importieren
@@ -16,16 +16,14 @@ const player = require("./Player.js");
 const Player = player.Player;
 const extent = 64;
 
-
 var newGame;
 let connectionCounter = 0;
 
-
-
-nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachrichten also Client -> Server
+nsp.on("connection", function (socket) {
+  // Hier drunter nur eingehende Nachrichten also Client -> Server
   console.log(`A socket connected with id ${socket.id}`);
-  socket.on('disconnect', function() { 
-    console.log(socket.id + ' disconnected')
+  socket.on("disconnect", function () {
+    console.log(socket.id + " disconnected");
     newGame.playerDisconnect();
     connectionCounter--;
   });
@@ -37,40 +35,37 @@ nsp.on("connection", function (socket) {  // Hier drunter nur eingehende Nachric
     newGame.playerConnect();
     newGame.canvas = canvas;
   });
-  
+
   socket.on("playerName", function (name) {
-    socket.join('GameRoom', () => newGame.newPlayer(name, socket.id));
+    socket.join("GameRoom", () => newGame.newPlayer(name, socket.id));
   });
-  
+
   socket.on("sendDifficulty", function (difficulty) {
-    newGame.setDifficulty(difficulty)
+    newGame.setDifficulty(difficulty);
   });
-  
-  socket.on("playerReady", function() {
+
+  socket.on("playerReady", function () {
     console.log(`${socket.id} ready`);
     newGame.playerReady(socket.id);
   });
-  
-  socket.on("playerMovement", function (pressedKey){
-    newGame.updateMovement(socket.id,pressedKey);
+
+  socket.on("playerMovement", function (pressedKey) {
+    newGame.updateMovement(socket.id, pressedKey);
     //player.update(pressedKey)
   });
 });
 
+// Ab hier ausgehende Nachrichten also Server -> Client in Funktionen die von Game.js aufgerufen können werden.
+// Alle Funktionen exportieren mit module.exports. Bis jetzt hat keine schreibweise funktioniert bis auf diese.
+// Also diese bitte benutzen
 
-// Ab hier ausgehende Nachrichten also Server -> Client in Funktionen die von Game.js aufgerufen können werden. 
-// Alle Funktionen exportieren mit module.exports. Bis jetzt hat keine schreibweise funktioniert bis auf diese. 
-// Also diese bitte benutzen 
-
-module.exports.sendDifficultyToClient = (difficulty) => nsp.to('GameRoom').emit('setDifficulty', difficulty);
-module.exports.sendStartGame = () => nsp.emit('startGame');
-module.exports.sendTimer = (time) => nsp.emit('timer',time);
-module.exports.sendDraw = (gameState) => nsp.emit('draw', gameState); 
-module.exports.sendGameOver = (levelCount) => nsp.emit('gameOver',levelCount);
-
+module.exports.sendDifficultyToClient = (difficulty) =>
+  nsp.to("GameRoom").emit("setDifficulty", difficulty);
+module.exports.sendStartGame = () => nsp.emit("startGame");
+module.exports.sendTimer = (time) => nsp.emit("timer", time);
+module.exports.sendDraw = (gameState) => nsp.emit("draw", gameState);
+module.exports.sendGameOver = (levelCount) => nsp.emit("gameOver", levelCount);
 
 http.listen(3000, () => {
   console.log(`Serving ${clientPath} on *:3000.`);
 });
-
-

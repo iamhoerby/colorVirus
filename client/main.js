@@ -3,32 +3,32 @@ import { KeyHandler } from "./eventHandler.js";
 
 let canvas = document.getElementById("myCanvas");
 
-const socket = io('/game-space');
+const socket = io("/game-space");
 const extent = 64;
 
 let rendering = new Rendering(canvas, extent);
 let keyHandler = new KeyHandler();
 
-// Hier drunter alle eingehenede Nachrichtien also Server -> Client 
+// Hier drunter alle eingehenede Nachrichtien also Server -> Client
 socket.on("connect", function () {
   socket.emit("playerConnect", canvas);
   rendering.inputName();
 });
-socket.on('setDifficulty', function(difficulty) {
-  rendering.chooseDifficulty(difficulty)
+socket.on("setDifficulty", function (difficulty) {
+  rendering.chooseDifficulty(difficulty);
 });
-socket.on('startGame', function() {
-  rendering.startGame(); 
+socket.on("startGame", function () {
+  rendering.startGame();
   keyHandler.startGame();
 });
-socket.on('timer', function(time) {
+socket.on("timer", function (time) {
   rendering.drawTimer(time);
 });
-socket.on("draw", function(gamestate) {
+socket.on("draw", function (gamestate) {
   // console.log(gamestate);
-  rendering.draw(gamestate); 
-}); 
-socket.on("gameOver", function(levelCount) {
+  rendering.draw(gamestate);
+});
+socket.on("gameOver", function (levelCount) {
   rendering.drawGameOver(levelCount);
 });
 
@@ -40,10 +40,10 @@ export function sendName(name) {
 }
 export function sendDifficultyToServer(difficultyClient) {
   socket.emit("sendDifficulty", difficultyClient);
-  rendering.chooseDifficulty(difficultyClient)
+  rendering.chooseDifficulty(difficultyClient);
 }
 export function sendReady() {
-  socket.emit("playerReady")
+  socket.emit("playerReady");
 }
 export function sendPlayerMovement(pressedKey) {
   socket.emit("playerMovement", pressedKey);
@@ -51,7 +51,4 @@ export function sendPlayerMovement(pressedKey) {
 
 // socket.emit('player1_damage', this.game.damage());
 
-// muss aber ein gamestate vorher initialisiert werden 
-
-
-
+// muss aber ein gamestate vorher initialisiert werden

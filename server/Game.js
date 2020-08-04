@@ -1,9 +1,9 @@
-const server = require('./server.js')
+const server = require("./server.js");
 const player = require("./Player.js");
 const Player = player.Player;
-const room = require("./Room.js")
+const room = require("./Room.js");
 const Room = room.Room;
-const Monster = require('./Monster.js');
+const Monster = require("./Monster.js");
 
 class Game {
   constructor(extent) {
@@ -16,20 +16,29 @@ class Game {
     this.pause = false;
     this.playerCount = 0;
     this.players = new Map();
-    this.connectionCount = 0; 
-    this.readyCount = 0; 
+    this.connectionCount = 0;
+    this.readyCount = 0;
     this.frameCount = 0;
     this.playerLifes = 3;
-    this.colors = ['white','yellow','blue','red','green','orange','violet','brown']
+    this.colors = [
+      "white",
+      "yellow",
+      "blue",
+      "red",
+      "green",
+      "orange",
+      "violet",
+      "brown",
+    ];
     this.gameState = {
-        room : [],
-        door: {color: 'white', state: 'closed', position: {x : 0, y : 0}},
-        players: [],
-        monsters :[]
-    }
+      room: [],
+      door: { color: "white", state: "closed", position: { x: 0, y: 0 } },
+      players: [],
+      monsters: [],
+    };
     this.monsters = [];
-    this.monsterColors = ['yellow', 'blue', 'red'];
-    this.loopIntervall; 
+    this.monsterColors = ["yellow", "blue", "red"];
+    this.loopIntervall;
     this.timerInterval;
   }
   playerConnect() {
@@ -39,42 +48,52 @@ class Game {
     this.playerCount--;
   }
   newPlayer(name, socketID) {
-    this.connectionCount++
+    this.connectionCount++;
     let positionX = 0;
     let positionY = 0;
     let colorNr = 0;
-    switch (this.connectionCount % 4){
-      case 0: 
+    switch (this.connectionCount % 4) {
+      case 0:
         positionX = 1;
         positionY = 1;
         colorNr = 1;
         break;
-      case 1: 
+      case 1:
         positionX = 0;
-        positionY = 0; 
+        positionY = 0;
         colorNr = 3;
         break;
-      case 2: 
-        positionX = 1; 
+      case 2:
+        positionX = 1;
         positionY = 0;
-        colorNr = 2; 
+        colorNr = 2;
         break;
-      case 3: 
+      case 3:
         positionX = 0;
         positionY = 1;
         colorNr = 3;
         break;
-
     }
     let color = this.colorDecode(colorNr);
-    this.players.set(socketID,new Player (positionX * (this.extent - 1),positionY * (this.extent - 1),color,3,'ArrowRight', socketID, name))
+    this.players.set(
+      socketID,
+      new Player(
+        positionX * (this.extent - 1),
+        positionY * (this.extent - 1),
+        color,
+        3,
+        "ArrowRight",
+        socketID,
+        name
+      )
+    );
     server.sendDifficultyToClient(this.difficulty);
   }
   setDifficulty(difficulty) {
     this.difficulty = difficulty;
-    server.sendDifficultyToClient(this.difficulty)
+    server.sendDifficultyToClient(this.difficulty);
   }
-  playerReady(socketID){
+  playerReady(socketID) {
     this.players.get(socketID).ready = 1;
     this.readyCount++;
     if (this.readyCount === this.playerCount) {
@@ -89,7 +108,7 @@ class Game {
     this.loop();
   }
   gameOver() {
-    clearInterval(this.timerInterval)
+    clearInterval(this.timerInterval);
     server.sendGameOver(this.levelCounter);
   }
   // Spiel-Timer
@@ -112,9 +131,9 @@ class Game {
       let time = null;
       this.timerInterval = setInterval(function () {
         if (timerSek < 10) {
-          time = (timerMin + ':0' + timerSek)
+          time = timerMin + ":0" + timerSek;
         } else {
-          time = (timerMin + ':' + timerSek)
+          time = timerMin + ":" + timerSek;
         }
         server.sendTimer(time);
         if (timerSek === 0 && timerMin === 0) {
@@ -132,14 +151,14 @@ class Game {
   loop() {
     this.loopIntervall = setInterval(() => {
       this.updateGameState();
-      this.drawGameState(); 
+      this.drawGameState();
       this.frameCount++;
-    }, 33)
+    }, 33);
   }
   updateMovement(socketID, pressedKey) {
     this.players.get(socketID).updateMovement(pressedKey, this.gameState.room);
   }
-  updateGameState(){
+  updateGameState() {
     let number = 0;
     let gameStatePlayer = [];
     for (var key of this.players.keys(this.gameState.room)) {
@@ -153,47 +172,57 @@ class Game {
     this.gameState.door = this.room.door.update();
 
     for (let i = 0; i < this.monsters.length; i++) {
-      if(this.monsters[i].alive){
-        this.monsters[i].update(this.frameCount, this.gameState.room, this.gameState.door.position, this.extent);
+      if (this.monsters[i].alive) {
+        this.monsters[i].update(
+          this.frameCount,
+          this.gameState.room,
+          this.gameState.door.position,
+          this.extent
+        );
         this.gameState.monsters[i].x = this.monsters[i].x;
         this.gameState.monsters[i].y = this.monsters[i].y;
       }
       this.gameState.monsters[i].color = this.monsterColors[i % 3];
 
       for (var key of this.players.keys()) {
-        this.damage(key, this.gameState.monsters[i])
-        this.killMonster(key, this.monsters[i])
+        this.damage(key, this.gameState.monsters[i]);
+        this.killMonster(key, this.monsters[i]);
         this.gameState.monsters[i].alive = this.monsters[i].alive;
       }
     }
     for (var key of this.players.keys()) {
-      this.checkPositions(key)
-      this.openDoor(key,this.gameState.door)
+      this.checkPositions(key);
+      this.openDoor(key, this.gameState.door);
     }
-  
   }
   drawGameState() {
-    server.sendDraw(this.gameState)
+    server.sendDraw(this.gameState);
   }
 
-  playerVsPlayer(key){ 
-    for (var key2 of this.players.keys()){
-      if (key !== key2 && this.players.get(key).bullet.x === this.players.get(key2).x && this.players.get(key).bullet.y === this.players.get(key2).y) {
+  playerVsPlayer(key) {
+    for (var key2 of this.players.keys()) {
+      if (
+        key !== key2 &&
+        this.players.get(key).bullet.x === this.players.get(key2).x &&
+        this.players.get(key).bullet.y === this.players.get(key2).y
+      ) {
         this.players.get(key2).lifes--;
-        if (this.players.get(key2).lifes === 0){
-          this.players.get(key2).alive = false;  
-        }
-        else{
+        if (this.players.get(key2).lifes === 0) {
+          this.players.get(key2).alive = false;
+        } else {
           this.players.get(key2).x = 0;
           this.players.get(key2).y = 0;
         }
       }
-      if (key !== key2 && this.players.get(key2).bullet.x === this.players.get(key).x && this.players.get(key2).bullet.y === this.players.get(key).y) {
+      if (
+        key !== key2 &&
+        this.players.get(key2).bullet.x === this.players.get(key).x &&
+        this.players.get(key2).bullet.y === this.players.get(key).y
+      ) {
         this.players.get(key).lifes--;
-        if (this.players.get(key).lifes === 0){
-          this.players.get(key).alive = false;  
-        }
-        else{
+        if (this.players.get(key).lifes === 0) {
+          this.players.get(key).alive = false;
+        } else {
           this.players.get(key).x = 0;
           this.players.get(key).y = 0;
         }
@@ -202,20 +231,29 @@ class Game {
   }
 
   killMonster(key, monster) {
-    if ((this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y === monster.y) ||
-    (this.players.get(key).bullet.x === monster.x && this.players.get(key).bullet.y === monster.y+1) ||
-    (this.players.get(key).bullet.x === monster.x+1 && this.players.get(key).bullet.y === monster.y) ||
-    (this.players.get(key).bullet.x === monster.x+1 && this.players.get(key).bullet.y === monster.y+1)) {
+    if (
+      (this.players.get(key).bullet.x === monster.x &&
+        this.players.get(key).bullet.y === monster.y) ||
+      (this.players.get(key).bullet.x === monster.x &&
+        this.players.get(key).bullet.y === monster.y + 1) ||
+      (this.players.get(key).bullet.x === monster.x + 1 &&
+        this.players.get(key).bullet.y === monster.y) ||
+      (this.players.get(key).bullet.x === monster.x + 1 &&
+        this.players.get(key).bullet.y === monster.y + 1)
+    ) {
       monster.alive = false;
     }
   }
 
   damage(key, monster) {
     if (monster.alive === true) {
-      if (this.players.get(key).x === monster.x && this.players.get(key).y === monster.y) {
+      if (
+        this.players.get(key).x === monster.x &&
+        this.players.get(key).y === monster.y
+      ) {
         this.players.get(key).lifes--;
         if (this.players.get(key).lifes === 0) {
-          this.players.get(key).alive = false;   
+          this.players.get(key).alive = false;
           this.gameOver();
         } else {
           this.players.get(key).x = 0;
@@ -223,24 +261,27 @@ class Game {
         }
       }
     } else {
-      if (this.players.get(key).x === monster.x && this.players.get(key).y === monster.y) {
+      if (
+        this.players.get(key).x === monster.x &&
+        this.players.get(key).y === monster.y
+      ) {
         this.players.get(key).color = monster.color;
       }
     }
   }
 
-  checkPositions(key){
-    for (var key2 of this.players.keys()){
+  checkPositions(key) {
+    for (var key2 of this.players.keys()) {
       if (
-        key !== key2 && 
-        this.players.get(key).x === this.players.get(key2).x && 
+        key !== key2 &&
+        this.players.get(key).x === this.players.get(key2).x &&
         this.players.get(key).y === this.players.get(key2).y
-        ) {
-          this.colorSwitch(key,key2)
+      ) {
+        this.colorSwitch(key, key2);
       }
     }
   }
-  colorSwitch(key1,key2) {
+  colorSwitch(key1, key2) {
     let color1 = this.colorCode(this.players.get(key1).color);
     let color2 = this.colorCode(this.players.get(key2).color);
     if (color1 !== color2) {
@@ -251,15 +292,15 @@ class Game {
     }
   }
   colorCode(color) {
-    let colorNr = this.colors.indexOf(color); 
+    let colorNr = this.colors.indexOf(color);
     return colorNr;
   }
   colorDecode(nummer) {
-    let color = 0; 
+    let color = 0;
     if (nummer <= 7) {
-      color = this.colors[nummer]
+      color = this.colors[nummer];
     } else {
-      color = 'brown'
+      color = "brown";
     }
     return color;
   }
@@ -277,67 +318,75 @@ class Game {
         break;
     }
     for (let i = 0; i < numberMonsters; i++) {
-      this.monsters.push(new Monster(
-        Math.floor(Math.random() * 32),
-        Math.floor(Math.random() * 32 + 2),
-        'white'));
+      this.monsters.push(
+        new Monster(
+          Math.floor(Math.random() * 32),
+          Math.floor(Math.random() * 32 + 2),
+          "white"
+        )
+      );
       this.gameState.monsters.push({
         x: 0,
         y: 0,
-        color: 'white',
-        alive: true
+        color: "white",
+        alive: true,
       });
     }
   }
 
   pickColor(color) {
     if (this.monsters.length === 2) {
-      if (color === 'red') {
-        this.monsterColors = ['yellow', '#ff00ff']
-      } else if (color === 'orange') {
-        this.monsterColors = ['yellow', 'red']
-      } else if (color === 'yellow') {
-        this.monsterColors = ['red', 'green']
-      } else if (color === 'green') {
-        this.monsterColors = ['yellow', 'blue']
-      } else if (color === 'blue') {
-        this.monsterColors = ['	#00FFFF', '#ff00ff']
+      if (color === "red") {
+        this.monsterColors = ["yellow", "#ff00ff"];
+      } else if (color === "orange") {
+        this.monsterColors = ["yellow", "red"];
+      } else if (color === "yellow") {
+        this.monsterColors = ["red", "green"];
+      } else if (color === "green") {
+        this.monsterColors = ["yellow", "blue"];
+      } else if (color === "blue") {
+        this.monsterColors = ["	#00FFFF", "#ff00ff"];
       } else {
-        this.monsterColors = ['blue', 'red']
+        this.monsterColors = ["blue", "red"];
       }
     } else if (this.monsters.length === 3) {
-      if (color === 'red') {
-        this.monsterColors = ['yellow', 'pink', 'purple']
-      } else if (color === 'orange') {
-        this.monsterColors = ['yellow', 'brown', '#ff00ff']
-      } else if (color === 'yellow') {
-        this.monsterColors = ['red', 'green', '#f5f5dc']
-      } else if (color === 'green') {
-        this.monsterColors = ['yellow', '#00FFFF', '#ff00ff']
-      } else if (color === 'blue') {
-        this.monsterColors = ['#00FFFF', 'pink', 'purple']
+      if (color === "red") {
+        this.monsterColors = ["yellow", "pink", "purple"];
+      } else if (color === "orange") {
+        this.monsterColors = ["yellow", "brown", "#ff00ff"];
+      } else if (color === "yellow") {
+        this.monsterColors = ["red", "green", "#f5f5dc"];
+      } else if (color === "green") {
+        this.monsterColors = ["yellow", "#00FFFF", "#ff00ff"];
+      } else if (color === "blue") {
+        this.monsterColors = ["#00FFFF", "pink", "purple"];
       } else {
-        this.monsterColors = ['blue', 'yellow', 'purple']
+        this.monsterColors = ["blue", "yellow", "purple"];
       }
     } else if (this.monsters.length === 4) {
-      if (color === 'red') {
-        this.monsterColors = ['yellow', 'pink', 'purple', 'blue']
-      } else if (color === 'orange') {
-        this.monsterColors = ['yellow', 'yellow', '#ff00ff', 'brown']
-      } else if (color === 'yellow') {
-        this.monsterColors = ['red', 'green', '#f5f5dc', 'violet']
-      } else if (color === 'green') {
-        this.monsterColors = ['yellow', '#00FFFF', '#ff00ff', 'pink']
-      } else if (color === 'blue') {
-        this.monsterColors = ['#00FFFF', 'pink', 'purple', 'purple']
+      if (color === "red") {
+        this.monsterColors = ["yellow", "pink", "purple", "blue"];
+      } else if (color === "orange") {
+        this.monsterColors = ["yellow", "yellow", "#ff00ff", "brown"];
+      } else if (color === "yellow") {
+        this.monsterColors = ["red", "green", "#f5f5dc", "violet"];
+      } else if (color === "green") {
+        this.monsterColors = ["yellow", "#00FFFF", "#ff00ff", "pink"];
+      } else if (color === "blue") {
+        this.monsterColors = ["#00FFFF", "pink", "purple", "purple"];
       } else {
-        this.monsterColors = ['blue', 'yellow', 'purple', 'green']
+        this.monsterColors = ["blue", "yellow", "purple", "green"];
       }
     }
   }
 
-  openDoor(key,door) {
-    if (this.players.get(key).y <= 2 && this.players.get(key).x >= door.position.x && this.players.get(key).x <= door.position.x + 7 && this.players.get(key).color === door.color) {
+  openDoor(key, door) {
+    if (
+      this.players.get(key).y <= 2 &&
+      this.players.get(key).x >= door.position.x &&
+      this.players.get(key).x <= door.position.x + 7 &&
+      this.players.get(key).color === door.color
+    ) {
       this.levelCounter++;
       clearInterval(this.loopIntervall);
       this.monsters = [];
@@ -346,33 +395,32 @@ class Game {
         let positionX = 0;
         let positionY = 0;
         let colorNr = 0;
-        switch (this.connectionCount % 4){
-          case 0: 
+        switch (this.connectionCount % 4) {
+          case 0:
             positionX = 1;
             positionY = 1;
             colorNr = 1;
             break;
-          case 1: 
+          case 1:
             positionX = 0;
-            positionY = 0; 
+            positionY = 0;
             colorNr = 3;
             break;
-          case 2: 
-            positionX = 1; 
+          case 2:
+            positionX = 1;
             positionY = 0;
-            colorNr = 2; 
+            colorNr = 2;
             break;
-          case 3: 
+          case 3:
             positionX = 0;
             positionY = 1;
             colorNr = 3;
             break;
-
         }
         this.players.get(key).x = positionX;
         this.players.get(key).y = positionY;
         this.players.get(key).color = this.colorDecode(colorNr);
-      } 
+      }
       this.monsterCreator();
       this.loop();
     }

@@ -39,28 +39,31 @@ module.exports = class Monster {
   collisionObs(coord) {
     for (let i = 0; i < coord.length; i++) {
       if (!this.vertical) {
-        if (this.x + 1 === coord[i].x && (
-            this.y === coord[i].y ||
-            this.y === coord[i].y + 1)) {
+        if (
+          this.x + 1 === coord[i].x &&
+          (this.y === coord[i].y || this.y === coord[i].y + 1)
+        ) {
           this.move = -1;
-        } else if (this.x - 1 === coord[i].x + 1 && (
-            this.y === coord[i].y ||
-            this.y === coord[i].y + 1)) {
+        } else if (
+          this.x - 1 === coord[i].x + 1 &&
+          (this.y === coord[i].y || this.y === coord[i].y + 1)
+        ) {
           this.move = 1;
         }
       } else {
-        if (this.y + 1 === coord[i].y && (
-            this.x === coord[i].x ||
-            this.x === coord[i].x + 1)) {
+        if (
+          this.y + 1 === coord[i].y &&
+          (this.x === coord[i].x || this.x === coord[i].x + 1)
+        ) {
           this.move = -1;
-        } else if (this.y - 1 === coord[i].y + 1 && (
-            this.x === coord[i].x ||
-            this.x === coord[i].x + 1)) {
+        } else if (
+          this.y - 1 === coord[i].y + 1 &&
+          (this.x === coord[i].x || this.x === coord[i].x + 1)
+        ) {
           this.move = 1;
         }
       }
     }
-
   }
   collisionDoor(door) {
     if (!this.vertical) {
@@ -70,7 +73,7 @@ module.exports = class Monster {
         this.move = 1;
       }
     } else {
-      if ((this.x >= door.x && this.x <= door.x + 7) && this.y === 2) {
+      if (this.x >= door.x && this.x <= door.x + 7 && this.y === 2) {
         this.move = 1;
       }
     }

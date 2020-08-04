@@ -31,7 +31,9 @@ export class Rendering {
         document.getElementById("hard").classList.add("locked");
         break;
       default:
-        document.getElementById("submitDifficulty").classList.remove("displayNone");
+        document
+          .getElementById("submitDifficulty")
+          .classList.remove("displayNone");
         break;
     }
   }
@@ -39,12 +41,14 @@ export class Rendering {
     document.getElementById("difficulty").classList.add("displayNone");
     document.getElementById("ready").classList.add("displayNone");
     document.getElementById("myCanvas").height = window.innerHeight * 0.75;
-    document.getElementById("myCanvas").width = document.getElementById("myCanvas").height;
+    document.getElementById("myCanvas").width = document.getElementById(
+      "myCanvas"
+    ).height;
     this.cellSize = this.canvas.width / this.extent;
     document.getElementById("canvas").classList.remove("displayNone");
   }
   drawTimer(time) {
-    document.getElementById('timer').innerHTML = time
+    document.getElementById("timer").innerHTML = time;
   }
   drawMonster(monsters) {
     for (let i = 0; i < monsters.length; i++) {
@@ -54,16 +58,21 @@ export class Rendering {
           monsters[i].x * this.cellSize,
           monsters[i].y * this.cellSize,
           this.cellSize,
-          this.cellSize)
+          this.cellSize
+        );
       } else {
-          this.context.fillStyle = monsters[i].color;
-          this.context.beginPath();
-          this.context.arc(
-            (monsters[i].x + 0.5) * this.cellSize,
-            (monsters[i].y + 0.5) * this.cellSize,
-            this.cellSize / 2, 0, Math.PI * 2, true);
-          this.context.fill();
-        }
+        this.context.fillStyle = monsters[i].color;
+        this.context.beginPath();
+        this.context.arc(
+          (monsters[i].x + 0.5) * this.cellSize,
+          (monsters[i].y + 0.5) * this.cellSize,
+          this.cellSize / 2,
+          0,
+          Math.PI * 2,
+          true
+        );
+        this.context.fill();
+      }
     }
   }
 
@@ -84,7 +93,7 @@ export class Rendering {
       gameStatePlayer.bullet.y * this.cellSize,
       this.cellSize / 2,
       this.cellSize / 2
-    )
+    );
   }
 
   drawObstacle(coord) {
@@ -99,7 +108,7 @@ export class Rendering {
   }
 
   // creates color "aura" around obstacles. Pure cosmetic effect, has nothing to do with gameplay
- /* drawObstEffect(coord) {
+  /* drawObstEffect(coord) {
     let colors = ["red", "orange", "yellow", "green", "blue", "violet"];
     this.context.fillStyle = "light" + colors[Math.floor(Math.random() * colors.length)];
     this.context.beginPath();
@@ -130,7 +139,7 @@ export class Rendering {
     );
   }
 
- /* makeGlow(obstacle, gameStatePlayer) {
+  /* makeGlow(obstacle, gameStatePlayer) {
     for (let i = 0; i < obstacle.length; i++){
       if (gameStatePlayer.bullet.x + 1 === obstacle[i].x &&
           gameStatePlayer.bullet.y === obstacle[i].y ||
@@ -146,7 +155,6 @@ export class Rendering {
       }
     }
   }*/
-
 
   draw(gameState) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -164,8 +172,9 @@ export class Rendering {
   }
   drawGameOver(levelCount) {
     document.getElementById("canvas").classList.add("displayNone");
-    document.getElementById("timer").classList.add("displayNone")
+    document.getElementById("timer").classList.add("displayNone");
     document.getElementById("gameOver").classList.remove("displayNone");
-    document.getElementById("levelCounter").innerHTML = "Du hast " + levelCount + " Level geschafft!"
+    document.getElementById("levelCounter").innerHTML =
+      "Du hast " + levelCount + " Level geschafft!";
   }
 }
