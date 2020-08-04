@@ -46,6 +46,11 @@ class Game {
   }
   playerDisconnect() {
     this.playerCount--;
+    if (this.playerCount === 0) {
+      clearInterval(this.loopIntervall);
+      clearInterval(this.timerInterval);
+      this.difficulty = 0; 
+    }
   }
   newPlayer(name, socketID) {
     this.connectionCount++;
@@ -114,6 +119,7 @@ class Game {
   // Spiel-Timer
   timer() {
     let minuten = 0;
+    let sekunden = 0;
     switch (this.difficulty) {
       case 1:
         minuten = 0;
@@ -127,9 +133,9 @@ class Game {
     }
     if (minuten !== 0) {
       let timerMin = minuten;
-      let timerSek = 0;
+      let timerSek = sekunden;
       let time = null;
-      this.timerInterval = setInterval(function () {
+      this.timerInterval = setInterval(() => {
         if (timerSek < 10) {
           time = timerMin + ":0" + timerSek;
         } else {
@@ -137,8 +143,9 @@ class Game {
         }
         server.sendTimer(time);
         if (timerSek === 0 && timerMin === 0) {
-          clearInterval(timer);
           this.gameOver();
+          clearInterval(this.timerInterval);
+          
         } else if (timerSek === 0) {
           timerMin--;
           timerSek += 59;
