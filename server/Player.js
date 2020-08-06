@@ -226,6 +226,7 @@ class Player {
         x: this.x,
         y: this.y,
         color: drawColor,
+        direction: this.direction, ////
         shoot: this.shoot,
         bullet: bullet1,
       };
@@ -234,6 +235,7 @@ class Player {
         x: this.x,
         y: this.y,
         color: drawColor,
+        direction: this.direction, /////
         shoot: this.shoot,
         bullet: {},
       };
