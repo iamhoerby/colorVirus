@@ -48,6 +48,11 @@ export function sendReady() {
 export function sendPlayerMovement(pressedKey) {
   socket.emit("playerMovement", pressedKey);
 }
+export function sendRestart() {
+  rendering.restart(); 
+  socket.emit("restart");
+
+}
 
 // socket.emit('player1_damage', this.game.damage());
 
