@@ -5,47 +5,9 @@
     <link rel="stylesheet" href="./style.css" type="text/css">
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="main.js"></script>
-
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-      /* Create two unequal columns that floats next to each other */
-      .column {
-        float: left;
-        display:table-row;
-      }
-      .left {
-        width: 25%;
-        height: 50%;
-        vertical-align: middle;   /* <-- funktioniert nicht :-(  ) */
-      }
-      .right {
-        width: 75%;
-      }
-      /* Clear floats after the columns */
-      .row:after {
-        content: "";
-        display: table;
-        clear: both;
-      }
-      </style>
-      </head>
-      <body>
-
   </head>
   <body>
-    <div class="column left">
-      <h3>Rules:</h3>
-      <p> You need to pass through the magic door. As many times as you can! Use <u>Arrows</u> to move.</p>  
-      <p> In order to do it, you and your teammate (if there is any) need to get a color that matches with color of the door. </p>
-      <p> Use <u>Space</u> to shoot the monsters to pick up their colors. You can bump your teammate to make a new color mix.</p>
-      <p> You have <u>3</u> lives. Each time a monster bumps into you, you lose one life and your color turns paler.</p> 
-      <p> Good luck!</p>  
-
-    </div>
-
-    <div class="column right">
+    <div class="all">
       <h1>Color Virus</h1>
       <div class="timer">
         <p id="timer"></p>
@@ -61,19 +23,31 @@
       <div class="buttons">
         <div id="difficulty" class="displayNone">
           <h3>Change Difficulty</h3>
-          <button id="easy" class="addMore" title="Only 3 monsters and unlimited time">Easy</button>
-          <button id="middle" class="addMore" title="6 monsters and 10 minutes time">Middle</button>
-          <button id="hard" class="addMore" title="9 hungry monsters and only 5 minutes time">Hard</button>
-          <button id="submitDifficulty">Submit</button>
+          <button id="easy" title="Only 3 monsters and unlimited time">Easy</button>
+          <button id="middle" title="">Middle</button>
+          <button id="hard"  title="">Hard</button>
+          <br>
+          <button id="submitDifficulty">SAVE</button>
         </div>
         <div><button id="ready" class="displayNone">READY</button></div>
         <div id="nextLevel" class="displayNone">
           <button id="next">Next Level</button>
         </div>
-        <div id = "gameOver" class="displayNone">
-          <p id="levelCounter" class=""></p>
-          <button id="restart">Play another Round</button>
-        </div>
+      </div>
+      <div id = "gameOver" class="displayNone">
+        <p id="levelCounter" class=""></p>
+        <button id="restart">Play another Round</button>
+      </div>
+      <div id="rules">
+        <h3>Rules:</h3>
+        <p> You need to pass through the magic door. As many times as you can! Use <u>Arrows</u> to move.</p>  
+        <p> In order to do it, you and your teammate (if there is any) need to get a color that matches with color of the door. </p>
+        <p> Use <u>Space</u> to shoot the monsters to pick up their colors. You can bump your teammate to make a new color mix.</p>
+        <p> You have <u>3</u> lives. Each time a monster bumps into you, you lose one life and your color turns paler.</p> 
+        <p> Good luck!</p>  
+      </div>
+      <div id="difficultyRules" class="displayNone">
+        <p>easy: Only 3 monsters and unlimited time<br>middle: 6 monsters and 10 minutes time<br>hard: 9 hungry monsters and only 5 minutes time</p>
       </div>
     </div>
   </body>

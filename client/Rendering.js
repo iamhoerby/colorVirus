@@ -12,7 +12,9 @@ export class Rendering {
   // Screen with the Difficulty Options
   chooseDifficulty(difficulty) {
     document.getElementById("startName").classList.add("displayNone");
+    document.getElementById("rules").classList.add("displayNone");
     document.getElementById("difficulty").classList.remove("displayNone");
+    document.getElementById("difficultyRules").classList.remove("displayNone");
     document.getElementById("ready").classList.remove("displayNone");
     document.getElementById("hard").disabled = false;
     document.getElementById("middle").disabled = false;
@@ -46,6 +48,7 @@ export class Rendering {
   }
   startGame() {
     document.getElementById("difficulty").classList.add("displayNone");
+    document.getElementById("difficultyRules").classList.add("displayNone");
     document.getElementById("ready").classList.add("displayNone");
     document.getElementById("myCanvas").height = window.innerHeight * 0.75;
     document.getElementById("myCanvas").width = document.getElementById(
