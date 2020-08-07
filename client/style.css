@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Courier New', Courier, monospace !important;
     overflow: hidden;
     color: #ffffff;
     background-image: linear-gradient(90deg, grey,darkgrey)
@@ -10,13 +10,23 @@ body {
     align-items: center;
 }
 input {
-    font-size:18px;
-    background-color: blue;
+    font:400 18px Courier;
+    background-color: #ffffff;
     border-radius: 5px;
     border: 2px solid #ffffff;
 }
+button {
+    margin: 10px;
+    padding: 10px 20px 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font: 400 13.333px Courier;
+    color: white;
+    background-color: rgb(117, 117, 117);
+}
 .timer {
     margin:auto;
+    font-size: 25px;
 }
 #canvas {
     margin:auto;
@@ -27,18 +37,11 @@ input {
     width: 90%; 
     margin: 30px;
 }
-.buttons button {
-    padding: 10px 20px 10px 20px;
-    margin: 10px;
-    border: 0px;
-    box-shadow: 0px 0px 10px 4px #00000038;
-
-}
 .displayNone {
     display:none; 
 }
 .locked {
-    background-color: green;
+    background-color: rgb(64, 165, 64);
 }
 #myCanvas {
     box-shadow: 0px 0px 10px 4px #00000038;

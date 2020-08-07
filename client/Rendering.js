@@ -176,10 +176,10 @@ export class Rendering {
     document.getElementById("gameOver").classList.remove("displayNone");
     if (levelCount < 10) {
       document.getElementById("levelCounter").innerHTML =
-      "<h3>Sorry. You've Lost!</h3><br> You only completed " + levelCount + " Level!";
+      "<h3>sorry. you've lost!</h3><br> you only completed " + levelCount + " level!";
     } else {
       document.getElementById("levelCounter").innerHTML =
-      "<h3>You WIN!</h3> <br> You completed " + levelCount + " Level!";
+      "<h3>you WIN!</h3> <br> you completed " + levelCount + " level!";
     }
     
   }

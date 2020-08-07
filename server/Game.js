@@ -397,6 +397,7 @@ class Game {
       this.levelCounter++;
       clearInterval(this.loopIntervall);
       this.monsters = [];
+      this.gameState.monsters = [];
       this.room = new Room(this.extent, 1, this.playerCount);
       for (var key of this.players.keys()) {
         let positionX = 0;
