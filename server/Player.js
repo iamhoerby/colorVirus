@@ -38,7 +38,7 @@ class Player {
     this.obstacle = 0;
     this.colors = [ ["navy", "royalblue", "lightsteelblue"], 
                     ["darkred", "red", "lightcoral"], 
-                    ["gold", "yellow", "lightyellow"], 
+                    ["gold", "yellow", "palegoldenrod"], 
                     ["darkgreen", "green", "mediumseagreen"], 
                     ["DarkOrange", "Orange", "LightSalmon"],
                     ["MediumVioletRed", "HotPink", "LightPink"],
@@ -76,117 +76,27 @@ class Player {
       this.bullet = new Bullet (this.x, this.y, this.direction, 1, "black", this.shoot, coord);
     }
   }
-
   updateLifes() {
     let result = "";
-    if (this.color === "blue") {
-      switch (this.lifes) {
-        case 3: 
-          result = this.colors[0][0]; 
-          break;
-        case 2: 
-          result = this.colors[0][1]; 
-          break;
-        case 1: 
-          result = this.colors[0][2]; 
-          break;
-        default: 
-          result = "white"; 
-          break;
-      }
-    } else if (this.color === "red") {
-      switch (this.lifes){
-        case 3: 
-          result = this.colors[1][0]; 
-          break;
-        case 2: 
-          result = this.colors[1][1]; 
-          break;
-        case 1: 
-          result = this.colors[1][2]; 
-          break;
-        default: 
-          result = "white"; 
-          break;
-      }
-    } else if (this.color === "yellow") {
-      switch (this.lifes) {
-        case 3: 
-          result = this.colors[2][0]; 
-          break;
-        case 2: 
-          result = this.colors[2][1]; 
-          break;
-        case 1: 
-          result = this.colors[2][2]; 
-          break;
-        default:
-          result = "white";
-          break;
-      }
-    } else if (this.color === "green") {
-      switch (this.lifes) {
-        case 3: 
-          result = this.colors[3][0]; 
-          break;
-        case 2: 
-          result = this.colors[3][1]; 
-          break;
-        case 1: 
-          result = this.colors[3][2]; 
-          break;
-        default: 
-          result = "white"; 
-          break;
-      }
-    } else if (this.color === "orange") {
-      switch (this.lifes) {
-        case 3: 
-          result = this.colors[4][0]; 
-          break;
-        case 2: 
-          result = this.colors[4][1]; 
-          break;
-        case 1: 
-          result = this.colors[4][2]; 
-          break;
-        default:
-          result = "white";
-          break;
-      }
-    } else if (this.color === "violet") {
-      switch (this.lifes) {
-        case 3: 
-          result = this.colors[5][0]; 
-          break;
-        case 2: 
-          result = this.colors[5][1]; 
-          break;
-        case 1: 
-          result = this.colors[5][2]; 
-          break;
-        default:
-          result = "white";
-          break;
-      }
-    } else if (this.color === "brown") {
-      switch (this.lifes) {
-        case 3: 
-          result = this.colors[6][0]; 
-          break;
-        case 2: 
-          result = this.colors[6][1]; 
-          break;
-        case 1: 
-          result = this.colors[6][2]; 
-          break;
-        default:
-          result = "white";
-          break;
-      }
-    } else {
-      result = "white";
+    let i = -1;
+    let j = -1;
+    switch(this.color){
+      case "blue": i = 0; break;
+      case "red": i = 1; break;
+      case "yellow": i = 2; break;
+      case "green": i = 3; break;
+      case "orange": i = 4; break;
+      case "violet": i = 5; break;
+      case "brown": i = 6; break;
+      default: i = -1; break;
     }
+    switch (this.lifes){
+      case 3: j = 0; break;
+      case 2: j = 1; break;
+      case 1: j = 2; break;
+      default: j = -1; break;
+    }
+    result = this.colors[i][j];
     return result;
   }
 
