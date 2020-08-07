@@ -174,7 +174,13 @@ export class Rendering {
     document.getElementById("canvas").classList.add("displayNone");
     document.getElementById("timer").classList.add("displayNone");
     document.getElementById("gameOver").classList.remove("displayNone");
-    document.getElementById("levelCounter").innerHTML =
-      "Du hast " + levelCount + " Level geschafft!";
+    if (levelCount < 10) {
+      document.getElementById("levelCounter").innerHTML =
+      "<h3>Sorry. You've Lost!</h3><br> You only completed " + levelCount + " Level!";
+    } else {
+      document.getElementById("levelCounter").innerHTML =
+      "<h3>You WIN!</h3> <br> You completed " + levelCount + " Level!";
+    }
+    
   }
 }
