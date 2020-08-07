@@ -53,6 +53,9 @@ nsp.on("connection", function (socket) {
     newGame.updateMovement(socket.id, pressedKey);
     //player.update(pressedKey)
   });
+  socket.on("restart", function () {
+    newGame.restart(); 
+  });
 });
 
 // Ab hier ausgehende Nachrichten also Server -> Client in Funktionen die von Game.js aufgerufen können werden.

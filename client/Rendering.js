@@ -14,6 +14,13 @@ export class Rendering {
     document.getElementById("startName").classList.add("displayNone");
     document.getElementById("difficulty").classList.remove("displayNone");
     document.getElementById("ready").classList.remove("displayNone");
+    document.getElementById("hard").disabled = false;
+    document.getElementById("middle").disabled = false;
+    document.getElementById("easy").disabled = false;
+    document.getElementById("hard").classList.remove("locked");
+    document.getElementById("middle").classList.remove("locked");
+    document.getElementById("easy").classList.remove("locked");
+    document.getElementById("ready").disabled = false;
     switch (difficulty) {
       case 1:
         document.getElementById("middle").disabled = true;
@@ -46,6 +53,9 @@ export class Rendering {
     ).height;
     this.cellSize = this.canvas.width / this.extent;
     document.getElementById("canvas").classList.remove("displayNone");
+  }
+  restart() {
+    document.getElementById("gameOver").classList.add("displayNone");
   }
   drawTimer(time) {
     document.getElementById("timer").innerHTML = time;
