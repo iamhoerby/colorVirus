@@ -5,11 +5,11 @@ export class Rendering {
     this.extent = extent;
     this.cellSize = 0;
   }
-  // Start Screen with Name Input
+  // Start Screen with Name Input -- Sebastian 
   inputName() {
     document.getElementById("startName").classList.remove("displayNone");
   }
-  // Screen with the Difficulty Options
+  // Screen with the Difficulty Options -- Sebastian
   chooseDifficulty(difficulty) {
     document.getElementById("startName").classList.add("displayNone");
     document.getElementById("rules").classList.add("displayNone");
@@ -46,17 +46,19 @@ export class Rendering {
         break;
     }
   }
+  //show gamefield -- Sebastian 
   startGame() {
     document.getElementById("difficulty").classList.add("displayNone");
     document.getElementById("difficultyRules").classList.add("displayNone");
     document.getElementById("ready").classList.add("displayNone");
-    document.getElementById("myCanvas").height = window.innerHeight * 0.75;
+    document.getElementById("myCanvas").height = window.innerHeight * 0.75; //calculate Canvas heigth so it is always completly  visible
     document.getElementById("myCanvas").width = document.getElementById(
       "myCanvas"
     ).height;
     this.cellSize = this.canvas.width / this.extent;
     document.getElementById("canvas").classList.remove("displayNone");
   }
+  // Remove Game Over Screen -- Sebastian 
   restart() {
     document.getElementById("gameOver").classList.add("displayNone");
   }
@@ -184,6 +186,7 @@ export class Rendering {
     }
     this.drawMonster(gameState.monsters);
   }
+  //Show Game Over Screen with restart option -- Sebastian 
   drawGameOver(levelCount) {
     document.getElementById("canvas").classList.add("displayNone");
     document.getElementById("timer").classList.add("displayNone");

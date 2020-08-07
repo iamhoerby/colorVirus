@@ -7,14 +7,14 @@ import { sendRestart } from "./main.js";
 export class KeyHandler {
   constructor() {
     this.gameStart = 0;
-    // Input Player Name *** Sebastian *** 25.6.2020
+    //Click to send name to server
     document.getElementById("submitName").onclick = function () {
       let name = document.getElementById("inputName").value;
       if (name !== "") {
         sendName(name);
       }
     };
-    // Input Difficulty *** Sebastian *** 25.6.2020
+    //click to choose difficulty
     let difficulty = 0;
     document.getElementById("easy").onclick = () => (difficulty = 1);
     document.getElementById("middle").onclick = () => (difficulty = 2);
@@ -24,7 +24,7 @@ export class KeyHandler {
         sendDifficultyToServer(difficulty);
       }
     };
-    //Ready
+    //click to be ready to play
     document.getElementById("ready").onclick = function () {
       sendReady();
       document.getElementById("ready").disabled = true;
@@ -50,17 +50,5 @@ export class KeyHandler {
       });
     } 
     this.gameStart++
-  }
-  keyEvent(event) {
-    if (
-      event === "ArrowRight" ||
-      event === "ArrowLeft" ||
-      event === "ArrowUp" ||
-      event === "ArrowDown" ||
-      event === "Space"
-    ) {
-      let pressedKey = event;
-      sendPlayerMovement(pressedKey);
-    }
   }
 }
