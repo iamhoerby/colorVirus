@@ -6,6 +6,7 @@ import { sendRestart } from "./main.js";
 
 export class KeyHandler {
   constructor() {
+    this.gameStart = 0;
     // Input Player Name *** Sebastian *** 25.6.2020
     document.getElementById("submitName").onclick = function () {
       let name = document.getElementById("inputName").value;
@@ -29,13 +30,26 @@ export class KeyHandler {
       document.getElementById("ready").disabled = true;
     };
     document.getElementById("restart").onclick = function () {
-      document.removeEventListener("keydown", keyEvent(event));
       sendRestart();
     }
   }
   //player moves
   startGame() {
-    document.addEventListener("keydown", this.keyEvent(event.code));
+    if (this.gameStart === 0) {
+      document.addEventListener("keydown", (event) => {
+        if (
+          event.code === "ArrowRight" ||
+          event.code === "ArrowLeft" ||
+          event.code === "ArrowUp" ||
+          event.code === "ArrowDown" ||
+          event.code === "Space"
+        ) {
+          let pressedKey = event.code;
+          sendPlayerMovement(pressedKey);
+        }
+      });
+    } 
+    this.gameStart++
   }
   keyEvent(event) {
     if (
