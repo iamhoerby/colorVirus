@@ -12,10 +12,7 @@ const nsp = io.of("/game-space");
 // Hier die Klassen importieren
 let game = require("./Game.js");
 let Game = game.Game;
-const player = require("./Player.js");
-const Player = player.Player;
 const extent = 64;
-
 var newGame;
 let connectionCounter = 0;
 
@@ -27,13 +24,12 @@ nsp.on("connection", function (socket) {
     newGame.playerDisconnect();
     connectionCounter--;
   });
-  socket.on("playerConnect", function (canvas) {
+  socket.on("playerConnect", function () {
     if (connectionCounter === 0) {
       newGame = new Game(extent);
     }
     connectionCounter++;
     newGame.playerConnect();
-    newGame.canvas = canvas;
   });
 
   socket.on("playerName", function (name) {
@@ -51,14 +47,13 @@ nsp.on("connection", function (socket) {
 
   socket.on("playerMovement", function (pressedKey) {
     newGame.updateMovement(socket.id, pressedKey);
-    //player.update(pressedKey)
+  });
+  socket.on("restart", function () {
+    newGame.restart(); 
   });
 });
 
-// Ab hier ausgehende Nachrichten also Server -> Client in Funktionen die von Game.js aufgerufen können werden.
-// Alle Funktionen exportieren mit module.exports. Bis jetzt hat keine schreibweise funktioniert bis auf diese.
-// Also diese bitte benutzen
-
+// Ab hier ausgehende Nachrichten also Server -> Client in Funktionen die von Game.js aufgerufen können werden
 module.exports.sendDifficultyToClient = (difficulty) =>
   nsp.to("GameRoom").emit("setDifficulty", difficulty);
 module.exports.sendStartGame = () => nsp.emit("startGame");

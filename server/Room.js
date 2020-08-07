@@ -5,6 +5,7 @@ class Room {
     this.number = number;
     this.colors = ["red", "blue", "yellow", "green", "orange", "violet"]; //colours for door
     this.doorColor = this.pickColor(); //picking random colour for door
+    //random position for door
     this.door = new Door(
       this.doorColor,
       "Closed",
@@ -14,16 +15,14 @@ class Room {
             this.extent / 4
         ),
         y: 0,
-      }, //random position for door
+      }, 
       this.extent
     );
-    // this.monster = new Monster("green", this.cellSize, this.context);
 
     //coordinates x (random) and y (fixed) for obstacles, depending on extent size. Helps to use extent of any value: 16, 32, 64...
     this.randCoord = this.setObstCoord();
-    this.moreRandCoord = this.randomize(this.randCoord); ///!!!
+    this.moreRandCoord = this.randomize(this.randCoord); // turning 7 random coordinates in 28 smaller blocks
 
-    // setInterval(this.draw(), 500);
   }
   pickColor() {
     if (this.playerCount > 1) {
@@ -154,7 +153,6 @@ class Room {
   }
 
   update() {
-    // return this.randCoord;
     return this.moreRandCoord;
   }
 }
@@ -175,4 +173,4 @@ module.exports = {
   Room: Room,
   Door: Door,
 };
-// new Room(document.getElementById('myCanvas'), 64, 0);
+

@@ -14,6 +14,13 @@ export class Rendering {
     document.getElementById("startName").classList.add("displayNone");
     document.getElementById("difficulty").classList.remove("displayNone");
     document.getElementById("ready").classList.remove("displayNone");
+    document.getElementById("hard").disabled = false;
+    document.getElementById("middle").disabled = false;
+    document.getElementById("easy").disabled = false;
+    document.getElementById("hard").classList.remove("locked");
+    document.getElementById("middle").classList.remove("locked");
+    document.getElementById("easy").classList.remove("locked");
+    document.getElementById("ready").disabled = false;
     switch (difficulty) {
       case 1:
         document.getElementById("middle").disabled = true;
@@ -46,6 +53,9 @@ export class Rendering {
     ).height;
     this.cellSize = this.canvas.width / this.extent;
     document.getElementById("canvas").classList.remove("displayNone");
+  }
+  restart() {
+    document.getElementById("gameOver").classList.add("displayNone");
   }
   drawTimer(time) {
     document.getElementById("timer").innerHTML = time;
@@ -102,31 +112,25 @@ export class Rendering {
     this.context.fillRect(
       coord.x * this.cellSize,
       coord.y * this.cellSize,
-      (this.cellSize * this.extent) / 32,
-      (this.cellSize * this.extent) / 32
+      (this.cellSize * this.extent) / (this.extent/2),
+      (this.cellSize * this.extent) / (this.extent/2)
     );
   }
 
   // creates color "aura" around obstacles. Pure cosmetic effect, has nothing to do with gameplay
-  /* drawObstEffect(coord) {
-    let colors = ["red", "orange", "yellow", "green", "blue", "violet"];
-    this.context.fillStyle = "light" + colors[Math.floor(Math.random() * colors.length)];
+  drawObstEffect(coord, color) {
+    this.context.fillStyle = color;
     this.context.beginPath();
-    this.context.arc(coord.x * this.cellSize +  (this.cellSize * this.extent) / 32, 
-                      coord.y * this.cellSize + (this.cellSize * this.extent) / 32, 
-                      this.cellSize*3, 0, 2 * Math.PI);
+    this.context.arc((coord.x + 1) * this.cellSize, (coord.y + 1) * this.cellSize, (this.cellSize * this.extent) / (this.extent/2), 0, 2 * Math.PI);
     this.context.fill();
-  }
-*/
+    console.log(color);
+    }
 
   drawRoom(gameStateRoomCoord) {
     //drawing room itself: borders, door, obstacles
-    //this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    //this.drawBorder();
     for (let i = 0; i < gameStateRoomCoord.length; i++) {
       this.drawObstacle(gameStateRoomCoord[i]);
     }
-    //this.door.draw();
   }
   //function for drawing a door
   drawDoor(gameStateDoor) {
@@ -134,37 +138,44 @@ export class Rendering {
     this.context.fillRect(
       gameStateDoor.position.x * this.cellSize,
       gameStateDoor.position.y * this.cellSize,
-      (this.cellSize * this.extent) / 8,
-      (this.cellSize * this.extent) / 32
+      (this.cellSize * this.extent) / (this.extent/8),
+      (this.cellSize * this.extent) / (this.extent/2)
     );
   }
 
-  /* makeGlow(obstacle, gameStatePlayer) {
-    for (let i = 0; i < obstacle.length; i++){
-      if (gameStatePlayer.bullet.x + 1 === obstacle[i].x &&
-          gameStatePlayer.bullet.y === obstacle[i].y ||
-          gameStatePlayer.bullet.y === obstacle[i].y + 1) 
-          {
-          this.drawObstEffect(obstacle[i]);
+  /* If a bullet hit an obstacle, glow effect will be drown*/ 
+  makeGlow(obstacle, gameStatePlayer) {
+    for (let i = 0; i < obstacle.length; i++) {
+      for (let j = 0; j < gameStatePlayer.length; j++) {
+        if (gameStatePlayer[j].bullet.direction === "right" && gameStatePlayer[j].bullet.x + 1 === obstacle[i].x && 
+            (gameStatePlayer[j].bullet.y === obstacle[i].y || gameStatePlayer[j].bullet.y === obstacle[i].y + 1)) {
+            this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);
+            }
+        if (gameStatePlayer[j].bullet.direction === "left" && gameStatePlayer[j].bullet.x - 1 === obstacle[i].x + 1 && 
+            (gameStatePlayer[j].bullet.y === obstacle[i].y || gameStatePlayer[j].bullet.y === obstacle[i].y + 1)) {
+              this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);    
           }
-      else if (gameStatePlayer.bullet.x - 1 === obstacle[i].x + 1 && 
-          this.y === obstacle[i].y ||
-          this.y === obstacle[i].y + 1) 
-          {
-          this.move = 1;
-      }
+        if (gameStatePlayer[j].bullet.direction === "down" && gameStatePlayer[j].bullet.y + 1 === obstacle[i].y && 
+            (gameStatePlayer[j].bullet.x === obstacle[i].x || gameStatePlayer[j].bullet.x === obstacle[i].x + 1)) {
+              this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);    
+          }
+        else if (gameStatePlayer[j].bullet.direction === "up" && gameStatePlayer[j].bullet.y - 1 === obstacle[i].y + 1 && 
+            (gameStatePlayer[j].bullet.x === obstacle[i].x || gameStatePlayer[j].bullet.x === obstacle[i].x + 1)) {
+              this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);    
+          }
+       }
     }
-  }*/
+  }
 
   draw(gameState) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    //  this.makeGlow(gameState.room, gameState.monsters);
+    this.makeGlow(gameState.room, gameState.players);
     this.drawRoom(gameState.room);
     this.drawDoor(gameState.door);
     for (let x = 0; x < gameState.players.length; x++) {
       this.drawPlayer(gameState.players[x]);
-      if (gameState.players[x].shoot === true) {
+      if (gameState.players[x].shoot) {
         this.drawBullet(gameState.players[x]);
       }
     }

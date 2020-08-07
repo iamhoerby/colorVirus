@@ -1,5 +1,12 @@
 # SEP project group O
 
+# Wie man das Spiel zum Laufen bringt:
+1. Clone and save the repository
+2. Install the dependencies with "npm i"
+3. Enter "npm start" to start the server on port 3000
+4. Open "http://localhost:3000/" in your browser
+5. Read the rules before you enter your name and start the game
+
 This is a boilerplate repository for the JavaScript SEP.
 
 Be sure to have [NodeJS](https://nodejs.org/en/) and [NPM](https://www.npmjs.com/) installed.

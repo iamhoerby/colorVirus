@@ -4,13 +4,11 @@ const Player = player.Player;
 const room = require("./Room.js");
 const Room = room.Room;
 const Monster = require("./Monster.js");
+const { json } = require("express");
 
 class Game {
   constructor(extent) {
     this.extent = extent;
-    this.canvas = 0;
-    this.cellSize = this.canvas.width / this.extent;
-    // this.context = this.canvas.getContext('2d');
     this.difficulty = 0;
     this.levelCounter = 0;
     this.pause = false;
@@ -50,49 +48,71 @@ class Game {
       clearInterval(this.loopIntervall);
       clearInterval(this.timerInterval);
       this.difficulty = 0; 
+      this.room = null; 
     }
   }
   newPlayer(name, socketID) {
     this.connectionCount++;
+    this.players.set(
+      socketID,
+      new Player(
+        0,
+        0,
+        "white",
+        3,
+        "ArrowRight",
+        socketID,
+        name,
+        "right",
+        false,
+        this.extent
+      )
+    );
+    this.setStartPosition(socketID);
+    server.sendDifficultyToClient(this.difficulty);
+  }
+  restart() {
+    for (var key of this.players.keys()) {
+      this.setStartPosition(key)
+      this.players.get(key).ready = 0; 
+      this.players.get(key).alive = true; 
+      this.players.get(key).lifes = 3; 
+      console.log(key + " not ready")
+    }
+    this.monsters = [];
+    this.readyCount = 0;
+    this.setDifficulty(0);
+  }
+  setStartPosition(key){
     let positionX = 0;
     let positionY = 0;
     let colorNr = 0;
     switch (this.connectionCount % 4) {
       case 0:
         positionX = 1;
-        positionY = 1;
+        positionY = 0;
         colorNr = 1;
         break;
       case 1:
         positionX = 0;
-        positionY = 0;
+        positionY = 1;
         colorNr = 3;
         break;
       case 2:
         positionX = 1;
-        positionY = 0;
+        positionY = 1;
         colorNr = 2;
         break;
       case 3:
         positionX = 0;
-        positionY = 1;
+        positionY = 0;
         colorNr = 3;
         break;
     }
     let color = this.colorDecode(colorNr);
-    this.players.set(
-      socketID,
-      new Player(
-        positionX * (this.extent - 1),
-        positionY * (this.extent - 1),
-        color,
-        3,
-        "ArrowRight",
-        socketID,
-        name
-      )
-    );
-    server.sendDifficultyToClient(this.difficulty);
+    this.players.get(key).x = positionX * (this.extent - 1);
+    this.players.get(key).y = positionY * (this.extent - 1); 
+    this.players.get(key).color = color;
   }
   setDifficulty(difficulty) {
     this.difficulty = difficulty;
@@ -114,6 +134,7 @@ class Game {
   }
   gameOver() {
     clearInterval(this.timerInterval);
+    clearInterval(this.loopIntervall);
     server.sendGameOver(this.levelCounter);
   }
   // Spiel-Timer
@@ -195,6 +216,7 @@ class Game {
         this.damage(key, this.gameState.monsters[i]);
         this.killMonster(key, this.monsters[i]);
         this.gameState.monsters[i].alive = this.monsters[i].alive;
+        this.playerVsPlayer(key);
       }
     }
     for (var key of this.players.keys()) {
@@ -312,19 +334,7 @@ class Game {
     return color;
   }
   monsterCreator() {
-    var numberMonsters;
-    switch (this.difficulty) {
-      case 1:
-        numberMonsters = 3;
-        break;
-      case 2:
-        numberMonsters = 6;
-        break;
-      case 3:
-        numberMonsters = 9;
-        break;
-    }
-    for (let i = 0; i < numberMonsters; i++) {
+    for (let i = 0; i < this.difficulty*3; i++) {
       this.monsters.push(
         new Monster(
           Math.floor(Math.random() * 32),
@@ -341,52 +351,6 @@ class Game {
     }
   }
 
-  pickColor(color) {
-    if (this.monsters.length === 2) {
-      if (color === "red") {
-        this.monsterColors = ["yellow", "#ff00ff"];
-      } else if (color === "orange") {
-        this.monsterColors = ["yellow", "red"];
-      } else if (color === "yellow") {
-        this.monsterColors = ["red", "green"];
-      } else if (color === "green") {
-        this.monsterColors = ["yellow", "blue"];
-      } else if (color === "blue") {
-        this.monsterColors = ["	#00FFFF", "#ff00ff"];
-      } else {
-        this.monsterColors = ["blue", "red"];
-      }
-    } else if (this.monsters.length === 3) {
-      if (color === "red") {
-        this.monsterColors = ["yellow", "pink", "purple"];
-      } else if (color === "orange") {
-        this.monsterColors = ["yellow", "brown", "#ff00ff"];
-      } else if (color === "yellow") {
-        this.monsterColors = ["red", "green", "#f5f5dc"];
-      } else if (color === "green") {
-        this.monsterColors = ["yellow", "#00FFFF", "#ff00ff"];
-      } else if (color === "blue") {
-        this.monsterColors = ["#00FFFF", "pink", "purple"];
-      } else {
-        this.monsterColors = ["blue", "yellow", "purple"];
-      }
-    } else if (this.monsters.length === 4) {
-      if (color === "red") {
-        this.monsterColors = ["yellow", "pink", "purple", "blue"];
-      } else if (color === "orange") {
-        this.monsterColors = ["yellow", "yellow", "#ff00ff", "brown"];
-      } else if (color === "yellow") {
-        this.monsterColors = ["red", "green", "#f5f5dc", "violet"];
-      } else if (color === "green") {
-        this.monsterColors = ["yellow", "#00FFFF", "#ff00ff", "pink"];
-      } else if (color === "blue") {
-        this.monsterColors = ["#00FFFF", "pink", "purple", "purple"];
-      } else {
-        this.monsterColors = ["blue", "yellow", "purple", "green"];
-      }
-    }
-  }
-
   openDoor(key, door) {
     if (
       this.players.get(key).y <= 2 &&
@@ -400,34 +364,7 @@ class Game {
       this.gameState.monsters = [];
       this.room = new Room(this.extent, 1, this.playerCount);
       for (var key of this.players.keys()) {
-        let positionX = 0;
-        let positionY = 0;
-        let colorNr = 0;
-        switch (this.connectionCount % 4) {
-          case 0:
-            positionX = 1;
-            positionY = 1;
-            colorNr = 1;
-            break;
-          case 1:
-            positionX = 0;
-            positionY = 0;
-            colorNr = 3;
-            break;
-          case 2:
-            positionX = 1;
-            positionY = 0;
-            colorNr = 2;
-            break;
-          case 3:
-            positionX = 0;
-            positionY = 1;
-            colorNr = 3;
-            break;
-        }
-        this.players.get(key).x = positionX;
-        this.players.get(key).y = positionY;
-        this.players.get(key).color = this.colorDecode(colorNr);
+        this.setStartPosition(key);
       }
       this.monsterCreator();
       this.loop();
