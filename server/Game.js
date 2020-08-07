@@ -38,7 +38,8 @@ class Game {
     this.monsterColors = ["yellow", "blue", "red"];
     this.loopIntervall;
     this.timerInterval;
-  }
+  } 
+  // Count Connections -- Sebastian 
   playerConnect() {
     this.playerCount++;
   }
@@ -51,6 +52,7 @@ class Game {
       this.room = null; 
     }
   }
+  // Add Player -- Sebastian 
   newPlayer(name, socketID) {
     this.connectionCount++;
     this.players.set(
@@ -71,6 +73,7 @@ class Game {
     this.setStartPosition(socketID);
     server.sendDifficultyToClient(this.difficulty);
   }
+  // Restart Game with default values -- Sebastian 
   restart() {
     for (var key of this.players.keys()) {
       this.setStartPosition(key)
@@ -83,6 +86,7 @@ class Game {
     this.readyCount = 0;
     this.setDifficulty(0);
   }
+  // Set Start Position and Color of Players -- Sebastian 
   setStartPosition(key){
     let positionX = 0;
     let positionY = 0;
@@ -118,6 +122,7 @@ class Game {
     this.difficulty = difficulty;
     server.sendDifficultyToClient(this.difficulty);
   }
+  // Set Player on ready and start Game when all players are ready -- Sebastian 
   playerReady(socketID) {
     this.players.get(socketID).ready = 1;
     this.readyCount++;
@@ -125,6 +130,7 @@ class Game {
       this.startGame();
     }
   }
+  // Start necessary Loops for Game and create necessary Monsters
   startGame() {
     server.sendStartGame();
     this.timer();
@@ -132,6 +138,7 @@ class Game {
     this.monsterCreator();
     this.loop();
   }
+  // Stop all Loops after the game
   gameOver() {
     clearInterval(this.timerInterval);
     clearInterval(this.loopIntervall);
@@ -220,7 +227,7 @@ class Game {
       }
     }
     for (var key of this.players.keys()) {
-      this.checkPositions(key);
+      this.checkPlayerPositions(key);
       this.openDoor(key, this.gameState.door);
     }
   }
@@ -298,32 +305,35 @@ class Game {
       }
     }
   }
-
-  checkPositions(key) {
+  // Check if players are on the same position so they can mix colors -- Sebastian 
+  checkPlayerPositions(key) {
     for (var key2 of this.players.keys()) {
       if (
         key !== key2 &&
         this.players.get(key).x === this.players.get(key2).x &&
         this.players.get(key).y === this.players.get(key2).y
       ) {
-        this.colorSwitch(key, key2);
+        this.colorMix(key, key2);
       }
     }
   }
-  colorSwitch(key1, key2) {
+  // Mix colors of players -- Sebastian 
+  colorMix(key1, key2) {
     let color1 = this.colorCode(this.players.get(key1).color);
     let color2 = this.colorCode(this.players.get(key2).color);
     if (color1 !== color2) {
-      let colorSwitch = color1 + color2 + 1;
-      let result = this.colorDecode(colorSwitch);
+      let colorMix = color1 + color2 + 1;
+      let result = this.colorDecode(colorMix);
       this.players.get(key1).color = result;
       this.players.get(key2).color = result;
     }
   }
+  // Change color to number so it can be used for calculations -- Sebastian 
   colorCode(color) {
     let colorNr = this.colors.indexOf(color);
     return colorNr;
   }
+  // Change number back to color -- Sebastian 
   colorDecode(nummer) {
     let color = 0;
     if (nummer <= 7) {
@@ -350,7 +360,7 @@ class Game {
       });
     }
   }
-
+  // End of one round
   openDoor(key, door) {
     if (
       this.players.get(key).y <= 2 &&
