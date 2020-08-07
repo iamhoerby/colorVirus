@@ -216,6 +216,7 @@ class Game {
         this.damage(key, this.gameState.monsters[i]);
         this.killMonster(key, this.monsters[i]);
         this.gameState.monsters[i].alive = this.monsters[i].alive;
+        this.playerVsPlayer(key);
       }
     }
     for (var key of this.players.keys()) {

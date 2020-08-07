@@ -1,10 +1,3 @@
-const server = require("./server.js");
-const player = require("./Player.js");
-const Player = player.Player;
-const room = require("./Room.js");
-const Room = room.Room;
-const Monster = require("./Monster.js");
-
 class Bullet {
   constructor(x, y, direction, speed, color, shoot, coord) {
     this.x = x;
