@@ -26,15 +26,7 @@ class Player {
     this.shoot = shoot;
     this.extent = extent;
     this.ready = 0;
-    this.bullet = new Bullet(
-      this.x,
-      this.y,
-      this.direction,
-      2,
-      "black",
-      this.shoot,
-      this.extent
-    );
+    this.bullet = new Bullet();
     this.obstacle = 0;
     this.colors = [ ["navy", "royalblue", "lightsteelblue"], 
                     ["darkred", "red", "lightcoral"], 
@@ -78,8 +70,8 @@ class Player {
   }
   updateLifes() {
     let result = "";
-    let i = -1;
-    let j = -1;
+    let i = 0;
+    let j = 0;
     switch(this.color){
       case "blue": i = 0; break;
       case "red": i = 1; break;
@@ -88,13 +80,13 @@ class Player {
       case "orange": i = 4; break;
       case "violet": i = 5; break;
       case "brown": i = 6; break;
-      default: i = -1; break;
+      default: i = 0; break;
     }
     switch (this.lifes){
       case 3: j = 0; break;
       case 2: j = 1; break;
       case 1: j = 2; break;
-      default: j = -1; break;
+      default: j = 0; break;
     }
     result = this.colors[i][j];
     return result;
