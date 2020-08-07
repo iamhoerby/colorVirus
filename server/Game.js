@@ -38,8 +38,8 @@ class Game {
     this.monsterColors = ["yellow", "blue", "red"];
     this.loopIntervall;
     this.timerInterval;
-  } 
-  // Count Connections -- Sebastian 
+    this.positionCounter = 0; 
+  }
   playerConnect() {
     this.playerCount++;
   }
@@ -75,6 +75,7 @@ class Game {
   }
   // Restart Game with default values -- Sebastian 
   restart() {
+    this.positionCounter = 0;
     for (var key of this.players.keys()) {
       this.setStartPosition(key)
       this.players.get(key).ready = 0; 
@@ -88,10 +89,12 @@ class Game {
   }
   // Set Start Position and Color of Players -- Sebastian 
   setStartPosition(key){
+    this.positionCounter++; 
+    console.log(this.positionCounter)
     let positionX = 0;
     let positionY = 0;
     let colorNr = 0;
-    switch (this.connectionCount % 4) {
+    switch (this.positionCounter % 4) {
       case 0:
         positionX = 1;
         positionY = 0;
@@ -373,6 +376,7 @@ class Game {
       this.monsters = [];
       this.gameState.monsters = [];
       this.room = new Room(this.extent, 1, this.playerCount);
+      this.positionCounter = 0; 
       for (var key of this.players.keys()) {
         this.setStartPosition(key);
       }
