@@ -9,9 +9,6 @@ const { json } = require("express");
 class Game {
   constructor(extent) {
     this.extent = extent;
-    this.canvas = 0;
-    this.cellSize = this.canvas.width / this.extent;
-    // this.context = this.canvas.getContext('2d');
     this.difficulty = 0;
     this.levelCounter = 0;
     this.pause = false;
@@ -65,7 +62,10 @@ class Game {
         3,
         "ArrowRight",
         socketID,
-        name
+        name,
+        "right",
+        false,
+        this.extent
       )
     );
     this.setStartPosition(socketID);
@@ -334,19 +334,7 @@ class Game {
     return color;
   }
   monsterCreator() {
-    var numberMonsters;
-    switch (this.difficulty) {
-      case 1:
-        numberMonsters = 3;
-        break;
-      case 2:
-        numberMonsters = 6;
-        break;
-      case 3:
-        numberMonsters = 9;
-        break;
-    }
-    for (let i = 0; i < numberMonsters; i++) {
+    for (let i = 0; i < this.difficulty*3; i++) {
       this.monsters.push(
         new Monster(
           Math.floor(Math.random() * 32),
@@ -362,52 +350,6 @@ class Game {
       });
     }
   }
-
-  /* pickColor(color) {
-    if (this.monsters.length === 2) {
-      if (color === "red") {
-        this.monsterColors = ["yellow", "#ff00ff"];
-      } else if (color === "orange") {
-        this.monsterColors = ["yellow", "red"];
-      } else if (color === "yellow") {
-        this.monsterColors = ["red", "green"];
-      } else if (color === "green") {
-        this.monsterColors = ["yellow", "blue"];
-      } else if (color === "blue") {
-        this.monsterColors = ["	#00FFFF", "#ff00ff"];
-      } else {
-        this.monsterColors = ["blue", "red"];
-      }
-    } else if (this.monsters.length === 3) {
-      if (color === "red") {
-        this.monsterColors = ["yellow", "pink", "purple"];
-      } else if (color === "orange") {
-        this.monsterColors = ["yellow", "brown", "#ff00ff"];
-      } else if (color === "yellow") {
-        this.monsterColors = ["red", "green", "#f5f5dc"];
-      } else if (color === "green") {
-        this.monsterColors = ["yellow", "#00FFFF", "#ff00ff"];
-      } else if (color === "blue") {
-        this.monsterColors = ["#00FFFF", "pink", "purple"];
-      } else {
-        this.monsterColors = ["blue", "yellow", "purple"];
-      }
-    } else if (this.monsters.length === 4) {
-      if (color === "red") {
-        this.monsterColors = ["yellow", "pink", "purple", "blue"];
-      } else if (color === "orange") {
-        this.monsterColors = ["yellow", "yellow", "#ff00ff", "brown"];
-      } else if (color === "yellow") {
-        this.monsterColors = ["red", "green", "#f5f5dc", "violet"];
-      } else if (color === "green") {
-        this.monsterColors = ["yellow", "#00FFFF", "#ff00ff", "pink"];
-      } else if (color === "blue") {
-        this.monsterColors = ["#00FFFF", "pink", "purple", "purple"];
-      } else {
-        this.monsterColors = ["blue", "yellow", "purple", "green"];
-      }
-    }
-  } */
 
   openDoor(key, door) {
     if (

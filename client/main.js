@@ -25,7 +25,6 @@ socket.on("timer", function (time) {
   rendering.drawTimer(time);
 });
 socket.on("draw", function (gamestate) {
-  // console.log(gamestate);
   rendering.draw(gamestate);
 });
 socket.on("gameOver", function (levelCount) {
@@ -53,7 +52,3 @@ export function sendRestart() {
   socket.emit("restart");
 
 }
-
-// socket.emit('player1_damage', this.game.damage());
-
-// muss aber ein gamestate vorher initialisiert werden

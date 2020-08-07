@@ -153,7 +153,6 @@ class Room {
   }
 
   update() {
-    // return this.randCoord;
     return this.moreRandCoord;
   }
 }

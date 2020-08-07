@@ -112,8 +112,8 @@ export class Rendering {
     this.context.fillRect(
       coord.x * this.cellSize,
       coord.y * this.cellSize,
-      (this.cellSize * this.extent) / 32,
-      (this.cellSize * this.extent) / 32
+      (this.cellSize * this.extent) / (this.extent/2),
+      (this.cellSize * this.extent) / (this.extent/2)
     );
   }
 
@@ -121,7 +121,7 @@ export class Rendering {
   drawObstEffect(coord, color) {
     this.context.fillStyle = color;
     this.context.beginPath();
-    this.context.arc((coord.x + 1) * this.cellSize, (coord.y + 1) * this.cellSize, (this.cellSize * this.extent) / 32, 0, 2 * Math.PI);
+    this.context.arc((coord.x + 1) * this.cellSize, (coord.y + 1) * this.cellSize, (this.cellSize * this.extent) / (this.extent/2), 0, 2 * Math.PI);
     this.context.fill();
     console.log(color);
     }
@@ -138,8 +138,8 @@ export class Rendering {
     this.context.fillRect(
       gameStateDoor.position.x * this.cellSize,
       gameStateDoor.position.y * this.cellSize,
-      (this.cellSize * this.extent) / 8,
-      (this.cellSize * this.extent) / 32
+      (this.cellSize * this.extent) / (this.extent/8),
+      (this.cellSize * this.extent) / (this.extent/2)
     );
   }
 
@@ -175,7 +175,7 @@ export class Rendering {
     this.drawDoor(gameState.door);
     for (let x = 0; x < gameState.players.length; x++) {
       this.drawPlayer(gameState.players[x]);
-      if (gameState.players[x].shoot === true) {
+      if (gameState.players[x].shoot) {
         this.drawBullet(gameState.players[x]);
       }
     }

@@ -32,7 +32,8 @@ class Player {
       this.direction,
       2,
       "black",
-      this.shoot
+      this.shoot,
+      this.extent
     );
     this.obstacle = 0;
     this.colors = [ ["navy", "royalblue", "lightsteelblue"], 
@@ -226,7 +227,7 @@ class Player {
         x: this.x,
         y: this.y,
         color: drawColor,
-        direction: this.direction, ////
+        direction: this.direction,
         shoot: this.shoot,
         bullet: bullet1,
       };
@@ -235,7 +236,7 @@ class Player {
         x: this.x,
         y: this.y,
         color: drawColor,
-        direction: this.direction, /////
+        direction: this.direction,
         shoot: this.shoot,
         bullet: {},
       };
