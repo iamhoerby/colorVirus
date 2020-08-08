@@ -350,8 +350,8 @@ class Game {
     for (let i = 0; i < this.difficulty*3; i++) {
       this.monsters.push(
         new Monster(
-          Math.floor(Math.random() * 32),
-          Math.floor(Math.random() * 32 + 2),
+          Math.floor(Math.random() * this.extent),
+          Math.floor(Math.random() * this.extent),
           "white"
         )
       );
