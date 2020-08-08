@@ -176,6 +176,7 @@ export class Rendering {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.makeGlow(gameState.room, gameState.players);
+    this.drawMonster(gameState.monsters);
     this.drawRoom(gameState.room);
     this.drawDoor(gameState.door);
     for (let x = 0; x < gameState.players.length; x++) {
@@ -184,7 +185,6 @@ export class Rendering {
         this.drawBullet(gameState.players[x]);
       }
     }
-    this.drawMonster(gameState.monsters);
   }
   //Show Game Over Screen with restart option -- Sebastian 
   drawGameOver(levelCount) {

@@ -14,6 +14,13 @@ module.exports = class Monster {
     this.speed = 7;
     this.alive = true;
   }
+  /**
+   * defines the movement of the monsters with help of collision checking functions
+   * @param {number} frames framerate 
+   * @param {object} coord coordinates of the obstacles
+   * @param {object} door coordinates of the door
+   * @param {number} extent extent of the canvas
+   */
   update(frames, coord, door, extent) {
     this.collisionObs(coord);
     this.collisionDoor(door);
@@ -36,6 +43,10 @@ module.exports = class Monster {
       }
     }
   }
+  /**
+   * prevents overlap with the obstacles
+   * @param {object} coord coordinates of the obstacles
+   */
   collisionObs(coord) {
     for (let i = 0; i < coord.length; i++) {
       if (!this.vertical) {
@@ -65,6 +76,10 @@ module.exports = class Monster {
       }
     }
   }
+  /**
+   * prevents overlap with the door
+   * @param {object} door coordinates of the door
+   */
   collisionDoor(door) {
     if (!this.vertical) {
       if (this.x + 1 === door.x && (this.y === 0 || this.y === 1)) {
