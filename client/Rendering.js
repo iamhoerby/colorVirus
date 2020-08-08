@@ -110,9 +110,8 @@ export class Rendering {
       this.cellSize / 2
     );
   }
-
+/* Andrei: drawing obstacle. It's a black rectangle with size 2x2 */
   drawObstacle(coord) {
-    // function for obstacles drawing
     this.context.fillStyle = "black";
     this.context.fillRect(
       coord.x * this.cellSize,
@@ -122,7 +121,8 @@ export class Rendering {
     );
   }
 
-  // creates color "aura" around obstacles. Pure cosmetic effect, has nothing to do with gameplay
+/* Andrei: this function creates color "aura" around obstacles hitted with a bullet. 
+  Pure cosmetic effect, has nothing to do with gameplay */
   drawObstEffect(coord, color) {
     this.context.fillStyle = color;
     this.context.beginPath();
@@ -131,13 +131,14 @@ export class Rendering {
     console.log(color);
     }
 
+/* Andrei: drawing room itself: borders, door, obstacles */
   drawRoom(gameStateRoomCoord) {
-    //drawing room itself: borders, door, obstacles
     for (let i = 0; i < gameStateRoomCoord.length; i++) {
       this.drawObstacle(gameStateRoomCoord[i]);
     }
   }
-  //function for drawing a door
+
+/* Andre: function for drawing a door. Rectangle with preset color*/
   drawDoor(gameStateDoor) {
     this.context.fillStyle = gameStateDoor.color;
     this.context.fillRect(
@@ -148,13 +149,13 @@ export class Rendering {
     );
   }
 
-  /* If a bullet hit an obstacle, glow effect will be drown*/ 
+  /*Andrei: if a bullet hits an obstacle, glow effect will be drown*/ 
   makeGlow(obstacle, gameStatePlayer) {
     for (let i = 0; i < obstacle.length; i++) {
-      for (let j = 0; j < gameStatePlayer.length; j++) {
+      for (let j = 0; j < gameStatePlayer.length; j++) {   // if a bullet is near an obstacle and next coordinates will intersect it...
         if (gameStatePlayer[j].bullet.direction === "right" && gameStatePlayer[j].bullet.x + 1 === obstacle[i].x && 
             (gameStatePlayer[j].bullet.y === obstacle[i].y || gameStatePlayer[j].bullet.y === obstacle[i].y + 1)) {
-            this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);
+            this.drawObstEffect(obstacle[i], gameStatePlayer[j].color); // ...an effect will appear
             }
         if (gameStatePlayer[j].bullet.direction === "left" && gameStatePlayer[j].bullet.x - 1 === obstacle[i].x + 1 && 
             (gameStatePlayer[j].bullet.y === obstacle[i].y || gameStatePlayer[j].bullet.y === obstacle[i].y + 1)) {
@@ -172,6 +173,7 @@ export class Rendering {
     }
   }
 
+  /* Drawing everything from above  */
   draw(gameState) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);

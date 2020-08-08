@@ -1,11 +1,14 @@
+/**Andrei: This file contains classes "Room" and "Door". They describe game field and its mechanik**/
+
+/*Andrei: Class Room. Describes field, its border and random generated obstacles */
 class Room {
   constructor(extent, number, playerCount) {
     this.playerCount = playerCount;
     this.extent = extent;
     this.number = number;
-    this.colors = ["red", "blue", "yellow", "green", "orange", "violet"]; //colours for door
-    this.doorColor = this.pickColor(); //picking random colour for door
-    //random position for door
+    this.colors = ["red", "blue", "yellow", "green", "orange", "violet"]; //colors for door
+    this.doorColor = this.pickColor(); //picking random color for door
+    /* random position for door */
     this.door = new Door(
       this.doorColor,
       "Closed",
@@ -15,15 +18,15 @@ class Room {
             this.extent / 4
         ),
         y: 0,
-      }, 
+      },
       this.extent
     );
 
-    //coordinates x (random) and y (fixed) for obstacles, depending on extent size. Helps to use extent of any value: 16, 32, 64...
+    /*coordinates x (random) and y (fixed) for obstacles, depending on extent size. Helps to use extent of any value: 16, 32, 64...*/
     this.randCoord = this.setObstCoord();
     this.moreRandCoord = this.randomize(this.randCoord); // turning 7 random coordinates in 28 smaller blocks
-
   }
+  /*Picks random color from "colors"-array. If there is less then 2 players, picks only from first 3 elements */
   pickColor() {
     if (this.playerCount > 1) {
       return this.colors[Math.floor(Math.random() * this.colors.length)];
@@ -31,17 +34,22 @@ class Room {
       return this.colors[Math.floor(Math.random() * 3)];
     }
   }
-  // Room update *** Andrej *** 23.7.2020
+
+  /* creating random coordinate x in range between 1/8 of extent and 7/8 of extent */
   randCoordX() {
     return Math.floor(
       Math.random() * (this.extent * (7 / 8) - this.extent / 8) +
         this.extent / 8
     );
   }
+
+  /* coordinate y */
+
   notSoRandCoordY(number) {
     return this.extent / 8 + (this.extent / 8) * number;
   }
 
+  /* creating array of 7 objects, containing coordinates x and y */
   setObstCoord() {
     let coord = [];
     for (let i = 0; i < 7; i++) {
@@ -53,6 +61,7 @@ class Room {
     return coord;
   }
 
+  /* four functions needed for correct "tetris-block" drawing */
   notWest() {
     let checkxy = { East: true, West: false, South: true, North: true };
     return checkxy;
@@ -73,6 +82,7 @@ class Room {
     return checkxy;
   }
 
+  /* four functions for setting coordinates for new obstacle sub-block */
   stepWest(coord) {
     return { x: coord.x - 2, y: coord.y };
   }
@@ -89,9 +99,8 @@ class Room {
     return { x: coord.x, y: coord.y + 2 };
   }
 
-  /*Andrej 24.07*/
+  /*This funcktion will randomize the obstacles by splitting it on four 2x2 blocks and drawing them in random sequence*/
 
-  //This funcktion will randomize the obstacles by splitting it on four 2x2 blocks and drawing them in random sequence
   randomize(somecoord) {
     let newCoord = [];
     for (let i = 0; i < somecoord.length; i++) {
@@ -152,11 +161,13 @@ class Room {
     return newCoord;
   }
 
+  /* returning the array of 28 elements, containg coordinates for each obsctacle sub-block */
   update() {
     return this.moreRandCoord;
   }
 }
 
+/* class Door */
 class Door {
   constructor(color, state, position, extent, cellSize, context) {
     this.color = color;
@@ -173,4 +184,3 @@ module.exports = {
   Room: Room,
   Door: Door,
 };
-
