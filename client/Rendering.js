@@ -43,6 +43,7 @@ export class Rendering {
         document
           .getElementById("submitDifficulty")
           .classList.remove("displayNone");
+          document.getElementById("ready").disabled = true;
         break;
     }
   }
@@ -51,7 +52,7 @@ export class Rendering {
     document.getElementById("difficulty").classList.add("displayNone");
     document.getElementById("difficultyRules").classList.add("displayNone");
     document.getElementById("ready").classList.add("displayNone");
-    document.getElementById("myCanvas").height = window.innerHeight * 0.75; //calculate Canvas heigth so it is always completly  visible
+    document.getElementById("myCanvas").height = window.innerHeight * 0.75; //calculate Canvas heigth so it is always completly visible
     document.getElementById("myCanvas").width = document.getElementById(
       "myCanvas"
     ).height;
@@ -65,6 +66,7 @@ export class Rendering {
   drawTimer(time) {
     document.getElementById("timer").innerHTML = time;
   }
+  // draws monsters as squares or circles --Yoanna
   drawMonster(monsters) {
     for (let i = 0; i < monsters.length; i++) {
       if (monsters[i].alive) {
@@ -90,7 +92,7 @@ export class Rendering {
       }
     }
   }
-
+  //renders player --Janka
   drawPlayer(gameStatePlayer) {
     this.context.fillStyle = gameStatePlayer.color;
     this.context.fillRect(
@@ -100,7 +102,7 @@ export class Rendering {
       this.cellSize
     );
   }
-
+  //renders bullet --Janka
   drawBullet(gameStatePlayer) {
     this.context.fillStyle = gameStatePlayer.bullet.color;
     this.context.fillRect(
@@ -110,7 +112,7 @@ export class Rendering {
       this.cellSize / 2
     );
   }
-/* Andrei: drawing obstacle. It's a black rectangle with size 2x2 */
+//drawing obstacle. It's a black rectangle with size 2x2 --Andrei
   drawObstacle(coord) {
     this.context.fillStyle = "black";
     this.context.fillRect(
@@ -137,7 +139,7 @@ export class Rendering {
     }
   }
 
-/* Andre: function for drawing a door. Rectangle with preset color*/
+/* Andrei: function for drawing a door. Rectangle with preset color*/
   drawDoor(gameStateDoor) {
     this.context.fillStyle = gameStateDoor.color;
     this.context.fillRect(
@@ -172,9 +174,8 @@ export class Rendering {
     }
   }
 
-  /* Drawing everything from above  */
+  // Drawing everything from above --Andrei
   draw(gameState) {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.makeGlow(gameState.room, gameState.players);
     this.drawMonster(gameState.monsters);
@@ -199,6 +200,5 @@ export class Rendering {
       document.getElementById("levelCounter").innerHTML =
       "<h3>you WIN!</h3> <br> you completed " + levelCount + " level!";
     }
-    
   }
 }

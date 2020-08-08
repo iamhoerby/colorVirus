@@ -7,14 +7,14 @@ import { sendRestart } from "./main.js";
 export class KeyHandler {
   constructor() {
     this.gameStart = 0;
-    //Click to send name to server
+    //Click to send name to server --Sebastian
     document.getElementById("submitName").onclick = function () {
       let name = document.getElementById("inputName").value;
       if (name !== "") {
         sendName(name);
       }
     };
-    //click to choose difficulty
+    //click to choose difficulty --Sebastian
     let difficulty = 0;
     document.getElementById("easy").onclick = () => (difficulty = 1);
     document.getElementById("middle").onclick = () => (difficulty = 2);
@@ -24,7 +24,7 @@ export class KeyHandler {
         sendDifficultyToServer(difficulty);
       }
     };
-    //click to be ready to play
+    //click to be ready to play --Sebastian
     document.getElementById("ready").onclick = function () {
       sendReady();
       document.getElementById("ready").disabled = true;
@@ -33,7 +33,7 @@ export class KeyHandler {
       sendRestart();
     }
   }
-  //player moves
+  //player moves --Janka
   startGame() {
     if (this.gameStart === 0) {
       document.addEventListener("keydown", (event) => {

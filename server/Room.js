@@ -6,12 +6,11 @@ class Room {
     this.playerCount = playerCount;
     this.extent = extent;
     this.number = number;
-    this.colors = ["red", "blue", "yellow", "green", "orange", "violet"]; //colors for door
+    this.colors = ["red", "blue", "yellow", "green", "orange", "violet", "brown"]; //colors for door
     this.doorColor = this.pickColor(); //picking random color for door
     /* random position for door */
     this.door = new Door(
       this.doorColor,
-      "Closed",
       {
         x: Math.floor(
           Math.random() * (this.extent * (3 / 4) - this.extent / 4) +
@@ -19,7 +18,6 @@ class Room {
         ),
         y: 0,
       },
-      this.extent
     );
 
     /*coordinates x (random) and y (fixed) for obstacles, depending on extent size. Helps to use extent of any value: 16, 32, 64...*/
@@ -169,14 +167,13 @@ class Room {
 
 /* class Door */
 class Door {
-  constructor(color, state, position, extent, cellSize, context) {
+  constructor(color, position) {
     this.color = color;
-    this.state = state;
     this.position = position;
   }
 
   update() {
-    return { color: this.color, state: this.state, position: this.position };
+    return { color: this.color, position: this.position };
   }
 }
 
