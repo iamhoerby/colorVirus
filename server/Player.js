@@ -37,7 +37,7 @@ class Player {
                     ["SaddleBrown", "Peru", "BurlyWood"]
                   ]; 
   }
-
+  // player moves if there is nothing in his way --Janka
   updateMovement(pressedKey, coord) {
     if (pressedKey === "ArrowRight") {
       this.direction = "right";
@@ -68,7 +68,8 @@ class Player {
       this.bullet = new Bullet (this.x, this.y, this.direction, 1, "black", this.shoot, coord);
     }
   }
-  updateLifes() {
+  //changes color of player depending on number of lifes --Janka
+  updateLives() {
     let result = "";
     let i = 0;
     let j = 0;
@@ -91,7 +92,7 @@ class Player {
     result = this.colors[i][j];
     return result;
   }
-
+  // prevents overlap with obstacles --Janka
   collisionObstacles(coord) {
     for (let i = 0; i < coord.length; i++) {
       if (this.direction === "right") {
@@ -120,11 +121,14 @@ class Player {
       }
     }
   }
-
+  // sends values to game.js --Janka
   update() {
-    let drawColor = this.updateLifes();
+    let bullet1 = {};
+    let drawColor = this.updateLives();
     if (this.shoot) {
-      let bullet1 = this.bullet.update();
+      if (this.bullet.bulletObstacle === false){
+        bullet1 = this.bullet.update();
+      }
       return {
         x: this.x,
         y: this.y,

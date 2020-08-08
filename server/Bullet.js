@@ -8,7 +8,9 @@ class Bullet {
     this.shoot = shoot;
     this.coord = coord;
     this.extent = extent;
+    this.bulletObstacle = false;
   }
+  // implement movement of bullet --Janka
   update() {
     this.collisionObstacles(this.coord);
     if (this.direction === "right") {
@@ -37,9 +39,10 @@ class Bullet {
       y: this.y,
       direction: this.direction,
       color: this.color,
+      bulletObstacle: this.bulletObstacle
     };
   }
-
+  // checks whether next field is obstacle --Janka
   collisionObstacles(coord) {
     for (let i = 0; i < coord.length; i++) {
       if (this.direction === "right") {
@@ -47,7 +50,7 @@ class Bullet {
           this.x === coord[i].x &&
           (this.y === coord[i].y || this.y === coord[i].y + 1)
         ) {
-          this.x--;
+          this.bulletObstacle = true;
         }
       }
       else if (this.direction === "left") {
@@ -55,7 +58,7 @@ class Bullet {
           this.x === coord[i].x + 1 &&
           (this.y === coord[i].y || this.y === coord[i].y + 1)
         ) {
-          this.x++;
+          this.bulletObstacle = true;
         }
       }
       else if (this.direction === "down") {
@@ -63,7 +66,7 @@ class Bullet {
           this.y === coord[i].y &&
           (this.x === coord[i].x || this.x === coord[i].x + 1)
         ) {
-          this.y--;
+          this.bulletObstacle = true;
         }
       }
       else if (this.direction === "up") {
@@ -71,7 +74,7 @@ class Bullet {
           this.y === coord[i].y + 1 &&
           (this.x === coord[i].x || this.x === coord[i].x + 1)
         ) {
-          this.y++;
+          this.bulletObstacle = true;
         }
       }
     }
