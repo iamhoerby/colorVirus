@@ -128,7 +128,6 @@ export class Rendering {
     this.context.beginPath();
     this.context.arc((coord.x + 1) * this.cellSize, (coord.y + 1) * this.cellSize, (this.cellSize * this.extent) / (this.extent/2), 0, 2 * Math.PI);
     this.context.fill();
-    console.log(color);
     }
 
 /* Andrei: drawing room itself: borders, door, obstacles */
