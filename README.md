@@ -8,8 +8,6 @@
 4. Open "http://localhost:3000/" in your browser
 5. Read the rules before you enter your name and start the game
 
-This is a boilerplate repository for the JavaScript SEP.
-
 Be sure to have [NodeJS](https://nodejs.org/en/) and [NPM](https://www.npmjs.com/) installed.
 
 ## Useful commands
