@@ -37,7 +37,7 @@ class Game {
     };
     this.monsters = [];
     this.monsterColors = ["yellow", "blue", "red"];
-    this.loopIntervall;
+    this.loopInterval;
     this.timerInterval;
     this.positionCounter = 0;
   }
@@ -49,7 +49,7 @@ class Game {
   playerDisconnect() {
     this.playerCount--;
     if (this.playerCount === 0) {
-      clearInterval(this.loopIntervall);
+      clearInterval(this.loopInterval);
       clearInterval(this.timerInterval);
       this.difficulty = 0;
       this.room = null;
@@ -147,7 +147,7 @@ class Game {
   // Stop all Loops after the game --Janka
   gameOver() {
     clearInterval(this.timerInterval);
-    clearInterval(this.loopIntervall);
+    clearInterval(this.loopInterval);
     server.sendGameOver(this.levelCounter);
   }
   // timer functionality --Sebastian
@@ -190,7 +190,7 @@ class Game {
   }
   // update loop --Sebastian
   loop() {
-    this.loopIntervall = setInterval(() => {
+    this.loopInterval = setInterval(() => {
       this.updateGameState();
       this.drawGameState();
       this.frameCount++;
@@ -379,7 +379,7 @@ class Game {
       this.players.get(key).color === door.color
     ) {
       this.levelCounter++;
-      clearInterval(this.loopIntervall);
+      clearInterval(this.loopInterval);
       this.monsters = [];
       this.gameState.monsters = [];
       this.room = new Room(this.extent, 1, this.playerCount);
