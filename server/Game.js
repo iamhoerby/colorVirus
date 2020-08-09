@@ -86,13 +86,13 @@ class Game {
       this.players.get(key).lives = 3;
     }
     this.monsters = [];
+    this.gameState.monsters = [];
     this.readyCount = 0;
     this.setDifficulty(0);
   }
   // Set Start Position and Color of Players -- Sebastian
   setStartPosition(key) {
     this.positionCounter++;
-    console.log(this.positionCounter);
     let positionX = 0;
     let positionY = 0;
     let colorNr = 0;

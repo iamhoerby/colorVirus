@@ -58,6 +58,7 @@ export class Rendering {
     ).height;
     this.cellSize = this.canvas.width / this.extent;
     document.getElementById("canvas").classList.remove("displayNone");
+    document.getElementById("timer").classList.remove("displayNone");
   }
   // Remove Game Over Screen -- Sebastian
   restart() {
