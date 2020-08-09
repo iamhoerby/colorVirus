@@ -31,7 +31,7 @@ export class KeyHandler {
     };
     document.getElementById("restart").onclick = function () {
       sendRestart();
-    }
+    };
   }
   //player moves --Janka
   startGame() {
@@ -48,7 +48,7 @@ export class KeyHandler {
           sendPlayerMovement(pressedKey);
         }
       });
-    } 
-    this.gameStart++
+    }
+    this.gameStart++;
   }
 }

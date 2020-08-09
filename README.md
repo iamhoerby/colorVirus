@@ -1,6 +1,7 @@
 # SEP project group O
 
-# Wie man das Spiel zum Laufen bringt:
+## Wie man das Spiel zum Laufen bringt
+
 1. Clone and save the repository
 2. Install the dependencies with "npm i"
 3. Enter "npm start" to start the server on port 3000
@@ -13,11 +14,11 @@ Be sure to have [NodeJS](https://nodejs.org/en/) and [NPM](https://www.npmjs.com
 
 ## Useful commands
 
- - `npm start` to start a dev server on port 3000 (open [http://localhost:3000/](http://localhost:3000/) in your browser)
- - `npm run lint` to check for coding style and `npm run lint-fix` to apply automated fixes
- - `npm install` to install dependencies
- - `npm update` to apply compatible dependency updates (relies on semantic versioning)
- - `npm audit` to scan for known vulnerabilities and `npm audit fix` to apply automated fixes
+- `npm start` to start a dev server on port 3000 (open [http://localhost:3000/](http://localhost:3000/) in your browser)
+- `npm run lint` to check for coding style and `npm run lint-fix` to apply automated fixes
+- `npm install` to install dependencies
+- `npm update` to apply compatible dependency updates (relies on semantic versioning)
+- `npm audit` to scan for known vulnerabilities and `npm audit fix` to apply automated fixes
 
 ## Repo overview
 
@@ -43,10 +44,10 @@ You should definitely check out the [socket.io getting started tutorial](https:/
 
 ## Useful documentation
 
- - [MDN web docs](https://developer.mozilla.org/en-US/docs/Web): Excellent and detailed documentation on web technology (JavaScript, HTML and CSS)
- - [NodeJS](https://nodejs.org/docs/latest/api/): Technical documentation on the JavaScript runtime and its API
- - [socket.io server](https://socket.io/docs/server-api/) and [socket.io client](https://socket.io/docs/client-api/) for the websocket library
- - [Git](https://git-scm.com/doc): Everything (and a lot more) you ever wanted to know about your favorite source control tool
+- [MDN web docs](https://developer.mozilla.org/en-US/docs/Web): Excellent and detailed documentation on web technology (JavaScript, HTML and CSS)
+- [NodeJS](https://nodejs.org/docs/latest/api/): Technical documentation on the JavaScript runtime and its API
+- [socket.io server](https://socket.io/docs/server-api/) and [socket.io client](https://socket.io/docs/client-api/) for the websocket library
+- [Git](https://git-scm.com/doc): Everything (and a lot more) you ever wanted to know about your favorite source control tool
 
 ## Git workflow
 

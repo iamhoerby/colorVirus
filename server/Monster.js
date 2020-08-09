@@ -16,7 +16,7 @@ module.exports = class Monster {
   }
   /**
    * defines the movement of the monsters with help of collision checking functions
-   * @param {number} frames framerate 
+   * @param {number} frames framerate
    * @param {object} coord coordinates of the obstacles
    * @param {object} door coordinates of the door
    * @param {number} extent extent of the canvas
@@ -25,18 +25,18 @@ module.exports = class Monster {
     this.collisionObs(coord);
     this.collisionDoor(door);
 
-    if (frames % this.speed === 0) {
+    if (frames % this.speed == 0) {
       if (this.vertical) {
-        if (this.y === extent - 2) {
+        if (this.y == extent - 2) {
           this.move = -1;
-        } else if (this.y === 0) {
+        } else if (this.y == 0) {
           this.move = 1;
         }
         this.y += this.move;
       } else {
-        if (this.x === extent - 2) {
+        if (this.x == extent - 2) {
           this.move = -1;
-        } else if (this.x === 0) {
+        } else if (this.x == 0) {
           this.move = 1;
         }
         this.x += this.move;
@@ -51,25 +51,25 @@ module.exports = class Monster {
     for (let i = 0; i < coord.length; i++) {
       if (!this.vertical) {
         if (
-          this.x + 1 === coord[i].x &&
-          (this.y === coord[i].y || this.y === coord[i].y + 1)
+          this.x + 1 == coord[i].x &&
+          (this.y == coord[i].y || this.y == coord[i].y + 1)
         ) {
           this.move = -1;
         } else if (
-          this.x - 1 === coord[i].x + 1 &&
-          (this.y === coord[i].y || this.y === coord[i].y + 1)
+          this.x - 1 == coord[i].x + 1 &&
+          (this.y == coord[i].y || this.y == coord[i].y + 1)
         ) {
           this.move = 1;
         }
       } else {
         if (
-          this.y + 1 === coord[i].y &&
-          (this.x === coord[i].x || this.x === coord[i].x + 1)
+          this.y + 1 == coord[i].y &&
+          (this.x == coord[i].x || this.x == coord[i].x + 1)
         ) {
           this.move = -1;
         } else if (
-          this.y - 1 === coord[i].y + 1 &&
-          (this.x === coord[i].x || this.x === coord[i].x + 1)
+          this.y - 1 == coord[i].y + 1 &&
+          (this.x == coord[i].x || this.x == coord[i].x + 1)
         ) {
           this.move = 1;
         }
@@ -82,13 +82,13 @@ module.exports = class Monster {
    */
   collisionDoor(door) {
     if (!this.vertical) {
-      if (this.x + 1 === door.x && (this.y === 0 || this.y === 1)) {
+      if (this.x + 1 == door.x && (this.y == 0 || this.y == 1)) {
         this.move = -1;
-      } else if (this.x - 1 === door.x + 7 && (this.y === 0 || this.y === 1)) {
+      } else if (this.x - 1 == door.x + 7 && (this.y == 0 || this.y == 1)) {
         this.move = 1;
       }
     } else {
-      if (this.x >= door.x && this.x <= door.x + 7 && this.y === 2) {
+      if (this.x >= door.x && this.x <= door.x + 7 && this.y == 2) {
         this.move = 1;
       }
     }

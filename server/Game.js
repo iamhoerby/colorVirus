@@ -39,7 +39,7 @@ class Game {
     this.monsterColors = ["yellow", "blue", "red"];
     this.loopIntervall;
     this.timerInterval;
-    this.positionCounter = 0; 
+    this.positionCounter = 0;
   }
   // --Sebi
   playerConnect() {
@@ -51,11 +51,11 @@ class Game {
     if (this.playerCount === 0) {
       clearInterval(this.loopIntervall);
       clearInterval(this.timerInterval);
-      this.difficulty = 0; 
-      this.room = null; 
+      this.difficulty = 0;
+      this.room = null;
     }
   }
-  // Add Player -- Sebastian 
+  // Add Player -- Sebastian
   newPlayer(name, socketID) {
     this.connectionCount++;
     this.players.set(
@@ -76,23 +76,23 @@ class Game {
     this.setStartPosition(socketID);
     server.sendDifficultyToClient(this.difficulty);
   }
-  // Restart Game with default values -- Sebastian 
+  // Restart Game with default values -- Sebastian
   restart() {
     this.positionCounter = 0;
     for (var key of this.players.keys()) {
-      this.setStartPosition(key)
-      this.players.get(key).ready = 0; 
-      this.players.get(key).alive = true; 
-      this.players.get(key).lives = 3; 
+      this.setStartPosition(key);
+      this.players.get(key).ready = 0;
+      this.players.get(key).alive = true;
+      this.players.get(key).lives = 3;
     }
     this.monsters = [];
     this.readyCount = 0;
     this.setDifficulty(0);
   }
-  // Set Start Position and Color of Players -- Sebastian 
-  setStartPosition(key){
-    this.positionCounter++; 
-    console.log(this.positionCounter)
+  // Set Start Position and Color of Players -- Sebastian
+  setStartPosition(key) {
+    this.positionCounter++;
+    console.log(this.positionCounter);
     let positionX = 0;
     let positionY = 0;
     let colorNr = 0;
@@ -120,7 +120,7 @@ class Game {
     }
     let color = this.colorDecode(colorNr);
     this.players.get(key).x = positionX * (this.extent - 1);
-    this.players.get(key).y = positionY * (this.extent - 1); 
+    this.players.get(key).y = positionY * (this.extent - 1);
     this.players.get(key).color = color;
   }
   // send chosen difficulty to all clients --Sebastian
@@ -128,7 +128,7 @@ class Game {
     this.difficulty = difficulty;
     server.sendDifficultyToClient(this.difficulty);
   }
-  // Set Player on ready and start Game when all players are ready -- Sebastian 
+  // Set Player on ready and start Game when all players are ready -- Sebastian
   playerReady(socketID) {
     this.players.get(socketID).ready = 1;
     this.readyCount++;
@@ -179,7 +179,6 @@ class Game {
         if (timerSek === 0 && timerMin === 0) {
           this.gameOver();
           clearInterval(this.timerInterval);
-          
         } else if (timerSek === 0) {
           timerMin--;
           timerSek += 59;
@@ -278,27 +277,27 @@ class Game {
   // if bullet hits monster, monster dies --Yoanna
   killMonster(key, monster) {
     if (
-      (this.players.get(key).bullet.x === monster.x &&
-        this.players.get(key).bullet.y === monster.y) ||
-      (this.players.get(key).bullet.x === monster.x &&
-        this.players.get(key).bullet.y === monster.y + 1) ||
-      (this.players.get(key).bullet.x === monster.x + 1 &&
-        this.players.get(key).bullet.y === monster.y) ||
-      (this.players.get(key).bullet.x === monster.x + 1 &&
-        this.players.get(key).bullet.y === monster.y + 1)
+      (this.players.get(key).bullet.x == monster.x &&
+        this.players.get(key).bullet.y == monster.y) ||
+      (this.players.get(key).bullet.x == monster.x &&
+        this.players.get(key).bullet.y == monster.y + 1) ||
+      (this.players.get(key).bullet.x == monster.x + 1 &&
+        this.players.get(key).bullet.y == monster.y) ||
+      (this.players.get(key).bullet.x == monster.x + 1 &&
+        this.players.get(key).bullet.y == monster.y + 1)
     ) {
       monster.alive = false;
     }
   }
   // if player run in monster, he loses a life --Yoanna
   damage(key, monster) {
-    if (monster.alive === true) {
+    if (monster.alive == true) {
       if (
-        this.players.get(key).x === monster.x &&
-        this.players.get(key).y === monster.y
+        this.players.get(key).x == monster.x &&
+        this.players.get(key).y == monster.y
       ) {
         this.players.get(key).lifes--;
-        if (this.players.get(key).lifes === 0) {
+        if (this.players.get(key).lifes == 0) {
           this.players.get(key).alive = false;
           this.gameOver();
         } else {
@@ -308,14 +307,14 @@ class Game {
       }
     } else {
       if (
-        this.players.get(key).x === monster.x &&
-        this.players.get(key).y === monster.y
+        this.players.get(key).x == monster.x &&
+        this.players.get(key).y == monster.y
       ) {
         this.players.get(key).color = monster.color;
       }
     }
   }
-  // Check if players are on the same position so they can mix colors --Sebastian 
+  // Check if players are on the same position so they can mix colors --Sebastian
   checkPlayerPositions(key) {
     for (var key2 of this.players.keys()) {
       if (
@@ -327,7 +326,7 @@ class Game {
       }
     }
   }
-  // Mix colors of players -- Sebastian 
+  // Mix colors of players -- Sebastian
   colorMix(key1, key2) {
     let color1 = this.colorCode(this.players.get(key1).color);
     let color2 = this.colorCode(this.players.get(key2).color);
@@ -338,12 +337,12 @@ class Game {
       this.players.get(key2).color = result;
     }
   }
-  // Change color to number so it can be used for calculations --Sebastian 
+  // Change color to number so it can be used for calculations --Sebastian
   colorCode(color) {
     let colorNr = this.colors.indexOf(color);
     return colorNr;
   }
-  // Change number back to color --Sebastian 
+  // Change number back to color --Sebastian
   colorDecode(nummer) {
     let color = 0;
     if (nummer <= 7) {
@@ -355,7 +354,7 @@ class Game {
   }
   // creates monsters at beginning of new round depending on difficulty --Yoanna
   monsterCreator() {
-    for (let i = 0; i < this.difficulty*3; i++) {
+    for (let i = 0; i < this.difficulty * 3; i++) {
       this.monsters.push(
         new Monster(
           Math.floor(Math.random() * this.extent),
@@ -384,7 +383,7 @@ class Game {
       this.monsters = [];
       this.gameState.monsters = [];
       this.room = new Room(this.extent, 1, this.playerCount);
-      this.positionCounter = 0; 
+      this.positionCounter = 0;
       for (var key of this.players.keys()) {
         this.setStartPosition(key);
       }
