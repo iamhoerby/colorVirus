@@ -49,7 +49,7 @@ nsp.on("connection", function (socket) {
     newGame.updateMovement(socket.id, pressedKey);
   });
   socket.on("restart", function () {
-    newGame.restart(); 
+    newGame.restart();
   });
 });
 

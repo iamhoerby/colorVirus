@@ -5,7 +5,7 @@ export class Rendering {
     this.extent = extent;
     this.cellSize = 0;
   }
-  // Start Screen with Name Input -- Sebastian 
+  // Start Screen with Name Input -- Sebastian
   inputName() {
     document.getElementById("startName").classList.remove("displayNone");
   }
@@ -43,11 +43,11 @@ export class Rendering {
         document
           .getElementById("submitDifficulty")
           .classList.remove("displayNone");
-          document.getElementById("ready").disabled = true;
+        document.getElementById("ready").disabled = true;
         break;
     }
   }
-  //show gamefield -- Sebastian 
+  //show gamefield -- Sebastian
   startGame() {
     document.getElementById("difficulty").classList.add("displayNone");
     document.getElementById("difficultyRules").classList.add("displayNone");
@@ -59,7 +59,7 @@ export class Rendering {
     this.cellSize = this.canvas.width / this.extent;
     document.getElementById("canvas").classList.remove("displayNone");
   }
-  // Remove Game Over Screen -- Sebastian 
+  // Remove Game Over Screen -- Sebastian
   restart() {
     document.getElementById("gameOver").classList.add("displayNone");
   }
@@ -112,65 +112,88 @@ export class Rendering {
       this.cellSize / 2
     );
   }
-//drawing obstacle. It's a black rectangle with size 2x2 --Andrei
+  //drawing obstacle. It's a black rectangle with size 2x2 --Andrei
   drawObstacle(coord) {
     this.context.fillStyle = "black";
     this.context.fillRect(
       coord.x * this.cellSize,
       coord.y * this.cellSize,
-      (this.cellSize * this.extent) / (this.extent/2),
-      (this.cellSize * this.extent) / (this.extent/2)
+      (this.cellSize * this.extent) / (this.extent / 2),
+      (this.cellSize * this.extent) / (this.extent / 2)
     );
   }
 
-/* Andrei: this function creates color "aura" around obstacles hitted with a bullet. 
+  /* Andrei: this function creates color "aura" around obstacles hitted with a bullet. 
   Pure cosmetic effect, has nothing to do with gameplay */
   drawObstEffect(coord, color) {
     this.context.fillStyle = color;
     this.context.beginPath();
-    this.context.arc((coord.x + 1) * this.cellSize, (coord.y + 1) * this.cellSize, (this.cellSize * this.extent) / (this.extent/2), 0, 2 * Math.PI);
+    this.context.arc(
+      (coord.x + 1) * this.cellSize,
+      (coord.y + 1) * this.cellSize,
+      (this.cellSize * this.extent) / (this.extent / 2),
+      0,
+      2 * Math.PI
+    );
     this.context.fill();
-    }
+  }
 
-/* Andrei: drawing room itself: borders, door, obstacles */
+  /* Andrei: drawing room itself: borders, door, obstacles */
   drawRoom(gameStateRoomCoord) {
     for (let i = 0; i < gameStateRoomCoord.length; i++) {
       this.drawObstacle(gameStateRoomCoord[i]);
     }
   }
 
-/* Andrei: function for drawing a door. Rectangle with preset color*/
+  /* Andrei: function for drawing a door. Rectangle with preset color*/
   drawDoor(gameStateDoor) {
     this.context.fillStyle = gameStateDoor.color;
     this.context.fillRect(
       gameStateDoor.position.x * this.cellSize,
       gameStateDoor.position.y * this.cellSize,
-      (this.cellSize * this.extent) / (this.extent/8),
-      (this.cellSize * this.extent) / (this.extent/2)
+      (this.cellSize * this.extent) / (this.extent / 8),
+      (this.cellSize * this.extent) / (this.extent / 2)
     );
   }
 
-  /*Andrei: if a bullet hits an obstacle, glow effect will be drown*/ 
+  /*Andrei: if a bullet hits an obstacle, glow effect will be drown*/
+
   makeGlow(obstacle, gameStatePlayer) {
     for (let i = 0; i < obstacle.length; i++) {
-      for (let j = 0; j < gameStatePlayer.length; j++) {   // if a bullet is near an obstacle and next coordinates will intersect it...
-        if (gameStatePlayer[j].bullet.direction === "right" && gameStatePlayer[j].bullet.x + 1 === obstacle[i].x && 
-            (gameStatePlayer[j].bullet.y === obstacle[i].y || gameStatePlayer[j].bullet.y === obstacle[i].y + 1)) {
-            this.drawObstEffect(obstacle[i], gameStatePlayer[j].color); // ...an effect will appear
-            }
-        if (gameStatePlayer[j].bullet.direction === "left" && gameStatePlayer[j].bullet.x - 1 === obstacle[i].x + 1 && 
-            (gameStatePlayer[j].bullet.y === obstacle[i].y || gameStatePlayer[j].bullet.y === obstacle[i].y + 1)) {
-              this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);    
-          }
-        if (gameStatePlayer[j].bullet.direction === "down" && gameStatePlayer[j].bullet.y + 1 === obstacle[i].y && 
-            (gameStatePlayer[j].bullet.x === obstacle[i].x || gameStatePlayer[j].bullet.x === obstacle[i].x + 1)) {
-              this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);    
-          }
-        else if (gameStatePlayer[j].bullet.direction === "up" && gameStatePlayer[j].bullet.y - 1 === obstacle[i].y + 1 && 
-            (gameStatePlayer[j].bullet.x === obstacle[i].x || gameStatePlayer[j].bullet.x === obstacle[i].x + 1)) {
-              this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);    
-          }
-       }
+      for (let j = 0; j < gameStatePlayer.length; j++) {
+        // if a bullet is near an obstacle and next coordinates will intersect it...
+        if (
+          gameStatePlayer[j].bullet.direction === "right" &&
+          gameStatePlayer[j].bullet.x + 1 === obstacle[i].x &&
+          (gameStatePlayer[j].bullet.y === obstacle[i].y ||
+            gameStatePlayer[j].bullet.y === obstacle[i].y + 1)
+        ) {
+          this.drawObstEffect(obstacle[i], gameStatePlayer[j].color); // ...an effect will appear
+        }
+        if (
+          gameStatePlayer[j].bullet.direction === "left" &&
+          gameStatePlayer[j].bullet.x - 1 === obstacle[i].x + 1 &&
+          (gameStatePlayer[j].bullet.y === obstacle[i].y ||
+            gameStatePlayer[j].bullet.y === obstacle[i].y + 1)
+        ) {
+          this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);
+        }
+        if (
+          gameStatePlayer[j].bullet.direction === "down" &&
+          gameStatePlayer[j].bullet.y + 1 === obstacle[i].y &&
+          (gameStatePlayer[j].bullet.x === obstacle[i].x ||
+            gameStatePlayer[j].bullet.x === obstacle[i].x + 1)
+        ) {
+          this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);
+        } else if (
+          gameStatePlayer[j].bullet.direction === "up" &&
+          gameStatePlayer[j].bullet.y - 1 === obstacle[i].y + 1 &&
+          (gameStatePlayer[j].bullet.x === obstacle[i].x ||
+            gameStatePlayer[j].bullet.x === obstacle[i].x + 1)
+        ) {
+          this.drawObstEffect(obstacle[i], gameStatePlayer[j].color);
+        }
+      }
     }
   }
 
@@ -188,17 +211,19 @@ export class Rendering {
       }
     }
   }
-  //Show Game Over Screen with restart option -- Sebastian 
+  //Show Game Over Screen with restart option -- Sebastian
   drawGameOver(levelCount) {
     document.getElementById("canvas").classList.add("displayNone");
     document.getElementById("timer").classList.add("displayNone");
     document.getElementById("gameOver").classList.remove("displayNone");
     if (levelCount < 10) {
       document.getElementById("levelCounter").innerHTML =
-      "<h3>sorry. you've lost!</h3><br> you only completed " + levelCount + " level!";
+        "<h3>sorry. you've lost!</h3><br> you only completed " +
+        levelCount +
+        " level!";
     } else {
       document.getElementById("levelCounter").innerHTML =
-      "<h3>you WIN!</h3> <br> you completed " + levelCount + " level!";
+        "<h3>you WIN!</h3> <br> you completed " + levelCount + " level!";
     }
   }
 }
