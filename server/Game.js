@@ -297,8 +297,8 @@ class Game {
         this.players.get(key).x === monster.x &&
         this.players.get(key).y === monster.y
       ) {
-        this.players.get(key).lives--;
-        if (this.players.get(key).lives === 0) {
+        this.players.get(key).lifes--;
+        if (this.players.get(key).lifes === 0) {
           this.players.get(key).alive = false;
           this.gameOver();
         } else {
