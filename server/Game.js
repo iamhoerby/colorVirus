@@ -83,16 +83,16 @@ class Game {
       this.setStartPosition(key);
       this.players.get(key).ready = 0;
       this.players.get(key).alive = true;
-      this.players.get(key).lives = 3;
+      this.players.get(key).lifes = 3;
     }
     this.monsters = [];
+    this.gameState.monsters = [];
     this.readyCount = 0;
     this.setDifficulty(0);
   }
   // Set Start Position and Color of Players -- Sebastian
   setStartPosition(key) {
     this.positionCounter++;
-    console.log(this.positionCounter);
     let positionX = 0;
     let positionY = 0;
     let colorNr = 0;
@@ -277,27 +277,27 @@ class Game {
   // if bullet hits monster, monster dies --Yoanna
   killMonster(key, monster) {
     if (
-      (this.players.get(key).bullet.x == monster.x &&
-        this.players.get(key).bullet.y == monster.y) ||
-      (this.players.get(key).bullet.x == monster.x &&
-        this.players.get(key).bullet.y == monster.y + 1) ||
-      (this.players.get(key).bullet.x == monster.x + 1 &&
-        this.players.get(key).bullet.y == monster.y) ||
-      (this.players.get(key).bullet.x == monster.x + 1 &&
-        this.players.get(key).bullet.y == monster.y + 1)
+      (this.players.get(key).bullet.x === monster.x &&
+        this.players.get(key).bullet.y === monster.y) ||
+      (this.players.get(key).bullet.x === monster.x &&
+        this.players.get(key).bullet.y === monster.y + 1) ||
+      (this.players.get(key).bullet.x === monster.x + 1 &&
+        this.players.get(key).bullet.y === monster.y) ||
+      (this.players.get(key).bullet.x === monster.x + 1 &&
+        this.players.get(key).bullet.y === monster.y + 1)
     ) {
       monster.alive = false;
     }
   }
   // if player run in monster, he loses a life --Yoanna
   damage(key, monster) {
-    if (monster.alive == true) {
+    if (monster.alive === true) {
       if (
-        this.players.get(key).x == monster.x &&
-        this.players.get(key).y == monster.y
+        this.players.get(key).x === monster.x &&
+        this.players.get(key).y === monster.y
       ) {
         this.players.get(key).lifes--;
-        if (this.players.get(key).lifes == 0) {
+        if (this.players.get(key).lifes === 0) {
           this.players.get(key).alive = false;
           this.gameOver();
         } else {
@@ -307,8 +307,8 @@ class Game {
       }
     } else {
       if (
-        this.players.get(key).x == monster.x &&
-        this.players.get(key).y == monster.y
+        this.players.get(key).x === monster.x &&
+        this.players.get(key).y === monster.y
       ) {
         this.players.get(key).color = monster.color;
       }
