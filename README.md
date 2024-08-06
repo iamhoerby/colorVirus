@@ -1,6 +1,7 @@
-# SEP project group O
+# Color Virus 
+A university project from LMU - Munich
 
-## Wie man das Spiel zum Laufen bringt
+## How to start the game: 
 
 1. Clone and save the repository
 2. Install the dependencies with "npm i"
